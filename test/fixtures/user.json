@@ -1,0 +1,13 @@
+[
+    {
+        "id": 1,
+        "username": "Test",
+        "authentication_provder": "modlab",
+        "special_group": 0,
+        "provider_data": "testuser",
+        "permissions": [
+            "test",
+            "test.test2"
+        ]
+    }
+]
