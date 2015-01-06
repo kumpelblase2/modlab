@@ -1,4 +1,5 @@
 function App() {
+    this.customModels = [];
 }
 
 App.prototype.registerSite = function(){

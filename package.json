@@ -1,51 +1,57 @@
 {
-    "name": "modlab",
-    "private": true,
-    "version": "0.0.1",
-    "description": "An extendable front and backend application for chat moderation with a focus on livestreaming services.",
-    "keywords": ["twitch", "chat", "moderation"],
-    "dependencies": {
-        "async": "^0.9.0",
-        "deep-extend": "~0.2.5",
-        "ejs": "~0.8.4",
-        "grunt": "0.4.2",
-        "grunt-contrib-clean": "~0.5.0",
-        "grunt-contrib-coffee": "~0.10.1",
-        "grunt-contrib-concat": "~0.3.0",
-        "grunt-contrib-copy": "~0.5.0",
-        "grunt-contrib-cssmin": "~0.9.0",
-        "grunt-contrib-jst": "~0.6.0",
-        "grunt-contrib-less": "0.11.1",
-        "grunt-contrib-uglify": "~0.4.0",
-        "grunt-contrib-watch": "~0.5.3",
-        "grunt-sails-linker": "~0.9.5",
-        "grunt-sync": "~0.0.4",
-        "include-all": "~0.1.3",
-        "log": "^1.4.0",
-        "q": "^1.1.2",
-        "sails": "~0.10.5",
-        "sails-disk": "~0.10.0",
-        "sails-mysql": "~0.10.7",
-        "skipper": "~0.5.3",
-        "modlab-chat": "~0.0.3"
-    },
-    "devDependencies": {
-        "barrels": "~1.4.0",
-        "mocha": "~2.0.1",
-        "supertest": "~0.15.0",
-        "should": "~4.4.0",
-        "sails-memory": "~0.10.3"
-    },
-    "scripts": {
-        "start": "node app.js",
-        "debug": "node debug app.js",
-        "test": "PORT=9999 NODE_ENV=test mocha -R spec -b --recursive"
-    },
-    "main": "app.js",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/kumpelblase2/modlab.git"
-    },
-    "author": "kumpelblase2",
-    "license": "MIT"
+  "name": "modlab",
+  "private": true,
+  "version": "0.0.1",
+  "description": "An extendable front and backend application for chat moderation with a focus on livestreaming services.",
+  "keywords": [
+    "twitch",
+    "chat",
+    "moderation"
+  ],
+  "dependencies": {
+    "async": "^0.9.0",
+    "deep-extend": "~0.2.5",
+    "ejs": "~0.8.4",
+    "grunt": "0.4.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-coffee": "~0.10.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-cssmin": "~0.9.0",
+    "grunt-contrib-jst": "~0.6.0",
+    "grunt-contrib-less": "0.11.1",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-sails-linker": "~0.9.5",
+    "grunt-sync": "~0.0.4",
+    "include-all": "~0.1.3",
+    "lodash": "^2.4.1",
+    "log": "^1.4.0",
+    "modlab-chat": "~0.0.3",
+    "q": "^1.1.2",
+    "sails": "~0.10.5",
+    "sails-disk": "~0.10.0",
+    "sails-mysql": "~0.10.7",
+    "skipper": "~0.5.3",
+    "waterline": "~0.10.15"
+  },
+  "devDependencies": {
+    "barrels": "~1.4.0",
+    "mocha": "~2.0.1",
+    "supertest": "~0.15.0",
+    "should": "~4.4.0",
+    "sails-memory": "~0.10.3"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "debug": "node debug app.js",
+    "test": "PORT=9999 NODE_ENV=test mocha -R spec -b --recursive"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kumpelblase2/modlab.git"
+  },
+  "author": "kumpelblase2",
+  "license": "MIT"
 }

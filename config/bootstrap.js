@@ -12,9 +12,6 @@ var async = require('async');
 
 module.exports.bootstrap = function (cb) {
 
-    var App = require('../api/app');
-    sails.app = new App();
-
     var chat = require('modlab-chat');
     var bot = chat.loadBot(null, sails.config.chat.adapter, 'kumpelbot');
     sails.chat = bot;
