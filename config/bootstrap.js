@@ -19,8 +19,9 @@ module.exports.bootstrap = function (cb) {
 
     var chat = require('../chat/chat');
     var bot = chat.loadBot('../chat/adapters', sails.config.chat.adapter, 'kumpelbot');
-    var plugins = sails.config.plugins;
+    sails.chat = bot;
 
+    var plugins = sails.config.plugins;
     var waiting = [];
     Object.keys(plugins).forEach(function(plugin) {
         waiting.push(function(callback) {
