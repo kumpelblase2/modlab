@@ -11,14 +11,12 @@
 var async = require('async');
 
 module.exports.bootstrap = function (cb) {
-    // Register coffee script
-    require('coffee-script/register');
 
-    var Site = require('../api/site/site');
-    sails.site = new Site();
+    var App = require('../api/app');
+    sails.app = new App();
 
-    var chat = require('../chat/chat');
-    var bot = chat.loadBot('../chat/adapters', sails.config.chat.adapter, 'kumpelbot');
+    var chat = require('modlab-chat');
+    var bot = chat.loadBot(null, sails.config.chat.adapter, 'kumpelbot');
     sails.chat = bot;
 
     var plugins = sails.config.plugins;
@@ -34,7 +32,7 @@ module.exports.bootstrap = function (cb) {
                 pluginMain = require(pluginInfo.name);
             }
 
-            pluginMain(bot, sails.site, callback);
+            pluginMain(bot, sails.app, callback);
         });
     });
 
