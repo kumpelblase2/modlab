@@ -1,0 +1,8 @@
+imports:
+    orm_hook: ./api/hooks/pluginmodels/
+
+git module orm_hook:
+    url: https://github.com/balderdashy/sails.git
+    files: load-user-modules.js
+    export: lib/hooks/orm
+    rev: 045fc6630fd915dce1abd89844e4164a9276a8cd
