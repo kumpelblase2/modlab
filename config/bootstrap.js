@@ -27,9 +27,7 @@ module.exports.bootstrap = function (cb) {
             sails.log.info('Loading plugin ' + plugin + ' ...');
             var pluginInfo = plugins[plugin];
             var pluginMain;
-            if(typeof(pluginInfo) === "string"){
-                pluginMain = require(pluginInfo);
-            } else if (pluginInfo.path) {
+            if (pluginInfo.path) {
                 pluginMain = require(pluginInfo.path);
             } else {
                 pluginMain = require(pluginInfo.name);
