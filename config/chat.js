@@ -1,4 +1,5 @@
 module.exports.chat = {
+    disabled: false,
     adapter: 'twitch',
     twitch: {
         port: 6667,

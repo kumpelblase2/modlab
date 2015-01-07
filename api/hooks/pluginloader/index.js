@@ -32,8 +32,12 @@ module.exports = function(sails) {
                         sails.log.error(err);
 
                     sails.log.info('Loaded ' + pluginNames.length + ' plugin(s).');
-                    sails.log.info('Connecting to chat ...');
-                    sails.chat.run();
+                    if(!sails.config.chat.disabled) {
+                        sails.log.info('Connecting to chat ...');
+                        sails.chat.run();
+                    } else {
+                        sails.log.info('Chat is disabled.');
+                    }
                     cb();
                 });
             });
