@@ -7,5 +7,5 @@ module.exports = function (chat, app, done) {
         message.reply('Mr Butt Buttington');
     });
 
-    done(null);
+    done();
 };
