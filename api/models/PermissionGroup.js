@@ -9,11 +9,10 @@ module.exports = {
 
     attributes: {
 
-        name: {type: 'string'},
+        name: { type: 'string' },
 
-        permissions: {type: 'array'},
+        permissions: { type: 'array' },
 
-        users_in_group: {collection: 'User', via: 'permission_groups', dominant: true}
+        users_in_group: { collection: 'User', via: 'permission_groups', dominant: true }
     }
 };
-

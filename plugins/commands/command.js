@@ -1,4 +1,5 @@
 module.exports = {
+    shema: true,
     attributes: {
 
         name: {type: 'string'},

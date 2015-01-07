@@ -9,6 +9,8 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.http.html
  */
 
+var bodyParser = require('body-parser');
+
 module.exports.http = {
 
     /****************************************************************************
@@ -35,7 +37,8 @@ module.exports.http = {
             'cookieParser',
             'session',
             //   'myRequestLogger',
-            //   'bodyParser',
+            'bodyParserUrl',
+            'bodyParserJSON',
             'handleBodyParserError',
             'compress',
             'methodOverride',
@@ -46,7 +49,7 @@ module.exports.http = {
             'favicon',
             '404',
             '500'
-        ]
+        ],
 
         /****************************************************************************
          *                                                                           *
@@ -68,8 +71,9 @@ module.exports.http = {
          *                                                                          *
          ***************************************************************************/
 
-        // bodyParser: require('skipper')
+        bodyParserUrl: bodyParser.urlencoded({ extended: false }),
 
+        bodyParserJSON: bodyParser.json()
     },
 
     /***************************************************************************
