@@ -1,5 +1,26 @@
 var path = require('path');
-var filter = require('./pluginhelper');
+var helper = require('./pluginhelper');
+var filter = helper.filter;
+var loadPluginConfig = helper.loadConfig;
+
+var _disable = function(plugin) {
+    plugin.disable();
+    sails.emit('plugin:' + plugin.name + ':disable');
+    sails.log.info('Disabled plugin `' + plugin.name + '`.');
+}
+
+var _enable = function(plugin, callback) {
+    var logCallback = function(error) {
+        if(error) {
+            callback(error);
+        } else {
+            sails.emit('plugin:' + plugin.name + ':enabled');
+            sails.log.info('Enabled plugin `' + plugin.name + '`.');
+            callback();
+        }
+    }
+    plugin.enable(logCallback);
+};
 
 module.exports = function(sails) {
     return {
@@ -7,12 +28,13 @@ module.exports = function(sails) {
 
         initialize: function(cb) {
             var self = this;
-            sails.after('hook:app:loaded', function() {
+            var waitFor = ['hook:app:loaded', 'hook:chat:loaded'];
+            sails.after(waitFor, function() {
                 var plugins = filter(sails.config.plugins);
                 var waiting = [];
                 plugins.forEach(function(plugin) {
                     waiting.push(function(callback) {
-                        sails.log.info('Loading plugin `' + plugin.name + '`` ...');
+                        sails.log.info('Loading plugin with id `' + plugin.name + '` ...');
                         var pluginMain;
                         if(plugin.source === 'npm') {
                             pluginMain = require(plugin.name);
@@ -20,32 +42,57 @@ module.exports = function(sails) {
                             pluginMain = require(path.join(sails.config.rootPath, plugin.path));
                         }
 
+                        var result = pluginMain(sails.app, sails.chat);
+                        if(!result.name)
+                            result.name = plugin.name;
+
+                        self.loadedPlugins.push(result);
                         var logCallback = function() {
-                            self.loadedPlugins.push(plugin);
-                            sails.emit('plugin:' + plugin.name + ':loaded');
-                            sails.log.info('Finished loading `' + plugin.name + '`.');
-                            callback();
+                            sails.emit('plugin:' + plugin.name + ':init');
+                            sails.log.verbose('Finished initializing `' + plugin.name + '`.');
+                            callback(null, result);
                         };
 
-                        sails.emit('plugin:' + plugin.name + ':init');
-                        pluginMain(sails.chat, sails.app, logCallback);
+                        var config = loadPluginConfig(plugin.name);
+                        result.init(config, logCallback);
                     });
                 });
 
-                async.parallel(waiting, function(err, result) {
-                    if(err)
-                        sails.log.error(err);
+                var done = cb;
+                async.series([
+                    function(cb) {
+                        async.parallel(waiting, function(err, result) {
+                            if(err)
+                                sails.log.error(err);
 
-                    sails.log.info('Loaded ' + self.loadedPlugins.length + ' plugin(s).');
-                    if(!sails.config.chat.disabled) {
-                        sails.log.info('Connecting to chat ...');
-                        sails.chat.run();
-                    } else {
-                        sails.log.warn('Chat is disabled.');
+                            sails.emit('hook:pluginloader:pluginsinit');
+                            sails.log.verbose('Initialized all plugins.');
+                            cb(null, result);
+                        });
+                    },
+                    function(cb) {
+                        async.each(self.loadedPlugins, _enable, cb);
                     }
-                    cb();
-                });
+                ], done);
             });
+        },
+        enable: function(name) {
+            var plugin = _.find(this.loadedPlugins, function(plugin) { plugin.name === name });
+            if(plugin)
+                _enable(plugin);
+        },
+
+        disablePlugin: function(name) {
+            var plugin = _.find(this.loadedPlugins, function(plugin) { plugin.name === name });
+            if(plugin)
+                _disable(plugin);
+        },
+        disableAll: function() {
+            this.loadedPlugins.forEach(_disable);
+        },
+
+        teardown: function(cb) {
+            this.disableAll();
         }
     };
 };

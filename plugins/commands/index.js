@@ -1,11 +1,25 @@
-module.exports = function (chat, app, done) {
-    chat.hear(/poop/, function (message) {
-        message.reply('POOPY MCPOOPSTER');
-    });
+function Commands(chat)
+{
+    this.name = "commands";
+    this.version = "0.0.1";
+    this.chat = chat;
+}
 
-    chat.hear(/butts/i, function (message) {
-        message.reply('Mr Butt Buttington');
-    });
+Commands.prototype.init = function(config, callback) {
+    callback();
+};
 
-    done();
+Commands.prototype.enable = function(callback) {
+    this.chat.hear(/hello/, function(message) {
+        message.reply('Hello!');
+    });
+    callback();
+};
+
+Commands.prototype.disable = function() {
+
+};
+
+module.exports = function (app, chat) {
+    return new Commands(chat);
 };
