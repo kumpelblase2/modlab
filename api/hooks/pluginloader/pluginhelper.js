@@ -32,5 +32,22 @@ module.exports = {
         } else {
             return {};
         }
+    },
+    enable: function(plugin, callback) {
+        var logCallback = function(error) {
+            if(error) {
+                callback(error);
+            } else {
+                sails.emit('plugin:' + plugin.name + ':enabled');
+                sails.log.info('Enabled plugin `' + plugin.name + '`.');
+                callback();
+            }
+        }
+        plugin.enable(logCallback);
+    },
+    disable: function(plugin) {
+        plugin.disable();
+        sails.emit('plugin:' + plugin.name + ':disable');
+        sails.log.info('Disabled plugin `' + plugin.name + '`.');
     }
 };

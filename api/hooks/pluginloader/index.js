@@ -3,24 +3,8 @@ var helper = require('./pluginhelper');
 var filter = helper.filter;
 var loadPluginConfig = helper.loadConfig;
 
-var _disable = function(plugin) {
-    plugin.disable();
-    sails.emit('plugin:' + plugin.name + ':disable');
-    sails.log.info('Disabled plugin `' + plugin.name + '`.');
-}
-
-var _enable = function(plugin, callback) {
-    var logCallback = function(error) {
-        if(error) {
-            callback(error);
-        } else {
-            sails.emit('plugin:' + plugin.name + ':enabled');
-            sails.log.info('Enabled plugin `' + plugin.name + '`.');
-            callback();
-        }
-    }
-    plugin.enable(logCallback);
-};
+var _disable = helper.disable;
+var _enable = helper.enable;
 
 module.exports = function(sails) {
     return {
