@@ -13,14 +13,24 @@ Commands.prototype.enable = function(callback) {
             commands.forEach(function(command) {
                 switch(command.type) {
                     case 'hear':
-                        self.chat.hear(new RegExp(command.value.regex), function(message) {
-                            message.reply(command.value.message);
+                        self.chat.hear(new RegExp(command.data.regex), function(message) {
+                            message.reply(command.data.message);
                         });
+                        break;
+
+                    case 'basic':
+                        self.registerCommand(command.name, command.data.message);
                         break;
                 }
             });
         }
         callback();
+    });
+};
+
+Commands.prototype.registerCommand = function(name, callback) {
+    self.chat.hear(new RegExp("$" + sails.config.plugin.commands.prefix + name), function(message) {
+        //TODO
     });
 };
 
