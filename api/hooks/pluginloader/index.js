@@ -1,7 +1,6 @@
 var path = require('path');
 var helper = require('./pluginhelper');
 var filter = helper.filter;
-var loadPluginConfig = helper.loadConfig;
 
 var _disable = helper.disable;
 var _enable = helper.enable;
@@ -12,7 +11,7 @@ module.exports = function(sails) {
 
         initialize: function(cb) {
             var self = this;
-            var waitFor = ['hook:app:loaded', 'hook:chat:loaded'];
+            var waitFor = ['hook:app:loaded', 'hook:chat:loaded', 'hook:pluginconfig:loaded'];
             sails.after(waitFor, function() {
                 var plugins = filter(sails.config.plugins);
                 var waiting = [];
@@ -42,9 +41,8 @@ module.exports = function(sails) {
                             callback(null, result);
                         };
 
-                        var config = loadPluginConfig(plugin.name);
                         if(typeof(result.init) === "function") {
-                            result.init(config, logCallback);
+                            result.init(logCallback);
                         } else {
                             logCallback();
                         }

@@ -25,14 +25,6 @@ module.exports = {
 
         return toLoad;
     },
-    loadConfig: function(name) {
-        var file = path.join(sails.config.rootPath, 'config', 'plugins', name);
-        if(fs.existsSync(file)) {
-            return require(file);
-        } else {
-            return {};
-        }
-    },
     enable: function(plugin, callback) {
         var logCallback = function(error) {
             if(error) {
