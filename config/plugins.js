@@ -2,5 +2,5 @@ module.exports.plugins = {
     commands: {
         path: 'plugins/commands'
     },
-    disabled: false
+    a_disabled_plugin: false
 };
