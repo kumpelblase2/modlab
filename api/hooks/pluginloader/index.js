@@ -3,13 +3,16 @@ var filter = require('./pluginhelper');
 
 module.exports = function(sails) {
     return {
+        loadedPlugins: [],
+
         initialize: function(cb) {
+            var self = this;
             sails.after('hook:app:loaded', function() {
                 var plugins = filter(sails.config.plugins);
                 var waiting = [];
                 plugins.forEach(function(plugin) {
                     waiting.push(function(callback) {
-                        sails.log.info('Loading plugin ' + plugin.name + ' ...');
+                        sails.log.info('Loading plugin `' + plugin.name + '`` ...');
                         var pluginMain;
                         if(plugin.source === 'npm') {
                             pluginMain = require(plugin.name);
@@ -18,8 +21,9 @@ module.exports = function(sails) {
                         }
 
                         var logCallback = function() {
+                            self.loadedPlugins.push(plugin);
                             sails.emit('plugin:' + plugin.name + ':loaded');
-                            sails.log.info('Finished loading ' + plugin.name + '.');
+                            sails.log.info('Finished loading `' + plugin.name + '`.');
                             callback();
                         };
 
@@ -32,7 +36,7 @@ module.exports = function(sails) {
                     if(err)
                         sails.log.error(err);
 
-                    sails.log.info('Loaded ' + plugins.length + ' plugin(s).');
+                    sails.log.info('Loaded ' + self.loadedPlugins.length + ' plugin(s).');
                     if(!sails.config.chat.disabled) {
                         sails.log.info('Connecting to chat ...');
                         sails.chat.run();
