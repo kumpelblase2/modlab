@@ -1,28 +1,29 @@
 var path = require('path');
+var filter = require('./pluginhelper');
 
 module.exports = function(sails) {
     return {
         initialize: function(cb) {
             sails.after('hook:app:loaded', function() {
-                var plugins = sails.config.plugins;
+                var plugins = filter(sails.config.plugins);
                 var waiting = [];
-                var pluginNames = Object.keys(plugins);
-                pluginNames.forEach(function(plugin) {
+                plugins.forEach(function(plugin) {
                     waiting.push(function(callback) {
-                        sails.log.info('Loading plugin ' + plugin + ' ...');
-                        var pluginInfo = plugins[plugin];
+                        sails.log.info('Loading plugin ' + plugin.name + ' ...');
                         var pluginMain;
-                        if (pluginInfo.path) {
-                            pluginMain = require(path.join(sails.config.rootPath, pluginInfo.path));
-                        } else {
-                            pluginMain = require(pluginInfo.name);
+                        if(plugin.source === 'npm') {
+                            pluginMain = require(plugin.name);
+                        } else if(plugin.source === 'local') {
+                            pluginMain = require(path.join(sails.config.rootPath, plugin.path));
                         }
 
                         var logCallback = function() {
-                            sails.log.info('Finished loading ' + plugin + '.');
+                            sails.emit('plugin:' + plugin.name + ':loaded');
+                            sails.log.info('Finished loading ' + plugin.name + '.');
                             callback();
                         };
 
+                        sails.emit('plugin:' + plugin.name + ':init');
                         pluginMain(sails.chat, sails.app, logCallback);
                     });
                 });
@@ -31,7 +32,7 @@ module.exports = function(sails) {
                     if(err)
                         sails.log.error(err);
 
-                    sails.log.info('Loaded ' + pluginNames.length + ' plugin(s).');
+                    sails.log.info('Loaded ' + plugins.length + ' plugin(s).');
                     if(!sails.config.chat.disabled) {
                         sails.log.info('Connecting to chat ...');
                         sails.chat.run();
