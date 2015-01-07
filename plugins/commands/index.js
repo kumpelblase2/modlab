@@ -7,10 +7,21 @@ function Commands(chat)
 }
 
 Commands.prototype.enable = function(callback) {
-    this.chat.hear(/hello/, function(message) {
-        message.reply('Hello!');
+    var self = this;
+    Command.find().exec(function(err, commands) {
+        if(commands) {
+            commands.forEach(function(command) {
+                switch(command.type) {
+                    case 'hear':
+                        self.chat.hear(new RegExp(command.value.regex), function(message) {
+                            message.reply(command.value.message);
+                        });
+                        break;
+                }
+            });
+        }
+        callback();
     });
-    callback();
 };
 
 Commands.prototype.disable = function() {
