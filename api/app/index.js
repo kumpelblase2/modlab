@@ -10,8 +10,11 @@ App.prototype.registerWidget = function() {
 
 };
 
-App.prototype.registerModels = function(path) {
-
+App.prototype.registerModels = function(models) {
+    var self = this;
+    models.forEach(function(model) {
+        self.customModels.push(model);
+    })
 };
 
 module.exports = App;

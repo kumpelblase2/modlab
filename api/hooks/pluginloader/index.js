@@ -50,6 +50,11 @@ module.exports = function(sails) {
                         var logCallback = function() {
                             sails.emit('plugin:' + plugin.name + ':init');
                             sails.log.verbose('Finished initializing `' + plugin.name + '`.');
+                            if(result.models && Array.isArray(result.models) && result.models.length > 0) {
+                                sails.app.registerModels(result.models);
+                                sails.emit('plugin:' + plugin.name + ':models');
+                                sails.log.verbose('Added ' + result.models.length + ' custom model(s) for plugin `' + plugin.name + '`.');
+                            }
                             callback(null, result);
                         };
 

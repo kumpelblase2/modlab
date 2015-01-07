@@ -3,6 +3,7 @@ function Commands(chat)
     this.name = "commands";
     this.version = "0.0.1";
     this.chat = chat;
+    this.models = [ require('./command') ];
 }
 
 Commands.prototype.enable = function(callback) {
