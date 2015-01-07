@@ -70,6 +70,10 @@ module.exports.routes = {
     '/dashboard': {
         controller: 'dashboard',
         action: 'index'
-    }
+    },
 
+    'GET /users': 'UserController.index',
+    'GET /users/:id': 'UserController.show',
+    'PATCH /users/:id': 'UserController.update',
+    'DELETE /users/:id': 'UserController.delete'
 };

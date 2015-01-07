@@ -10,5 +10,21 @@ module.exports = {
         User.findOne(1).exec(function (err, user) {
             res.send(user.hasPermission(req.param('perm')));
         });
+    },
+
+    index: function(req, res) {
+        User.find().exec(function(err, users) {
+            res.ok({ users: users });
+        });
+    },
+
+    show: function(req, res) {
+        res.ok();
+    },
+    update: function(req, res) {
+        res.ok();
+    },
+    delete: function(req, res) {
+        res.ok();
     }
 };
