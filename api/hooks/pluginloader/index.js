@@ -71,17 +71,18 @@ module.exports = function(sails) {
                             sails.emit('hook:pluginloader:custommodels');
                             cb(err, result)
                         });
-                    },
-                    function(cb) {
-                        async.each(self.loadedPlugins, _enable, function(err, result) {
-                            sails.emit('hook:pluginloader:pluginsenable');
-                            sails.log.info('Loaded all plugins.');
-                            cb(err, result);
-                        });
                     }
                 ], done);
             });
         },
+        enableAll: function(cb) {
+            async.each(this.loadedPlugins, _enable, function(err) {
+                sails.emit('hook:pluginloader:pluginsenable');
+                sails.log.info('Loaded all plugins.');
+                cb(err);
+            });
+        },
+
         enable: function(name) {
             var plugin = _.find(this.loadedPlugins, function(plugin) { plugin.name === name });
             if(plugin)

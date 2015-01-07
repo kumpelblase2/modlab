@@ -11,7 +11,12 @@
 var async = require('async');
 
 module.exports.bootstrap = function (cb) {
-    sails.services.passport.loadStrategies();
-    sails.emit('app:bootstrap');
-    cb();
+    sails.hooks.pluginloader.enableAll(function(err) {
+        if(err)
+            return cb(err);
+
+        sails.services.passport.loadStrategies();
+        sails.emit('app:bootstrap');
+        cb();
+    });
 };
