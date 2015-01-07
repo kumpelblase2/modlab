@@ -75,7 +75,11 @@ module.exports = function(sails) {
                         });
                     },
                     function(cb) {
-                        async.each(self.loadedPlugins, _enable, cb);
+                        async.each(self.loadedPlugins, _enable, function(err, result) {
+                            sails.emit('hook:pluginloaded:pluginsenable');
+                            sails.log.info('Loaded all plugins.');
+                            cb(err, result);
+                        });
                     }
                 ], done);
             });
