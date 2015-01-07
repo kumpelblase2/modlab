@@ -5,10 +5,6 @@ function Commands(chat)
     this.chat = chat;
 }
 
-Commands.prototype.init = function(config, callback) {
-    callback();
-};
-
 Commands.prototype.enable = function(callback) {
     this.chat.hear(/hello/, function(message) {
         message.reply('Hello!');

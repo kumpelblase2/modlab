@@ -54,7 +54,11 @@ module.exports = function(sails) {
                         };
 
                         var config = loadPluginConfig(plugin.name);
-                        result.init(config, logCallback);
+                        if(typeof(result.init) === "function") {
+                            result.init(config, logCallback);
+                        } else {
+                            logCallback();
+                        }
                     });
                 });
 
