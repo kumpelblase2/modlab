@@ -23,7 +23,7 @@
             {
                 kind: 'button',
                 type: 'submit',
-                style: 'primary',
+                style: 'primary col-md-12',
                 name: 'login',
                 value: 'Sign in'
             }
@@ -31,10 +31,10 @@
     }]) %>
 
     <% if (providers) {%>
-      <h4>You can also use one of these...</h4>
+      <h4>Or you can login via:</h4>
 
       <% Object.keys(providers).forEach(function (key) { %>
-        <a href="/auth/<%= providers[key].slug %>" role="button"><%= providers[key].name %></a>
+          <a href="/auth/<%= providers[key].slug %>" role="button" class="btn btn-default col-md-12" style="background-color: #6441A5; color: white;"><%= providers[key].name %></a>
       <% }) %>
     <% } %>
 </div>
