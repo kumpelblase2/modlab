@@ -8,9 +8,25 @@
     action: '/auth/local',
     method: 'post',
     controls: [
-        partial('../elements/input', [{ type: 'text', name: 'identifier', placeholder: 'Username or Email' }]),
-        partial('../elements/input', [{ type: 'password', name: 'password', placeholder: 'Password' }]),
-        partial('../elements/button', [{ name: 'login', style: 'primary', value: 'Sign in' }])
+        {
+            kind: 'input',
+            type: 'text',
+            name: 'identifier',
+            placeholder: 'Username or Email'
+        },
+        {
+            kind: 'input',
+            type: 'password',
+            name: 'password',
+            placeholder: 'Password'
+        },
+        {
+            kind: 'button',
+            type: 'submit',
+            style: 'primary',
+            name: 'login',
+            value: 'Sign in'
+        }
     ]
 }]) %>
 
