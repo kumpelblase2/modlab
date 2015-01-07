@@ -41,7 +41,7 @@ module.exports = function(sails) {
                         sails.log.info('Connecting to chat ...');
                         sails.chat.run();
                     } else {
-                        sails.log.info('Chat is disabled.');
+                        sails.log.warn('Chat is disabled.');
                     }
                     cb();
                 });
