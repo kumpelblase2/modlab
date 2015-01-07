@@ -1,12 +1,14 @@
 <form role="form" action="<%= form.action || '' %>" method="<%= form.method || '' %>">
     <% form.controls.forEach(function(control) { %>
-        <% if(typeof(control) === "string") { %>
-            <%- control %>
-        <% } else { %>
-            <% if(control.kind !== "button") { %>
-                <%- partial('label', [{ for: control.name, value: control.placeholder }]) %>
+        <div class="form-group">
+            <% if(typeof(control) === "string") { %>
+                <%- control %>
+            <% } else { %>
+                <% if(control.kind !== "button") { %>
+                    <%- partial('label', [{ for: control.name, value: control.placeholder }]) %>
+                <% } %>
+                <%- partial('input', [control]) %>
             <% } %>
-            <%- partial('input', [control]) %>
-        <% } %>
+        </div>
     <% }); %>
 </form>
