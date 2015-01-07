@@ -19,6 +19,8 @@ App.prototype.registerModels = function(models) {
             name: name,
             schema: schema
         });
+        schema.globalId = name;
+        sails.models[name.toLowerCase()] = schema;
     });
 };
 

@@ -80,19 +80,20 @@ module.exports = function(sails) {
                         });
                     },
                     function(cb) {
-                        async.each(self.loadedPlugins, _enable, function(err, result) {
-                            sails.emit('hook:pluginloaded:pluginsenable');
-                            sails.log.info('Loaded all plugins.');
-                            cb(err, result);
+                        async.each(self.loadedPlugins, function(plugin, cb) {
+                            sails.app.registerModels(plugin.models);
+                            cb();
+                        }, function(err, result) {
+                            sails.emit('hook:pluginloader:custommodels');
+                            cb(err, result)
                         });
                     },
                     function(cb) {
-                        sails.log.verbose('Loading custom plugin models...');
-                        sails.app.customModels.forEach(function(model) {
-                            model.schema.globalId = model.name;
-                            sails.models[model.name.toLowerCase()] = model.schema;
+                        async.each(self.loadedPlugins, _enable, function(err, result) {
+                            sails.emit('hook:pluginloader:pluginsenable');
+                            sails.log.info('Loaded all plugins.');
+                            cb(err, result);
                         });
-                        cb();
                     }
                 ], done);
             });
