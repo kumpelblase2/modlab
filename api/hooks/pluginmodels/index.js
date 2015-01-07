@@ -3,11 +3,9 @@ module.exports = function(sails) {
         initialize: function(cb) {
             sails.after('hook:app:loaded', function() {
                 sails.log.verbose('Loading custom plugin models...');
-                sails.models['test'] = {
-                    attributes: {},
-                    identity: 'test',
-                    globalId: 'Test'
-                };
+                sails.app.customModels.forEach(function(model) {
+                    sails.models[model.name] = model.shema;
+                });
                 cb();
             });
         }
