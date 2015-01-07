@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 function App() {
     this.customModels = [];
 }
@@ -12,9 +14,12 @@ App.prototype.registerWidget = function() {
 
 App.prototype.registerModels = function(models) {
     var self = this;
-    models.forEach(function(model) {
-        self.customModels.push(model);
-    })
+    _.forOwn(models, function(schema, name) {
+        self.customModels.push({
+            name: name,
+            schema: schema
+        });
+    });
 };
 
 module.exports = App;

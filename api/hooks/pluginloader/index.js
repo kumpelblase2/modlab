@@ -85,6 +85,14 @@ module.exports = function(sails) {
                             sails.log.info('Loaded all plugins.');
                             cb(err, result);
                         });
+                    },
+                    function(cb) {
+                        sails.log.verbose('Loading custom plugin models...');
+                        sails.app.customModels.forEach(function(model) {
+                            model.schema.globalId = model.name;
+                            sails.models[model.name.toLowerCase()] = model.schema;
+                        });
+                        cb();
                     }
                 ], done);
             });
