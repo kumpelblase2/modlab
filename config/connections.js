@@ -21,7 +21,7 @@
 
 module.exports.connections = {
 
-    test: {
+    memory: {
         adapter: 'sails-memory'
     },
 
