@@ -40,6 +40,8 @@ module.exports = function(sails) {
                             return result;
                         }
                     }).then(function(plugin) {
+                        plugin.loaded = true;
+                        sails.app.plugins[plugin.name] = plugin;
                         sails.emit('plugin:' + plugin.name + ':init');
                         sails.log.verbose('Finished initializing `' + plugin.name + '`.');
                         if(plugin.models && Array.isArray(plugin.models) && plugin.models.length > 0) {

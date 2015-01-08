@@ -27,6 +27,7 @@ module.exports = {
     },
     enable: function(plugin) {
         return plugin.enableAsync().then(function() {
+            plugin.enabled = true;
             sails.emit('plugin:' + plugin.name + ':enabled');
             sails.log.info('Enabled plugin `' + plugin.name + '`.');
         }).catch(function(err) {
@@ -36,6 +37,7 @@ module.exports = {
     disable: function(plugin) {
         return new Promise(function(resolve, reject) {
             plugin.disable();
+            plugin.enabled = false;
             sails.emit('plugin:' + plugin.name + ':disable');
             sails.log.info('Disabled plugin `' + plugin.name + '`.');
             resolve(plugin);

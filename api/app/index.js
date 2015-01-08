@@ -2,6 +2,7 @@ var _ = require('lodash');
 
 function App() {
     this.customModels = [];
+    this.plugins = {};
 }
 
 App.prototype.registerSite = function() {
