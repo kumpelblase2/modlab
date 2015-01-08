@@ -1,10 +1,16 @@
-function Commands(chat)
+var Plugin = require('modlab-plugin');
+var util = require('util');
+
+function Commands(app, chat)
 {
-    this.name = "commands";
-    this.version = "0.0.1";
-    this.chat = chat;
-    this.models = { 'Command': require('./command') };
+    Commands.super_.call(this, app, chat, {
+        name: "commands",
+        version: "0.0.1",
+        models: { 'Command': require('./command') }
+    });
 }
+
+util.inherits(Commands, Plugin);
 
 Commands.prototype.enable = function(callback) {
     var self = this;
@@ -39,5 +45,5 @@ Commands.prototype.disable = function() {
 };
 
 module.exports = function (app, chat) {
-    return new Commands(chat);
+    return new Commands(app, chat);
 };

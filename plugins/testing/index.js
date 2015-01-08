@@ -1,22 +1,16 @@
-function Test()
+var Plugin = require('modlab-plugin');
+var util = require('util');
+
+function Test(app, chat)
 {
-    this.name = "tests";
-    this.version = "0.0.1";
+    Test.super_.call(this, app, chat, {
+        name: "testing",
+        version: "0.0.1"
+    });
 }
 
-Test.prototype.init = function(callback) {
-    callback();
-};
-
-Test.prototype.enable = function(callback) {
-    callback();
-};
-
-
-Test.prototype.disable = function() {
-
-};
+util.inherits(Test, Plugin);
 
 module.exports = function (app, chat) {
-    return new Test();
+    return new Test(app, chat);
 };
