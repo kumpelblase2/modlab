@@ -1,7 +1,7 @@
 {
 	"Welcome": "Willkommen",
 	"A brand new app.": "Eine neue App.",
-	"ModLab": "ModLab",
+	"Modlab": "Modlab",
 	"Error.Passport.Password.Invalid": "The provided password is invalid!",
 	"Error.Passport.Password.Wrong": "Whoa, that password wasn't quite right!",
 	"Error.Passport.Password.NotSet": "Oh no, you haven't set a password yet!",
@@ -13,5 +13,5 @@
 	"Error.Passport.Username.Missing": "You need to supply a username",
 	"Error.Passport.Password.Missing": "Oh no, you haven't set a password yet!",
 	"Error.Passport.Generic": "Snap. Something went wrong with authorization.",
-	"Snap. Something went wrong with authorization.": "Snap. Something went wrong with authorization."
+	"Error.Authorization.NotAuthorized": "You are not authorized to do this"
 }
