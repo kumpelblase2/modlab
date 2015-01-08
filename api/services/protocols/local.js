@@ -26,55 +26,13 @@ exports.register = function (req, res, next) {
   var email    = req.param('email')
     , username = req.param('username')
     , password = req.param('password');
-
-  if (!email) {
-    req.flash('error', 'Error.Passport.Email.Missing');
-    return next(new Error('No email was entered.'));
-  }
-
-  if (!username) {
-    req.flash('error', 'Error.Passport.Username.Missing');
-    return next(new Error('No username was entered.'));
-  }
-
-  if (!password) {
-    req.flash('error', 'Error.Passport.Password.Missing');
-    return next(new Error('No password was entered.'));
-  }
-
-  User.create({
-    username : username
-  , email    : email
-  }, function (err, user) {
-    if (err) {
-      if (err.code === 'E_VALIDATION') {
-        if (err.invalidAttributes.email) {
-          req.flash('error', 'Error.Passport.Email.Exists');
-        } else {
-          req.flash('error', 'Error.Passport.User.Exists');
-        }
+  RegisterService.register(username, email, password, function(err, user) {
+      if(err) {
+          req.flash('error', err.message);
+          next(new Error(req.__(err.message)));
+      } else {
+          next(null, user);
       }
-
-      return next(err);
-    }
-
-    Passport.create({
-      protocol : 'local'
-    , password : password
-    , user     : user.id
-    }, function (err, passport) {
-      if (err) {
-        if (err.code === 'E_VALIDATION') {
-          req.flash('error', 'Error.Passport.Password.Invalid');
-        }
-
-        return user.destroy(function (destroyErr) {
-          next(destroyErr || err);
-        });
-      }
-
-      next(null, user);
-    });
   });
 };
 

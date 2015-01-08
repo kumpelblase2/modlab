@@ -14,7 +14,9 @@ module.exports.bootstrap = function (cb) {
     sails.hooks.pluginloader.enableAll().then(function() {
         sails.services.passport.loadStrategies();
         sails.emit('app:bootstrap');
-        cb();
+        RegisterService.register('test', 'test@test.com', 'test', function(err, user) {
+            cb();
+        });
     }).catch(function(err) {
         return cb(err);
     });
