@@ -4,7 +4,7 @@ var fs = require('fs');
 module.exports = function(sails) {
     return {
         initialize: function(callback) {
-            var pluginConfDir = path.join(sails.config.rootPath, 'config', 'plugin');
+            var pluginConfDir = path.join(sails.config.paths.config, 'plugin');
             sails.config.plugin = {};
             fs.readdirSync(pluginConfDir).forEach(function(file) {
                 var name = file.split('.')[0];
