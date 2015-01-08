@@ -1,0 +1,10 @@
+extends ../layout/layout.jade
+include includes/listentry.jade
+
+block content
+    if users && users.length > 0
+        ul
+            each user in users
+                +listentry(user)
+    else
+        | No users to display

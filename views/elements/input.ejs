@@ -1,5 +1,0 @@
-<% if(input.kind === 'button') { %>
-    <%- partial('button', [input]) %>
-<% } else { %>
-    <input class="form-control" type="<%= input.type || 'text' %>" <% if(input.name) { %>name="<%= input.name %>"<% } %> placeholder="<%= input.placeholder || '' %>"><%= input.value || '' %></input>
-<% } %>

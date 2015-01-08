@@ -1,0 +1,64 @@
+include ../mixins/includes.jade
+
+doctype html
+html
+    head
+        title
+            block title
+                | Modlab
+        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+        link(rel='stylesheet', href='/styles/bootstrap-theme.css')
+        link(rel='stylesheet', href='/styles/bootstrap.css')
+        link(rel='stylesheet', href='/styles/importer.css')
+        block head
+    body
+        include navigation.jade
+        
+        link(type='text/css', rel='stylesheet', href='http://sailsjs.org/styles/fonts.css')
+        style.
+            /* Styles included inline since you'll probably be deleting this page anyway */
+            .container {
+                width: 80%;
+                max-width: 1200px;
+                margin: auto;
+            }
+            
+            div.header {
+                -webkit-transition: 6s;
+                -moz-transition: 6s;
+                -o-transition: 6s;
+                transition: 6s;
+                background: rgba(4, 36, 41, 0.89) url(http://sailsjs.org/images/img_sailsShadow.png) no-repeat 42% bottom;
+                padding: 100px 0 65px;
+            }
+            
+            .header h1#main-title {
+                color: #fff;
+                font-weight: 300;
+                font-size: 2.5em;
+            }
+            
+            div.main.container {
+                padding: 50px 0;
+            }
+            
+            div.default-page {
+                min-width: 1200px;
+            }
+        
+        script(type='text/javascript').
+            setTimeout(function sunrise () {
+                document.getElementsByClassName('header')[0].style.backgroundColor = '#118798';
+            }, 0);
+        
+        div.default-page
+            div.header
+                h1.container#main-title #{i18n('Modlab')}
+            div.main.container.clearfix#content
+                block content
+                    
+        script(type='text/javascript', src='/jst.js')
+        script(src='/js/dependencies/sails.io.js')
+        script(src='/js/dependencies/jquery-2.1.1.min.js')
+        script(src='/js/dependencies/underscore.js')
+        script(src='/js/bootstrap.js')
