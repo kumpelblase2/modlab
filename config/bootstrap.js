@@ -11,12 +11,11 @@
 var async = require('async');
 
 module.exports.bootstrap = function (cb) {
-    sails.hooks.pluginloader.enableAll(function(err) {
-        if(err)
-            return cb(err);
-
+    sails.hooks.pluginloader.enableAll().then(function() {
         sails.services.passport.loadStrategies();
         sails.emit('app:bootstrap');
         cb();
+    }).catch(function(err) {
+        return cb(err);
     });
 };

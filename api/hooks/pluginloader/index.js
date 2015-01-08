@@ -1,5 +1,6 @@
 var path = require('path');
 var helper = require('./pluginhelper');
+var Promise = require('bluebird');
 var filter = helper.filter;
 
 var _disable = helper.disable;
@@ -12,79 +13,71 @@ module.exports = function(sails) {
         initialize: function(cb) {
             var self = this;
             var waitFor = ['hook:app:loaded', 'hook:chat:loaded', 'hook:pluginconfig:loaded'];
-            sails.after(waitFor, function() {
-                var plugins = filter(sails.config.plugins);
-                var waiting = [];
-                plugins.forEach(function(plugin) {
-                    waiting.push(function(callback) {
-                        sails.log.info('Loading plugin with id `' + plugin.name + '` ...');
-                        var pluginMain;
-                        if(plugin.source === 'npm') {
-                            pluginMain = require(plugin.name);
-                        } else if(plugin.source === 'local') {
-                            pluginMain = require(path.join(sails.config.rootPath, plugin.path));
-                        }
-
-                        var result = pluginMain(sails.app, sails.chat);
-                        if(!result.name)
-                            result.name = plugin.name;
-
-                        self.loadedPlugins.push(result);
-                        var logCallback = function() {
-                            sails.emit('plugin:' + plugin.name + ':init');
-                            sails.log.verbose('Finished initializing `' + plugin.name + '`.');
-                            if(result.models && Array.isArray(result.models) && result.models.length > 0) {
-                                sails.app.registerModels(result.models);
-                                sails.emit('plugin:' + plugin.name + ':models');
-                                sails.log.verbose('Added ' + result.models.length + ' custom model(s) for plugin `' + plugin.name + '`.');
-                            }
-                            callback(null, result);
-                        };
-
-                        if(typeof(result.init) === "function") {
-                            result.init(logCallback);
-                        } else {
-                            logCallback();
-                        }
-                    });
-                });
-
-                var done = cb;
-                async.series([
-                    function(cb) {
-                        async.parallel(waiting, function(err, result) {
-                            if(err)
-                                sails.log.error(err);
-
-                            sails.emit('hook:pluginloader:pluginsinit');
-                            sails.log.verbose('Initialized all plugins.');
-                            cb(null, result);
-                        });
-                    },
-                    function(cb) {
-                        async.each(self.loadedPlugins, function(plugin, cb) {
-                            sails.app.registerModels(plugin.models);
-                            cb();
-                        }, function(err, result) {
-                            sails.emit('hook:pluginloader:custommodels');
-                            cb(err, result)
-                        });
+            var plugins = filter(sails.config.plugins);
+            var waiting = [];
+            sails.afterAsync(waitFor).then(function() {
+                return Promise.map(plugins, function(pluginInfo) {
+                    sails.log.info('Loading plugin with id `' + pluginInfo.name + '` ...');
+                    var pluginMain;
+                    if(pluginInfo.source === 'npm') {
+                        pluginMain = require(pluginInfo.name);
+                    } else if(pluginInfo.source === 'local') {
+                        pluginMain = require(path.join(sails.config.rootPath, pluginInfo.path));
                     }
-                ], done);
+
+                    var result = Promise.promisifyAll(pluginMain(sails.app, sails.chat));
+                    if(!result.name)
+                        result.name = pluginInfo.name;
+
+                    return Promise.resolve().then(function() {
+                        if(typeof(result.init) === "function") {
+                            return result.initAsync().then(function() {
+                                self.loadedPlugins.push(result);
+                                return result;
+                            });
+                        } else {
+                            self.loadedPlugins.push(result);
+                            return result;
+                        }
+                    }).then(function(plugin) {
+                        sails.emit('plugin:' + plugin.name + ':init');
+                        sails.log.verbose('Finished initializing `' + plugin.name + '`.');
+                        if(plugin.models && Array.isArray(plugin.models) && plugin.models.length > 0) {
+                            sails.app.registerModels(plugin.models);
+                            sails.emit('plugin:' + plugin.name + ':models');
+                            sails.log.verbose('Added ' + plugin.models.length + ' custom model(s) for plugin `' + plugin.name + '`.');
+                        }
+                        return plugin;
+                    }).catch(function(err) {
+                        sails.log.error("Error initializing " + result.name + ": " + err.message);
+                    });
+                }, { concurrency: 5 }).then(function(initializedPlugins) {
+                    sails.emit('hook:pluginloader:pluginsinit');
+                    sails.log.verbose('Initialized all plugins.');
+                    var initialized = _.filter(initializedPlugins);
+                    initialized.forEach(function(plugin) {
+                            sails.app.registerModels(plugin.models);
+                    });
+                    sails.emit('hook:pluginloader:custommodels');
+                    return initialized;
+                });
+            }).then(function(initialized) {
+                cb(null, initialized);
+            }).catch(function(err) {
+                sails.log.error(err);
+                cb();
             });
         },
-        enableAll: function(cb) {
-            async.each(this.loadedPlugins, _enable, function(err) {
+        enableAll: function() {
+            return Promise.map(this.loadedPlugins, _enable).then(function() {
                 sails.emit('hook:pluginloader:pluginsenable');
                 sails.log.info('Loaded all plugins.');
-                cb(err);
             });
         },
-
         enable: function(name) {
             var plugin = _.find(this.loadedPlugins, function(plugin) { plugin.name === name });
             if(plugin)
-                _enable(plugin);
+                return _enable(plugin);
         },
 
         disablePlugin: function(name) {

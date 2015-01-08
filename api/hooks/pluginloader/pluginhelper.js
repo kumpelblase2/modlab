@@ -25,21 +25,20 @@ module.exports = {
 
         return toLoad;
     },
-    enable: function(plugin, callback) {
-        var logCallback = function(error) {
-            if(error) {
-                callback(error);
-            } else {
-                sails.emit('plugin:' + plugin.name + ':enabled');
-                sails.log.info('Enabled plugin `' + plugin.name + '`.');
-                callback();
-            }
-        }
-        plugin.enable(logCallback);
+    enable: function(plugin) {
+        return plugin.enableAsync().then(function() {
+            sails.emit('plugin:' + plugin.name + ':enabled');
+            sails.log.info('Enabled plugin `' + plugin.name + '`.');
+        }).catch(function(err) {
+            sails.log.error("Couldn't initialize " + plugin.name + ": " + err.message);
+        });
     },
     disable: function(plugin) {
-        plugin.disable();
-        sails.emit('plugin:' + plugin.name + ':disable');
-        sails.log.info('Disabled plugin `' + plugin.name + '`.');
+        return new Promise(function(resolve, reject) {
+            plugin.disable();
+            sails.emit('plugin:' + plugin.name + ':disable');
+            sails.log.info('Disabled plugin `' + plugin.name + '`.');
+            resolve(plugin);
+        });
     }
 };
