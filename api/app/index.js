@@ -3,6 +3,7 @@ var _ = require('lodash');
 function App() {
     this.customModels = [];
     this.plugins = {};
+    this.installation = { step: 0, finished: false };
 }
 
 App.prototype.registerSite = function() {
@@ -24,5 +25,9 @@ App.prototype.registerModels = function(models) {
         sails.models[name.toLowerCase()] = schema;
     });
 };
+
+App.prototype.finishedInstallation = function() {
+    return this.installation.finished;
+}
 
 module.exports = App;
