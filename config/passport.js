@@ -27,6 +27,8 @@ module.exports.passport = {
             clientID: 'your-client-id',
             clientSecret: 'your-client-secret'
         },
-        scope: ['read']
+        scope: ['read'],
+        background: '#6441A5',
+        text: 'white'
     }
 };
