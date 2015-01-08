@@ -28,12 +28,8 @@ module.exports.policies = {
 
     '*': ['middleware', 'passport'],
 
-    'auth': {
-        '*': ['passport']
-    },
-
     'dashboard': {
-        '*': ['sessionAuth']
+        '*': ['passport','sessionAuth']
     }
 
     /***************************************************************************
