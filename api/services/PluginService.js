@@ -6,8 +6,11 @@ module.exports = {
         confDir = confDir || path.join(sails.config.paths.config, 'plugin');
         var defaults = plugin.defaults || {};
         sails.config.plugin[plugin.name] = defaults;
+        return PluginService.writePluginConfig(defaults, confDir);
+    },
+    writePluginConfig: function(config, confDir) {
         return Promise.resolve().then(function() {
-            return JSON.stringify(defaults, null, 4);
+            return JSON.stringify(config, null, 4);
         }).then(function(parsed) {
             var configPath = path.join(confDir, plugin.name + '.json');
             return fs.writeFile(configPath, parsed);
