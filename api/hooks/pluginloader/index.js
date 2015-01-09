@@ -2,6 +2,7 @@ var path = require('path');
 var helper = require('./pluginhelper');
 var Promise = require('bluebird');
 var filter = helper.filter;
+var fs = Promise.promisifyAll(require('fs'));
 
 var _disable = helper.disable;
 var _enable = helper.enable;
@@ -30,6 +31,21 @@ module.exports = function(sails) {
                         result.name = pluginInfo.name;
 
                     return Promise.resolve().then(function() {
+                        if(!_.has(sails.config.plugin, result.name)) {
+                            var defaults = result.defaults || {};
+                            sails.config.plugin[result.name] = defaults;
+                            return Promise.resolve().then(function() {
+                                return JSON.stringify(defaults, null, 4);
+                            }).then(function(parsed) {
+                                var configPath = path.join(sails.config.paths.config, 'plugin', result.name + '.json');
+                                return fs.writeFile(configPath, parsed);
+                            }).then(function() {
+                                sails.log.info('Generated default config for ' + result.name);
+                            }).catch(function(err) {
+                                sails.log.error('Could not save default config: ' + err);
+                            });
+                        }
+                    }).then(function() {
                         if(typeof(result.init) === "function") {
                             return result.initAsync().then(function() {
                                 self.loadedPlugins.push(result);
