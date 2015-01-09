@@ -15,6 +15,7 @@ block content
                     label(for='password') Password
                     input.form-control(type='password', name='password', placeholder='Password')
                 .form-group
+                    input(type='hidden', name='redirect', value='/dashboard')
                     button.btn.btn-primary.col-md-12(type='submit', name='login') Sign in
         
         if providers
