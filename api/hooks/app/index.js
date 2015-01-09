@@ -12,6 +12,10 @@ module.exports = function(sails) {
                 sails.models.dataregister.findOne({ key: 'installation' }).then(function(installation) {
                     if(installation) {
                         sails.app.installation = installation;
+                    } else {
+                        sails.models.dataregister.create({ key: 'installation', value: { step: '1', finished: false } }).then(function(installation) {
+                            sails.app.installation = installation;
+                        });
                     }
                 })
             });

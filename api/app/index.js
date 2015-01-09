@@ -3,7 +3,6 @@ var _ = require('lodash');
 function App() {
     this.customModels = [];
     this.plugins = {};
-    this.installation = { step: 0, finished: false };
 }
 
 App.prototype.registerSite = function() {
@@ -27,7 +26,11 @@ App.prototype.registerModels = function(models) {
 };
 
 App.prototype.finishedInstallation = function() {
-    return this.installation.finished;
+    return this.installation.value.finished;
+}
+
+App.prototype.currentInstallationStep = function() {
+    return this.installation.value.step;
 }
 
 module.exports = App;
