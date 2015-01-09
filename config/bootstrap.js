@@ -8,12 +8,16 @@
  * For more information on bootstrapping your app, check out:
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.bootstrap.html
  */
-var async = require('async');
 
 module.exports.bootstrap = function (cb) {
     sails.hooks.pluginloader.enableAll().then(function() {
         sails.services.passport.loadStrategies();
+    }).then(function() {
+        if(!sails.config.chat.disabled) {
+            sails.chat.run();
+        }
         sails.emit('app:bootstrap');
+    }).then(function() {
         RegisterService.register('test', 'test@test.com', 'test', function(err, user) {
             cb();
         });
