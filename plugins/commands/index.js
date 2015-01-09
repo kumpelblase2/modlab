@@ -4,10 +4,14 @@ var util = require('util');
 function Commands(app, chat)
 {
     Commands.super_.call(this, app, chat, {
-        name: "commands",
-        version: "0.0.1",
-        models: { 'Command': require('./command') }
+        name: 'commands',
+        version: '0.0.1',
+        models: { 'Command': require('./models/command') }
     });
+
+    this.controllers = {
+        'Command': require('./controllers/CommandController')
+    }
 }
 
 util.inherits(Commands, Plugin);
