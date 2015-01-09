@@ -62,11 +62,6 @@ module.exports.routes = {
      *                                                                          *
      ***************************************************************************/
 
-    '/install_success': {
-        controller: 'install',
-        action: 'success'
-    },
-
     '/dashboard': {
         controller: 'dashboard',
         action: 'index'
