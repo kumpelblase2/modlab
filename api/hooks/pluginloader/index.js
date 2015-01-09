@@ -30,20 +30,10 @@ module.exports = function(sails) {
                     if(!result.name)
                         result.name = pluginInfo.name;
 
+                    result.log = PluginService.createPluginLogger(result.name);
                     return Promise.resolve().then(function() {
                         if(!_.has(sails.config.plugin, result.name)) {
-                            var defaults = result.defaults || {};
-                            sails.config.plugin[result.name] = defaults;
-                            return Promise.resolve().then(function() {
-                                return JSON.stringify(defaults, null, 4);
-                            }).then(function(parsed) {
-                                var configPath = path.join(sails.config.paths.config, 'plugin', result.name + '.json');
-                                return fs.writeFile(configPath, parsed);
-                            }).then(function() {
-                                sails.log.info('Generated default config for ' + result.name);
-                            }).catch(function(err) {
-                                sails.log.error('Could not save default config: ' + err);
-                            });
+                            return PluginService.generateDefaultConfig(result);
                         }
                     }).then(function() {
                         if(typeof(result.init) === "function") {
@@ -59,25 +49,17 @@ module.exports = function(sails) {
                         plugin.loaded = true;
                         sails.app.plugins[plugin.name] = plugin;
                         sails.emit('plugin:' + plugin.name + ':init');
-                        sails.log.verbose('Finished initializing `' + plugin.name + '`.');
-                        if(plugin.models && Array.isArray(plugin.models) && plugin.models.length > 0) {
-                            sails.app.registerModels(plugin.models);
-                            sails.emit('plugin:' + plugin.name + ':models');
-                            sails.log.verbose('Added ' + plugin.models.length + ' custom model(s) for plugin `' + plugin.name + '`.');
-                        }
+                        plugin.log.verbose('Finished initializing.');
+                        PluginService.registerCustomModels(plugin);
                         return plugin;
                     }).catch(function(err) {
-                        sails.log.error("Error initializing " + result.name + ": " + err.message);
+                        plugin.log.error("Error initializing: " + err.message);
                     });
                 }, { concurrency: 5 }).then(function(initializedPlugins) {
                     sails.emit('hook:pluginloader:pluginsinit');
                     sails.log.verbose('Initialized all plugins.');
-                    var initialized = _.filter(initializedPlugins);
-                    initialized.forEach(function(plugin) {
-                            sails.app.registerModels(plugin.models);
-                    });
                     sails.emit('hook:pluginloader:custommodels');
-                    return initialized;
+                    return _.filter(initializedPlugins);
                 });
             }).then(function(initialized) {
                 cb(null, initialized);
