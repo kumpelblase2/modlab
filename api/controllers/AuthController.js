@@ -147,7 +147,12 @@ var AuthController = {
 
         // Upon successful login, send the user to the homepage were req.user
         // will available.
-        res.redirect('/dashboard');
+        var redirect = req.param('redirect');
+        if(redirect) {
+            res.redirect(redirect);
+        } else {
+            res.redirect('/');
+        }
       });
     });
   },

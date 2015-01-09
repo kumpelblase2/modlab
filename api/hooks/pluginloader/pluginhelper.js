@@ -29,9 +29,9 @@ module.exports = {
         return plugin.enableAsync().then(function() {
             plugin.enabled = true;
             sails.emit('plugin:' + plugin.name + ':enabled');
-            sails.log.info('Enabled plugin `' + plugin.name + '`.');
+            plugin.log.info('Enabled plugin `' + plugin.name + '` at version ' + plugin.version + '.');
         }).catch(function(err) {
-            sails.log.error("Couldn't initialize " + plugin.name + ": " + err.message);
+            plugin.log.error("Couldn't enable: " + err.message);
         });
     },
     disable: function(plugin) {
@@ -39,7 +39,7 @@ module.exports = {
             plugin.disable();
             plugin.enabled = false;
             sails.emit('plugin:' + plugin.name + ':disable');
-            sails.log.info('Disabled plugin `' + plugin.name + '`.');
+            plugin.log.info('Disabled plugin `' + plugin.name + '`.');
             resolve(plugin);
         });
     }
