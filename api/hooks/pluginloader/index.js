@@ -13,7 +13,7 @@ module.exports = function(sails) {
 
         initialize: function(cb) {
             var self = this;
-            var waitFor = ['hook:app:loaded', 'hook:chat:loaded', 'hook:pluginconfig:loaded'];
+            var waitFor = ['hook:app:loaded', 'hook:chat:loaded'];
             var plugins = filter(sails.config.plugins);
             var waiting = [];
             sails.afterAsync(waitFor).then(function() {
@@ -32,9 +32,9 @@ module.exports = function(sails) {
 
                     result.log = PluginService.createPluginLogger(result.name);
                     return Promise.resolve().then(function() {
-                        if(!_.has(sails.config.plugin, result.name)) {
+                        /*if(!_.has(sails.config.plugin, result.name)) {
                             return PluginService.generateDefaultConfig(result);
-                        }
+                        }*/
                     }).then(function() {
                         if(typeof(result.init) === "function") {
                             return result.initAsync().then(function() {
@@ -53,7 +53,7 @@ module.exports = function(sails) {
                         PluginService.registerCustomModels(plugin);
                         return plugin;
                     }).catch(function(err) {
-                        plugin.log.error("Error initializing: " + err.message);
+                        result.log.error("Error initializing: " + err.message);
                     });
                 }, { concurrency: 5 }).then(function(initializedPlugins) {
                     sails.emit('hook:pluginloader:pluginsinit');
