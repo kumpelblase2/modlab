@@ -4,6 +4,7 @@ module.exports = function(sails) {
             if(sails.config.prettyerror.enabled) {
                 require('pretty-error').start();
             }
+            callback();
         }
     };
 };
