@@ -1,38 +1,20 @@
-extends layout/layout.jade
+extends layout/errorlayout.jade
+
+block title
+    | Modlab - Error 500
+
+block pageheader
+    | Error - 500
 
 block content
-    .page
-        pre.col-md-6.col-md-offset-1(style='background-color:white; border:none;').
-            555555555555555555       000000000           000000000
-            5::::::::::::::::5     00:::::::::00       00:::::::::00
-            5::::::::::::::::5   00:::::::::::::00   00:::::::::::::00
-            5:::::555555555555  0:::::::000:::::::0 0:::::::000:::::::0
-            5:::::5             0::::::0   0::::::0 0::::::0   0::::::0
-            5:::::5             0:::::0     0:::::0 0:::::0     0:::::0
-            5:::::5555555555    0:::::0     0:::::0 0:::::0     0:::::0
-            5:::::::::::::::5   0:::::0 000 0:::::0 0:::::0 000 0:::::0
-            555555555555:::::5  0:::::0 000 0:::::0 0:::::0 000 0:::::0
-                        5:::::5 0:::::0     0:::::0 0:::::0     0:::::0
-                        5:::::5 0:::::0     0:::::0 0:::::0     0:::::0
-            5555555     5:::::5 0::::::0   0::::::0 0::::::0   0::::::0
-            5::::::55555::::::5 0:::::::000:::::::0 0:::::::000:::::::0
-            55:::::::::::::55   00:::::::::::::00   00:::::::::::::00
-              55:::::::::55       00:::::::::00       00:::::::::00
-                555555555           000000000           000000000
+    h1 Internal Server Error
+    h2
+        if error
+            pre
+                code= error
+        else
+            | Something isn't right here.
             
-    .main
-        h1 Internal Server Error
-        h2
-            if error
-                pre
-                    code= error
-            else
-                | Something isn't right here.
-                
-        p.error.
-            A team of highly trained sea bass is working on this as we speak.
-            If the problem persists, please <a href="mailto://you@your-domain.com">contact the system administrator</a> and inform them of the time that the error occured, and anything you might have done that may have caused the error.
-            
-        .logo
-            a(href='http://sailsjs.org')
-                img(src='http://sailsjs.org/images/logo.png')
+    p.error.
+        A team of highly trained sea bass is working on this as we speak.
+        If the problem persists, please <a href="mailto://you@your-domain.com">contact the system administrator</a> and inform them of the time that the error occured, and anything you might have done that may have caused the error.

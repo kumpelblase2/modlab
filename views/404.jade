@@ -1,37 +1,20 @@
-extends layout/layout.jade
+extends layout/errorlayout.jade
+
+block title
+    | Modlab - Error 404
+
+block pageheader
+    | Error - 404
 
 block content
-        .page
-            pre.col-md-6.col-md-offset-1(style='background-color:white; border:none;')
-                |        444444444        000000000             444444444
-                |       4::::::::4      00:::::::::00          4::::::::4
-                |      4:::::::::4    00:::::::::::::00       4:::::::::4
-                |     4::::44::::4   0:::::::000:::::::0     4::::44::::4
-                |    4::::4 4::::4   0::::::0   0::::::0    4::::4 4::::4
-                |   4::::4  4::::4   0:::::0     0:::::0   4::::4  4::::4
-                |  4::::4   4::::4   0:::::0     0:::::0  4::::4   4::::4
-                | 4::::444444::::444 0:::::0 000 0:::::0 4::::444444::::444
-                | 4::::::::::::::::4 0:::::0 000 0:::::0 4::::::::::::::::4
-                | 4444444444:::::444 0:::::0     0:::::0 4444444444:::::444
-                |           4::::4   0:::::0     0:::::0           4::::4
-                |           4::::4   0::::::0   0::::::0           4::::4
-                |           4::::4   0:::::::000:::::::0           4::::4
-                |         44::::::44  00:::::::::::::00          44::::::44
-                |         4::::::::4    00:::::::::00            4::::::::4
-                |         4444444444      000000000              4444444444
-                
-        .main
-            h1 Something's fishy here.
-            h2
-                if error
-                    error
-                else
-                    | The page you were trying to reach doesn't exist.
-                    
-                p.help
-                    a(href='http://en.wikipedia.org/wiki/HTTP_404') Why
-                    |  might this be happening?
-                    
-                .logo
-                    a(href='http://sailsjs.org')
-                        img(src='http://sailsjs.org/images/logo.png')
+    h1 Not found
+    h2 Something's fishy here.
+    p
+        if error
+            error
+        else
+            | The page you were trying to reach doesn't exist.
+            
+    p.help
+        a(href='http://en.wikipedia.org/wiki/HTTP_404') Why
+        |  might this be happening?

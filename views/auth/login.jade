@@ -1,32 +1,33 @@
-extends ../layout/layout.jade
+extends ../layout/auth.jade
 
-block content
-    if errors
-        each error in errors
-            +alert('danger', i18n(error), true)
-            
+block content            
     - var redirect = req.param('redirect')
-    .row.col-md-4.col-md-offset-4
-        .row
-            form(role='form', method='post', action='/auth/local')
-                .form-group
-                    label(for='identifier') Username
-                    input.form-control(type='text', name='identifier', placeholder='Username or Email')
-                .form-group
-                    label(for='password') Password
-                    input.form-control(type='password', name='password', placeholder='Password')
-                .form-group
-                    if redirect
-                        input(type='hidden', name='redirect', value=redirect)
-                    else
-                        input(type='hidden', name='redirect', value='/dashboard')
-                    button.btn.btn-primary.col-md-12(type='submit', name='login') Sign in
-        
-        if providers
-            .row
-                h4 Or you can login via:
-                each key in Object.keys(providers)
-                    - var provider = providers[key]
-                    a.btn.btn-default.col-md-12(role='button', 
-                                                style='background-color: #{provider.background}; color: #{provider.text};',
-                                                href='/auth/#{provider.slug}')= provider.name
+    .panel-heading
+        h3.panel-title Please Sign In
+    .panel-body
+        if errors
+            each error in errors
+                +alert('danger', i18n(error), true)
+                
+        form(role='form', method='post', action='/auth/local')
+            .form-group
+                label(for='identifier') Username
+                input.form-control(type='text', name='identifier', placeholder='Username or Email')
+            .form-group
+                label(for='password') Password
+                input.form-control(type='password', name='password', placeholder='Password')
+            .form-group
+                if redirect
+                    input(type='hidden', name='redirect', value=redirect)
+                else
+                    input(type='hidden', name='redirect', value='/dashboard')
+                button.btn.btn-primary.btn-block(type='submit', name='login') Sign in
+    
+    if providers
+        .panel-footer
+            h4 Or you can sign in via:
+            each key in Object.keys(providers)
+                - var provider = providers[key]
+                a.btn.btn-default.btn-block(role='button', 
+                                            style='background-color: #{provider.background}; color: #{provider.text};',
+                                            href='/auth/#{provider.slug}')= provider.name

@@ -1,11 +1,13 @@
-extends ../layout/layout.jade
+extends ../layout/auth.jade
 
 block content
-    if errors
-        each error in errors
-            +alert('danger', i18n(error), true)
-            
-    .row.col-md-4.col-md-offset-4
+    .panel-heading
+        h3 Register
+    .panel-body
+        if errors
+            each error in errors
+                +alert('danger', i18n(error), true)
+        
         form(role='form', method='post', action='/auth/local/register')
             .form-group
                 label(for='username') Username
@@ -17,4 +19,4 @@ block content
                 label(for='password') Password
                 input.form-control(type='password', name='password', placeholder='Password')
             .form-group
-                button.btn.btn-primary.col-md-12(type='submit', name='register') Register
+                button.btn.btn-primary.btn-block(type='submit', name='register') Register

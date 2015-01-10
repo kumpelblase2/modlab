@@ -1,0 +1,23 @@
+li.dropdown
+    a.dropdown-toggle(data-toggle='dropdown', href='#')
+        i.fa.fa-user.fa-fw
+        i.fa.fa-caret-down
+    ul.dropdown-menu.dropdown-user
+        if req.isAuthenticated()
+            li
+                a(href='/user')
+                    i.fa.fa-user.fa-fw
+                    | Profile
+            li
+                a(href='/settings')
+                    i.fa.fa-gear.fa-fw
+                    | Settings
+            li
+                a(href='/logout')
+                    i.fa.fa-sign-out.fa-fw
+                    | Logout
+        else
+            li
+                a(href='/login')
+                    i.fa.fa-sign-in.fa-fw
+                    | Login

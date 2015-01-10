@@ -1,0 +1,22 @@
+mixin notification(url, icon, message, time)
+    a(href=url)
+        div
+            i.fa.fa-fa(class='fa-' + icon)= message
+            span.pull-right.text-muted.small
+                = time
+
+
+li.dropdown
+    a.dropdown-toggle(data-toggle='dropdown', href='#')
+        i.fa.fa-bell.fa-fw
+        i.fa.fa-caret-down
+    ul.dropdown-menu.dropdown-alerts
+        if notifications
+            each notify in notifications
+                li
+                    +notification(notify.url, notify.icon, notify.message, notify.time)
+                li.divider
+        else
+            li
+                i.fa.fa-fa.fa-bell-o  No notifications
+                

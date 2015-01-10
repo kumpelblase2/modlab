@@ -1,0 +1,13 @@
+extends base.jade
+
+block layout
+    #wrapper
+        include navigation/main.jade
+    
+    #page-wrapper
+        .row
+            .col-lg-12
+                h1.page-header
+                    block pageheader
+                        
+        block content
