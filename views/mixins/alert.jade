@@ -1,9 +1,7 @@
 mixin alert(type, message, dismissible)
     if dismissible
-        .alert(class='alert-#{type} alert-dismissible', role='alert')
-            button.close(type='button', data-dismiss='alert', aria-label='Close')
-                span(aria-hidden='true')
-                    | &times;
+        .alert.alert-dismissable(class='alert-#{type}', role='alert')
+            button.close(type='button', data-dismiss='alert', aria-hidden='true') &times;
             = message
     else
         .alert(class='alert-#{type}', role='alert')= message
