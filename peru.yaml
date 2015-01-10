@@ -47,7 +47,7 @@ git module dashboard_fontawesome-fonts:
 
 git module pace_css:
     url: https://github.com/HubSpot/pace.git
-    export: themes/black/
+    export: themes/blue/
     files: pace-theme-flash.css
     rev: c6846cbf6b928e9903b569269fa9fbf32f2554f4
 
