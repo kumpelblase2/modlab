@@ -2,4 +2,7 @@
     .sidebar-nav.navbar-collapse
         ul.nav.in#side-menu
             +sidebar-item('home', '/', 'Home')
-            +sidebar-item('dashboard', '/dashboard', 'Dashboard')
+            if req.isAuthenticated()
+                +sidebar-item('dashboard', '/dashboard', 'Dashboard')
+            else
+                +sidebar-item('sign-in', '/login', 'Sign In')
