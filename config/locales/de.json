@@ -13,5 +13,6 @@
 	"Error.Passport.Username.Missing": "You need to supply a username",
 	"Error.Passport.Password.Missing": "Oh no, you haven't set a password yet!",
 	"Error.Passport.Generic": "Snap. Something went wrong with authorization.",
-	"Error.Authorization.NotAuthorized": "You are not authorized to do this"
+	"Error.Authorization.NotAuthorized": "You are not authorized to do this.",
+	"Error.Authorization.NoRights": "You do not have to proper rights to do this."
 }

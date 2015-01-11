@@ -145,6 +145,11 @@ var AuthController = {
           return tryAgain(err);
         }
 
+        if(!req.user.hasPermission('system.login')) {
+            req.logout();
+            return res.forbidden('Error.Authorization.NoRights');
+        }
+
         var redirect = req.param('redirect');
         if(redirect && /^[a-zA-Z]/.test(redirect)) {
             res.redirect('/' + redirect);

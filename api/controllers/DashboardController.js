@@ -7,7 +7,10 @@
 
 module.exports = {
     index: function (req, res) {
-        res.view();
+        if(!req.user.hasPermission('system.dashboard')) {
+            res.forbidden(req.__('Error.Authorization.NoRights'));
+        } else {
+            res.view();
+        }
     }
 };
-

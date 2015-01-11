@@ -1,5 +1,9 @@
 module.exports = {
     index: function(req, res) {
-        res.view('dashboard/plugins/index', { plugins: sails.app.plugins });
+        if(req.user.hasPermission('system.plugins.view')) {
+            res.view('dashboard/plugins/index', { plugins: sails.app.plugins });
+        } else {
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
+        }
     }
 };
