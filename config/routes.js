@@ -64,6 +64,7 @@ module.exports.routes = {
 
     '/dashboard': 'DashboardController.index',
     '/plugins': 'PluginController.index',
+    '/rights': 'RightsController.index',
 
     'GET /users': 'UserController.index',
     'GET /users/:id': 'UserController.show',

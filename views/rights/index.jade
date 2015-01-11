@@ -1,0 +1,53 @@
+extends ../layout/default.jade
+
+block title
+    | Rights Management
+    
+block pageheader
+    | Rights
+    
+block content
+    .panel.panel-primary
+        .panel-heading
+            | Users
+        table.table
+            thead
+                th #
+                th Name
+                th Permissions
+                th Groups
+            tbody
+                each user in users
+                    tr
+                        td= user.id
+                        td= user.username
+                        if user.permissions.length > 0
+                            td= user.permissions.join(' - ')
+                        else
+                            td None
+                            
+                        if user.groups.length > 0
+                            td= user.groups.join(', ')
+                        else
+                            td None
+            
+    .panel.panel-primary
+        .panel-heading
+            | Groups
+        table.table
+            thead
+                th #
+                th Name
+                th Permissions
+                th # Users
+            tbody
+                each group in groups
+                    tr
+                        td= group.id
+                        td= group.name
+                        if group.permissions.length > 0
+                            td= group.permissions.join(', ')
+                        else
+                            td None
+                            
+                        td= group.users
