@@ -6,5 +6,6 @@
                 
             if req.isAuthenticated()
                 +sidebar-item('dashboard', '/dashboard', 'Dashboard')
+                +sidebar-item('plug', '/plugins', 'Plugins')
             else
                 +sidebar-item('sign-in', '/login', 'Sign In')
