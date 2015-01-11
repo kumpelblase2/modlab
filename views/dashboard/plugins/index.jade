@@ -1,0 +1,40 @@
+extends ../../layout/default.jade
+
+include includes/pluginentry.jade
+
+block title
+    | Modlab - Plugins Overview
+    
+block pageheader
+    | Configured Plugins
+    
+block content
+    .panel.panel-primary
+        .panel-heading
+            | Enabled Plugins
+        table.table
+            thead
+                th Name
+                th Version
+                th Author
+                th Description
+            
+            tbody
+                each plugin in plugins
+                    if plugin.enabled
+                        +pluginentry(plugin)
+                        
+    .panel.panel-info
+        .panel-heading
+            | Disabled Plugins
+        table.table
+            th
+                td Name
+                td Version
+                td Author
+                td Description
+                
+            tbody
+                each plugin in plugins
+                    if !plugin.enabled
+                        +pluginentry(plugin)

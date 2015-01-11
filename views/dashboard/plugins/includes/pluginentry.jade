@@ -1,0 +1,10 @@
+mixin pluginentry(plugininfo)
+    tr
+        td= plugininfo.name
+        td= plugininfo.version
+        td
+            if plugininfo.author
+                = plugininfo.author
+        td
+            if plugininfo.description
+                = plugininfo.description

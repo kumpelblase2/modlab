@@ -32,6 +32,10 @@ module.exports.policies = {
         '*': ['middleware', 'passport','sessionAuth']
     },
 
+    'plugin': {
+        '*': ['middleware', 'passport','sessionAuth']
+    },
+
     'install/steps': {
         '*': ['middleware', 'passport', 'notFinishedInstallation', 'sessionAuth', 'admin'],
         '1': ['middleware', 'passport', 'notFinishedInstallation']
