@@ -7,11 +7,12 @@ block pageheader
     | Error - 404
 
 block content
+    - var error = error || req.flash('error')
     h1 Not found
     h2 Something's fishy here.
     p
         if error
-            error
+            = error
         else
             | The page you were trying to reach doesn't exist.
             

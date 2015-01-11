@@ -44,6 +44,9 @@ module.exports = function forbidden(data, options) {
     // If it was omitted, use an empty object (`{}`)
     options = (typeof options === 'string') ? {view: options} : options || {};
 
+    // Put error in flash before any kind of response to ensure we can use it even in error pages.
+    req.flash('error', data);
+
     // If a view was provided in options, serve it.
     // Otherwise try to guess an appropriate view, or if that doesn't
     // work, just send JSON.
@@ -55,7 +58,6 @@ module.exports = function forbidden(data, options) {
     // but fall back to sending JSON(P) if any errors occur.
     else {
         req.params.redirect = req.route.path.substring(1);
-        req.flash('error', data);
         sails.controllers.auth.login(req, res);
     }
 };
