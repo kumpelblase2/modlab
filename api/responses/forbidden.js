@@ -54,6 +54,7 @@ module.exports = function forbidden(data, options) {
     // If no second argument provided, try to serve the default view,
     // but fall back to sending JSON(P) if any errors occur.
     else {
+        req.params.redirect = req.route.path.substring(1);
         req.flash('error', data);
         sails.controllers.auth.login(req, res);
     }

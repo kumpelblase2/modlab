@@ -19,7 +19,7 @@ module.exports = {
                         user.addPermission('user.admin');
                         return user.save();
                     }).then(function() {
-                        res.redirect('/login?redirect=/install/steps/2');
+                        res.redirect('/login?redirect=install/steps/2');
                     }).catch(function(err) {
                         console.log(err);
                     });

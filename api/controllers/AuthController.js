@@ -145,11 +145,9 @@ var AuthController = {
           return tryAgain(err);
         }
 
-        // Upon successful login, send the user to the homepage were req.user
-        // will available.
         var redirect = req.param('redirect');
-        if(redirect) {
-            res.redirect(redirect);
+        if(redirect && /^[a-zA-Z]/.test(redirect)) {
+            res.redirect('/' + redirect);
         } else {
             res.redirect('/');
         }
