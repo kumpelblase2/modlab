@@ -30,6 +30,7 @@
     "jade": "~1.8.2",
     "lodash": "^2.4.1",
     "log": "^1.4.0",
+    "marked": "~0.3.2",
     "modlab-chat": "~0.0.3",
     "modlab-plugin": "~0.0.2",
     "passport": "~0.2.1",
