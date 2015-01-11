@@ -26,14 +26,14 @@ module.exports.policies = {
      *                                                                          *
      ***************************************************************************/
 
-    '*': ['middleware', 'passport'],
+    '*': ['middleware', 'passport', 'sessionAuth'],
 
-    'dashboard': {
-        '*': ['middleware', 'passport','sessionAuth']
+    'auth': {
+        '*': ['middleware', 'passport'],
     },
 
-    'plugin': {
-        '*': ['middleware', 'passport','sessionAuth']
+    'root': {
+        '*': ['middleware', 'passport']
     },
 
     'install/steps': {
