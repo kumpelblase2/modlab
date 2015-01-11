@@ -1,5 +1,9 @@
 module.exports = {
     index: function(req, res) {
-        res.view('homepage');
+        if(sails.config.modlab.disableHome) {
+            res.redirect('/dashboard');
+        } else {
+            res.view('homepage');
+        }
     }
 }

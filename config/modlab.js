@@ -1,3 +1,4 @@
 module.exports.modlab = {
-    name: 'Modlab'
+    name: 'Modlab',
+    disableHome: true
 }

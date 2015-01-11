@@ -1,7 +1,9 @@
 .navbar-default.sidebar(role='navigation')
     .sidebar-nav.navbar-collapse
         ul.nav.in#side-menu
-            +sidebar-item('home', '/', 'Home')
+            if !sails.config.modlab.disableHome
+                +sidebar-item('home', '/', 'Home')
+                
             if req.isAuthenticated()
                 +sidebar-item('dashboard', '/dashboard', 'Dashboard')
             else
