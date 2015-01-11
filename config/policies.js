@@ -26,19 +26,19 @@ module.exports.policies = {
      *                                                                          *
      ***************************************************************************/
 
-    '*': ['middleware', 'passport', 'sessionAuth'],
+    '*': ['helper', 'passport', 'sessionAuth'],
 
     'auth': {
-        '*': ['middleware', 'passport'],
+        '*': ['helper', 'passport'],
     },
 
     'root': {
-        '*': ['middleware', 'passport']
+        '*': ['helper', 'passport']
     },
 
     'install/steps': {
-        '*': ['middleware', 'passport', 'notFinishedInstallation', 'sessionAuth', 'admin'],
-        '1': ['middleware', 'passport', 'notFinishedInstallation']
+        '*': ['helper', 'passport', 'notFinishedInstallation', 'admin'],
+        '1': ['helper', 'passport', 'notFinishedInstallation']
     }
 
     /***************************************************************************
