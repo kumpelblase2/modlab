@@ -11,14 +11,24 @@ module.exports = {
 
         User.create({
             username: name,
-            email: mail
+            email: mail,
+            permissions: sails.config.permissions.defaultPermissions
         }).then(function(user) {
             return Passport.create({
                 protocol: 'local',
                 password: password,
                 user: user.id
             }).then(function() {
-                return user;
+                return PermissionGroup.findOne({ name: sails.config.permissions.defaultGroup }).then(function(group) {
+                    if(!group) {
+                        return user;
+                    } else {
+                        user.permission_groups.add(group.id);
+                        return user.save().then(function() {
+                            return user;
+                        });
+                    }
+                });
             }).catch(function(err) {
                 if (err.code === 'E_VALIDATION') {
                     err = new Error('Error.Passport.Password.Invalid');
