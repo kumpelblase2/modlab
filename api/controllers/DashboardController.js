@@ -7,7 +7,7 @@
 
 module.exports = {
     index: function (req, res) {
-        if(!req.user.hasPermission('system.dashboard')) {
+        if(!req.user.hasPermission('system.dashboard.view')) {
             res.forbidden(req.__('Error.Authorization.NoRights'));
         } else {
             res.view();

@@ -4,7 +4,7 @@ module.exports.permissions = {
 
     defaultPermissions: [
         'system.login',
-        'system.dashboard',
+        'system.dashboard.view',
         'user.profile',
         'user.settings'
     ]
