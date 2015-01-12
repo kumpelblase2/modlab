@@ -65,6 +65,12 @@ module.exports.routes = {
     '/dashboard': 'DashboardController.index',
     '/plugins': 'PluginController.index',
     '/rights': 'RightsController.index',
+    'GET /rights/user/:id': 'RightsController.user',
+    'GET /rights/group/:id': 'RightsController.group',
+    'DELETE /rights/group/:id': 'RightsController.deleteGroup',
+    'PATCH /rights/group/:id': 'RightsController.groupEdit',
+    'PATCH /rights/user/:id': 'RightsController.userEdit',
+    'PUT /rights/group': 'RightsController.createGroup',
 
     'GET /users': 'UserController.index',
     'GET /users/:id': 'UserController.show',

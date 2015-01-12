@@ -1,0 +1,26 @@
+extends ../layout/default.jade
+
+block title
+    | Rights Management
+    
+block pageheader
+    | Rights - #{group.name}
+    
+block content
+    .panel.panel-default
+        .panel-heading
+            | Permissions
+        .panel-body
+            ul.list-group
+                each permission in group.permissions
+                    li.list-group-item= permission
+                    
+    .panel.panel-default
+        .panel-heading
+            | Users
+        .panel-body
+            ul.list.group
+                each user in group.users_in_group
+                    li.list-group-item
+                        a(href='/rights/user/#{user.id}')= user.username
+                        
