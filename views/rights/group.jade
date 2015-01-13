@@ -10,17 +10,17 @@ block content
     .panel.panel-default
         .panel-heading
             | Permissions
-        .panel-body
-            ul.list-group
-                each permission in group.permissions
-                    li.list-group-item= permission
-                    
+        table.table
+            each permission in group.permissions
+                tr
+                    td= permission
+                
     .panel.panel-default
         .panel-heading
             | Users
-        .panel-body
-            ul.list.group
-                each user in group.users_in_group
-                    li.list-group-item
+        table.table
+            each user in group.users
+                tr
+                    td
                         a(href='/rights/user/#{user.id}')= user.username
-                        
+                    

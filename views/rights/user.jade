@@ -10,16 +10,16 @@ block content
     .panel.panel-default
         .panel-heading
             | Permissions
-        .panel-body
-            ul.list-group
-                each permission in user.permissions
-                    li.list-group-item= permission
+        table.table
+            each permission in user.permissions
+                tr
+                    td= permission
     
     .panel.panel-default
         .panel-heading
             | Permission Groups
-        .panel-body
-            ul.list.group
-                each group in user.groups
-                    li.list-group-item
+        table.table
+            each group in user.groups
+                tr
+                    td
                         a(href='/rights/group/#{group.id}')= group.name
