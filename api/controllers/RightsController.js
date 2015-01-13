@@ -49,7 +49,7 @@ module.exports = {
             }
 
             var tmp = _.pick(group, 'id', 'name', 'permissions');
-            tmp.groups = group.users_in_group.map(function(user) {
+            tmp.users = group.users_in_group.map(function(user) {
                 return { id: user.id, username: user.username };
             });
             res.view('rights/group', { group: tmp });
