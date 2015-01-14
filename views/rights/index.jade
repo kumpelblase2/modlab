@@ -20,7 +20,8 @@ block content
                 each user in users
                     tr
                         td= user.id
-                        td= user.username
+                        td
+                            a(href='/rights/user/#{user.id}')= user.username
                         if user.permissions.length > 0
                             td= user.permissions.join(' - ')
                         else

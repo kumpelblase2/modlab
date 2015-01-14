@@ -22,5 +22,55 @@ module.exports = {
                 });
             });
         }
+    },
+
+    user: function(req, res) {
+        var userid = req.param('id');
+        User.findOne(userid).populate('permission_groups').then(function(user) {
+            if(!user) {
+                return res.notFound('Error.Resource.NotFound');
+            }
+
+            var tmp = _.pick(user, 'id', 'username', 'permissions');
+            tmp.groups = user.permission_groups.map(function(group) {
+                return { id: group.id, name: group.name };
+            });
+            res.view('rights/user', { user: tmp });
+        }).catch(function(err) {
+            res.serverError(err);
+        });
+    },
+
+    group: function(req, res) {
+        var groupid = req.param('id');
+        PermissionGroup.findOne(groupid).populate('users_in_group').then(function(group) {
+            if(!group) {
+                return res.notFound('Error.Resource.NotFound');
+            }
+
+            var tmp = _.pick(group, 'id', 'name', 'permissions');
+            tmp.groups = group.users_in_group.map(function(user) {
+                return { id: user.id, username: user.username };
+            });
+            res.view('rights/group', { group: tmp });
+        }).catch(function(err) {
+            res.serverError(err);
+        });
+    },
+
+    createGroup: function(req, res) {
+        res.ok();
+    },
+
+    deleteGroup: function(req, res) {
+        res.ok();
+    },
+
+    groupEdit: function(req, res) {
+        res.ok();
+    },
+
+    userEdit: function(req, res) {
+        res.ok();
     }
 };
