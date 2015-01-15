@@ -28,7 +28,7 @@ block content
                             td None
                             
                         if user.groups.length > 0
-                            td= user.groups.join(', ')
+                            td= _.map(user.groups, function(group) { return group.name; }).join(', ')
                         else
                             td None
             
