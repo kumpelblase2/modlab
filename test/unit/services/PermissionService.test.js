@@ -16,6 +16,8 @@ describe('PermissionService', function() {
 
         it('should work with strings and arrays', function() {
             PermissionService.matches('a.b', ['a', 'b']).should.be.ok;
+            PermissionService.matches('a.b', ['a', 'c']).should.not.be.ok;
+            PermissionService.matches(['a', 'c'], 'a.c').should.be.ok;
         });
 
         it('should allow wildcard character for one group', function() {
