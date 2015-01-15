@@ -4,7 +4,8 @@ block title
     | Rights Management
     
 block pageheader
-    | Rights - #{user.username}
+    | Rights - #{user.username} 
+    a.btn.btn-primary.fa.fa-pencil(href='/rights/user/' + user.id + '/edit')
     
 block content
     .panel.panel-default
