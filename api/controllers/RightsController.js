@@ -1,7 +1,7 @@
 module.exports = {
     index: function(req, res) {
         if(!req.user.hasPermission('system.rights.view')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             User.find().populate('permission_groups').then(function(users) {
                 var minifiedUsers = users.map(function(user) {
@@ -20,7 +20,7 @@ module.exports = {
 
     userShow: function(req, res) {
         if(!req.user.hasPermission('system.rights.view')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             var userid = req.param('id');
             User.findOne(userid).populate('permission_groups').then(function(user) {
@@ -37,7 +37,7 @@ module.exports = {
 
     groupShow: function(req, res) {
         if(!req.user.hasPermission('system.rights.view')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             var groupid = req.param('id');
             PermissionGroup.findOne(groupid).populate('users_in_group').then(function(group) {
@@ -54,7 +54,7 @@ module.exports = {
 
     groupNew: function(req, res) {
         if(!req.user.hasPermission('system.rights.group.create')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             res.view('rights/groupedit');
         }
@@ -62,7 +62,7 @@ module.exports = {
 
     groupCreate: function(req, res) {
         if(!req.user.hasPermission('system.rights.group.create')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             var name = req.param('name');
             var permissions = req.param('permissions[]');
@@ -81,7 +81,7 @@ module.exports = {
 
     groupEdit: function(req, res) {
         if(!req.user.hasPermission('system.rights.group.edit')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             var groupid = req.param('id');
             PermissionGroup.findOne(groupid).then(function(group) {
@@ -96,7 +96,7 @@ module.exports = {
 
     userEdit: function(req, res) {
         if(!req.user.hasPermission('system.rights.user.edit')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             var userid = req.param('id');
             User.findOne(userid).then(function(user) {
@@ -111,7 +111,7 @@ module.exports = {
 
     groupUpdate: function(req, res) {
         if(!req.user.hasPermission('system.rights.group.edit')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             var id = req.param('id');
             var name = req.param('name');
@@ -131,7 +131,7 @@ module.exports = {
 
     userUpdate: function(req, res) {
         if(!req.user.hasPermission('system.rights.user.edit')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             var id = req.param('id');
             var permissions = req.param('permissions[]');
@@ -149,7 +149,7 @@ module.exports = {
 
     groupDelete: function(req, res) {
         if(!req.user.hasPermission('system.rights.group.delete')) {
-            res.forbidden('Error.Authorization.NoRights', '403');
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             var id = req.param('id');
             PermissionGroup.destroy(id).then(function() {
