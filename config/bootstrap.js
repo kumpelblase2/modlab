@@ -17,10 +17,7 @@ module.exports.bootstrap = function (cb) {
             sails.chat.run();
         }
         sails.emit('app:bootstrap');
-    }).then(function() {
-        RegisterService.register('test', 'test@test.com', 'test', function(err, user) {
-            cb();
-        });
+        cb();
     }).catch(function(err) {
         return cb(err);
     });
