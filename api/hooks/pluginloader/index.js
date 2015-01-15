@@ -12,6 +12,11 @@ module.exports = function(sails) {
         loadedPlugins: [],
 
         initialize: function(cb) {
+            if(!sails.config.rootPath) {
+                sails.config.rootPath = path.join(sails.config.paths.config, '..');
+            }
+
+
             var self = this;
             var waitFor = ['hook:app:loaded', 'hook:chat:loaded'];
             var plugins = filter(sails.config.plugins);
