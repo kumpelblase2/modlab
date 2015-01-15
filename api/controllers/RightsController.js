@@ -5,18 +5,12 @@ module.exports = {
         } else {
             User.find().populate('permission_groups').then(function(users) {
                 var minifiedUsers = users.map(function(user) {
-                    var tmp = _.pick(user, 'id', 'username', 'permissions');
-                    tmp.groups = user.permission_groups.map(function(group) {
-                        return group.name;
-                    });
-                    return tmp;
+                    return user.strip();
                 });
 
                 PermissionGroup.find().populate('users_in_group').then(function(groups) {
                     var minifiedGroups = groups.map(function(group) {
-                        var temp = _.pick(group, 'id', 'name', 'permissions');
-                        temp.users = group.users_in_group.length;
-                        return temp;
+                        return group.strip();
                     });
                     res.view('rights/index', { users: minifiedUsers, groups: minifiedGroups });
                 });
@@ -24,53 +18,145 @@ module.exports = {
         }
     },
 
-    user: function(req, res) {
-        var userid = req.param('id');
-        User.findOne(userid).populate('permission_groups').then(function(user) {
-            if(!user) {
-                return res.notFound('Error.Resource.NotFound');
+    userShow: function(req, res) {
+        if(!req.user.hasPermission('system.rights.view')) {
+            res.forbidden('Error.Authorization.NoRights', '403');
+        } else {
+            var userid = req.param('id');
+            User.findOne(userid).populate('permission_groups').then(function(user) {
+                if(!user) {
+                    return res.notFound('Error.Resource.NotFound');
+                }
+
+                res.view('rights/user', { user: user.strip() });
+            }).catch(function(err) {
+                res.serverError(err);
+            });
+        }
+    },
+
+    groupShow: function(req, res) {
+        if(!req.user.hasPermission('system.rights.view')) {
+            res.forbidden('Error.Authorization.NoRights', '403');
+        } else {
+            var groupid = req.param('id');
+            PermissionGroup.findOne(groupid).populate('users_in_group').then(function(group) {
+                if(!group) {
+                    return res.notFound('Error.Resource.NotFound');
+                }
+
+                res.view('rights/group', { group: group.strip() });
+            }).catch(function(err) {
+                res.serverError(err);
+            });
+        }
+    },
+
+    groupNew: function(req, res) {
+        if(!req.user.hasPermission('system.rights.group.create')) {
+            res.forbidden('Error.Authorization.NoRights', '403');
+        } else {
+            res.view('rights/groupedit');
+        }
+    },
+
+    groupCreate: function(req, res) {
+        if(!req.user.hasPermission('system.rights.group.create')) {
+            res.forbidden('Error.Authorization.NoRights', '403');
+        } else {
+            var name = req.param('name');
+            var permissions = req.param('permissions[]');
+            if(!Array.isArray(permissions)) {
+                permissions = [ permissions ];
             }
 
-            var tmp = _.pick(user, 'id', 'username', 'permissions');
-            tmp.groups = user.permission_groups.map(function(group) {
-                return { id: group.id, name: group.name };
+            PermissionGroup.create({
+                name: name,
+                permissions: permissions
+            }).then(function(group) {
+                res.redirect('/rights/group/' + group.id);
             });
-            res.view('rights/user', { user: tmp });
-        }).catch(function(err) {
-            res.serverError(err);
-        });
-    },
-
-    group: function(req, res) {
-        var groupid = req.param('id');
-        PermissionGroup.findOne(groupid).populate('users_in_group').then(function(group) {
-            if(!group) {
-                return res.notFound('Error.Resource.NotFound');
-            }
-
-            var tmp = _.pick(group, 'id', 'name', 'permissions');
-            tmp.users = group.users_in_group.map(function(user) {
-                return { id: user.id, username: user.username };
-            });
-            res.view('rights/group', { group: tmp });
-        }).catch(function(err) {
-            res.serverError(err);
-        });
-    },
-
-    createGroup: function(req, res) {
-        res.ok();
-    },
-
-    deleteGroup: function(req, res) {
-        res.ok();
+        }
     },
 
     groupEdit: function(req, res) {
-        res.ok();
+        if(!req.user.hasPermission('system.rights.group.edit')) {
+            res.forbidden('Error.Authorization.NoRights', '403');
+        } else {
+            var groupid = req.param('id');
+            PermissionGroup.findOne(groupid).then(function(group) {
+                if(!group) {
+                    return res.notFound('Error.Resource.NotFound');
+                }
+
+                res.view('rights/groupedit', { group: group });
+            });
+        }
     },
 
     userEdit: function(req, res) {
-        res.ok();
+        if(!req.user.hasPermission('system.rights.user.edit')) {
+            res.forbidden('Error.Authorization.NoRights', '403');
+        } else {
+            var userid = req.param('id');
+            User.findOne(userid).then(function(user) {
+                if(!user) {
+                    return res.notFound('Error.Resource.NotFound');
+                }
+
+                res.view('rights/useredit', { user: user.strip() });
+            });
+        }
+    },
+
+    groupUpdate: function(req, res) {
+        if(!req.user.hasPermission('system.rights.group.edit')) {
+            res.forbidden('Error.Authorization.NoRights', '403');
+        } else {
+            var id = req.param('id');
+            var name = req.param('name');
+            var permissions = req.param('permissions[]');
+            if(!Array.isArray(permissions)) {
+                permissions = [ permissions ];
+            }
+
+            PermissionGroup.update(id, {
+                name: name,
+                permissions: permissions
+            }).then(function(groups) {
+                sails.controllers.rights.groupShow(req, res);
+            });
+        }
+    },
+
+    userUpdate: function(req, res) {
+        if(!req.user.hasPermission('system.rights.user.edit')) {
+            res.forbidden('Error.Authorization.NoRights', '403');
+        } else {
+            var id = req.param('id');
+            var permissions = req.param('permissions[]');
+            if(!Array.isArray(permissions)) {
+                permissions = [ permissions ];
+            }
+
+            User.update(id, {
+                permissions: permissions
+            }).then(function(users) {
+                sails.controllers.rights.userShow(req, res);
+            });
+        }
+    },
+
+    groupDelete: function(req, res) {
+        if(!req.user.hasPermission('system.rights.group.delete')) {
+            res.forbidden('Error.Authorization.NoRights', '403');
+        } else {
+            var id = req.param('id');
+            PermissionGroup.destroy(id).then(function() {
+                res.redirect('/rights');
+            }).catch(function(err) {
+                console.log(err);
+            });
+        }
     }
 };
