@@ -45,7 +45,8 @@ block content
                 each group in groups
                     tr
                         td= group.id
-                        td= group.name
+                        td
+                            a(href='/rights/group/#{group.id}')= group.name
                         if group.permissions.length > 0
                             td= group.permissions.join(', ')
                         else
