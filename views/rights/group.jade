@@ -6,6 +6,7 @@ block title
 block pageheader
     | Rights - #{group.name} 
     a.btn.btn-primary.fa.fa-pencil(href='/rights/group/' + group.id + '/edit')
+    a#deleteGroup.btn.btn-danger.fa.fa-trash(data-href='/rights/group/' + group.id, data-return='/rights')
     
 block content
     .panel.panel-default
