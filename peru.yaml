@@ -8,6 +8,8 @@ imports:
     dashboard_fontawesome-fonts: ./assets/fonts/
     pace_js|min-js: ./assets/js/vendor/
     pace_css: ./assets/styles/vendor/
+    sweetalert|min-js: ./assets/js/vendor/
+    sweetalert|css: ./assets/styles/vendor/
 
 git module dashboard_css:
     url: https://github.com/IronSummitMedia/startbootstrap-sb-admin-2.git
@@ -55,8 +57,18 @@ git module pace_js:
     url: https://github.com/HubSpot/pace.git
     rev: c6846cbf6b928e9903b569269fa9fbf32f2554f4
 
+git module sweetalert:
+    url: https://github.com/lipis/bootstrap-sweetalert.git
+    export: lib/
+
 rule min-css:
     files: '*.min.css'
 
 rule min-js:
     files: '*.min.js'
+
+rule css:
+    files: '*.css'
+
+rule js:
+    files: '*.js'
