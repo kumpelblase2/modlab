@@ -10,10 +10,25 @@ var User = {
         permission_groups: { collection: 'PermissionGroup', via: 'users_in_group', defaultsTo: [] },
 
         hasPermission: function (inPermission) {
-            return _.contains(this.permissions, inPermission) || _.some(this.permission_groups, function (permissionGroup) {
-                _.contains(permissionGroup.permissions, inPermission);
+            return PermissionService.isIncluded(this.permissions, inPermission) || _.some(this.permission_groups, function(group) {
+                PermissionService.isIncluded(group.permissions, inPermission);
             });
         },
+        allPermissions: function() {
+            var all = [];
+            this.permissions.forEach(function(perm) {
+                all.push(perm);
+            });
+
+            this.permission_groups.forEach(function(group) {
+                group.permissions.forEach(function(perm) {
+                    all.push(perm);
+                });
+            });
+
+            return all;
+        }
+
         addPermission: function(permission) {
             this.permissions.push(permission);
         },
@@ -21,10 +36,10 @@ var User = {
             this.permissions = _.without(this.permissions, permission);
         },
         addToPermissionGroup: function(group) {
-
+            this.permission_groups.add(group.id);
         },
         removeFromPermissionGroup: function(group) {
-
+            this.permission_groups.remove(group.id);
         }
     }
 };
