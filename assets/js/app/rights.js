@@ -10,8 +10,9 @@ $(function() {
             text: 'If you continue, you will not be able to recover the deleted group.',
             type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: 'Yes, continue'
+            confirmButtonClass: 'btn-danger',
+            confirmButtonText: 'Yes, continue',
+            closeOnConfirm: false
         }, function() {
             $.ajax({
                 url: self.getAttribute('data-href'),
