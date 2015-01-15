@@ -1,0 +1,28 @@
+extends ../layout/default.jade
+
+block title
+    | Rights Management
+    
+block pageheader
+    if group
+        | Rights - #{group.name} - Edit
+    else
+        | Rights - New group
+    
+block content
+    - var method = group ? 'PATCH' : 'PUT'
+    - var action = group ? '/rights/group/' + group.id : '/rights/group'
+    form(action=action, method='POST')
+        .form-group
+            label(for='name') Name
+            input.form-control(type='text', name='name', placeholder='Group name', value=(group ? group.name : ''))
+        .form-group
+            label(for='permissions[]')
+            a.btn.btn-success.fa.fa-plus#btnAddPermission(href='#')
+            if group
+                each permission in group.permissions
+                    input.form-control(type='text', name='permissions[]', placeholder='Permission', value=permission)
+            input.form-control(type='text', name='permissions[]', placeholder='Permission')
+        .form-group
+            input(type='hidden', name='_method', value=method)
+            button.btn-success(type='submit') Save
