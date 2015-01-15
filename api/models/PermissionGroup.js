@@ -9,7 +9,7 @@ module.exports = {
 
     attributes: {
 
-        name: { type: 'string' },
+        name: { type: 'string', unique: true },
 
         permissions: { type: 'array', defaultsTo: [] },
 
