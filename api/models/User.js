@@ -27,7 +27,7 @@ var User = {
             });
 
             return all;
-        }
+        },
 
         addPermission: function(permission) {
             this.permissions.push(permission);
