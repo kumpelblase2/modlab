@@ -1,0 +1,19 @@
+extends ../layout/default.jade
+
+block title
+    | Rights Management
+    
+block pageheader
+    | Rights - #{user.username} - Edit
+        
+block content
+    form(action='/rights/user/' + user.id, method='POST')
+        .form-group
+            label(for='permissions[]') Permissions
+            a.btn.btn-success.fa.fa-plus.pull-right#btnAddPermission(href='#')
+            each permission in user.permissions
+                input.form-control(type='text', name='permissions[]', placeholder='Permission', value=permission)
+            input.form-control(type='text', name='permissions[]', placeholder='Permission')
+        .form-group
+            input(type='hidden', name='_method', value='PATCH')
+            button.btn.btn-success(type='submit') Save
