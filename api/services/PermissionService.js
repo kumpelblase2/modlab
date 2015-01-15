@@ -8,9 +8,9 @@ module.exports = {
             return true;
         }
 
-        var parts = check.split('\\.');
+        var parts = check.split('.');
         return _.some(own_permissions, function(permission) {
-            var splitted = permission.split('\\.');
+            var splitted = permission.split('.');
             return PermissionService.matches(splitted, parts);
         });
     },
@@ -24,8 +24,8 @@ module.exports = {
             return true;
         }
 
-        permission = (Array.isArray(permission) ? permission : permission.split('\\.'));
-        match = (Array.isArray(match) ? match : match.split('\\.'));
+        permission = (Array.isArray(permission) ? permission : permission.split('.'));
+        match = (Array.isArray(match) ? match : match.split('.'));
 
         if(permission.length != match.length) {
             return false;
@@ -33,7 +33,7 @@ module.exports = {
 
         for(var i = 0; i < permission.length; i++) {
             var perm = permission[i];
-            if(perm !== match[i] && perm === '*') {
+            if(perm !== match[i] && perm !== '*') {
                 return false;
             }
         }
