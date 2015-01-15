@@ -40,6 +40,14 @@ var User = {
         },
         removeFromPermissionGroup: function(group) {
             this.permission_groups.remove(group.id);
+        },
+
+        strip: function() {
+            var tmp = _.pick(this, 'id', 'username', 'email', 'permissions');
+            tmp.groups = this.permission_groups.map(function(group) {
+                return { id: user.id, name: grou.name };
+            });
+            return tmp;
         }
     }
 };
