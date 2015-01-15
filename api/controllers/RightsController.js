@@ -72,7 +72,7 @@ module.exports = {
 
             PermissionGroup.create({
                 name: name,
-                permissions: permissions
+                permissions: _.filter(permissions, function(permission) { return permission.length > 0 })
             }).then(function(group) {
                 res.redirect('/rights/group/' + group.id);
             });
@@ -122,7 +122,7 @@ module.exports = {
 
             PermissionGroup.update(id, {
                 name: name,
-                permissions: permissions
+                permissions: _.filter(permissions, function(permission) { return permission.length > 0 })
             }).then(function(groups) {
                 sails.controllers.rights.groupShow(req, res);
             });
@@ -140,7 +140,7 @@ module.exports = {
             }
 
             User.update(id, {
-                permissions: permissions
+                permissions: _.filter(permissions, function(permission) { return permission.length > 0 })
             }).then(function(users) {
                 sails.controllers.rights.userShow(req, res);
             });
