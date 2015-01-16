@@ -13,7 +13,7 @@ module.exports = {
                 toLoad.push({
                     name: name,
                     source: 'npm',
-                    path: path.join('node_modules', name);
+                    path: path.join('node_modules', name)
                 });
             } else if(typeof(options) === "object") {
                 if(options.disabled)
