@@ -12,14 +12,16 @@ module.exports = {
             if(options === true) {
                 toLoad.push({
                     name: name,
-                    source: 'npm'
+                    source: 'npm',
+                    path: path.join('node_modules', name);
                 });
             } else if(typeof(options) === "object") {
                 if(options.disabled)
                     return;
 
                 var source = options.path ? 'local' : 'npm';
-                toLoad.push(_.merge({ source: source, name: name }, options, function(a, b) { return b ? b : a; }));
+                var plPath = options.path || path.join('node_modules', name);
+                toLoad.push(_.merge({ source: source, name: name, path: plPath }, options, function(a, b) { return b ? b : a; }));
             }
         });
 
