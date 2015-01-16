@@ -8,7 +8,8 @@ module.exports = function(grunt) {
             modlabConfig: 'config/',
             assetsDir: 'assets/',
             jsDir: 'js/',
-            cssDir: 'styles/'
+            cssDir: 'styles/',
+            templatesDir: 'templates/'
         });
 
         var files = grunt.config.get('copy.dev.files');
@@ -29,6 +30,13 @@ module.exports = function(grunt) {
                 cwd: path.join(pluginAssetDir, options.cssDir),
                 src: [ '*.css' ],
                 dest: path.join('.tmp/public/styles/plugin', plugin.name)
+            });
+
+            files.push({
+                expand: true,
+                cwd: path.join(pluginAssetDir, options.templatesDir),
+                src: [ '*.html' ],
+                dest: path.join('.tmp/public/templates/plugin', plugin.name)
             });
         });
 
