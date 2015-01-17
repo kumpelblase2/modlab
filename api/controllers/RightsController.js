@@ -99,7 +99,7 @@ module.exports = {
             res.forbidden(req.__('Error.Authorization.NoRights'), '403');
         } else {
             var userid = req.param('id');
-            User.findOne(userid).then(function(user) {
+            User.findOne(userid).populate('permission_groups').then(function(user) {
                 if(!user) {
                     return res.notFound('Error.Resource.NotFound');
                 }
