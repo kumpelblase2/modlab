@@ -137,7 +137,7 @@ module.exports = {
         } else {
             var id = req.param('id');
             var permissions = req.param('permissions[]');
-            var permissionGroups = req.param('groups[]');
+            var permissionGroups = req.param('groups[]') || [];
             if(!Array.isArray(permissions)) {
                 permissions = [ permissions ];
             }
