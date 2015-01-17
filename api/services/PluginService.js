@@ -29,6 +29,41 @@ module.exports = {
             plugin.log.verbose('Added ' + plugin.models.length + ' custom model(s).');
         }
     },
+    registerCustomControllers: function(plugin) {
+        if(plugin.controllers) {
+            sails.app.registerControllers(plugin.controllers);
+            sails.emit('plugin:' + plugin.name + ':controllers');
+            plugin.log.verbose('Added ' + plugin.controllers.length + ' custom controllers(s).');
+        }
+    },
+
+    registerControllerInSails: function(id, controller) {
+        sails.controllers[id] = controller;
+        var hook = sails.hooks.controllers;
+
+        if (!(_.isObject(hook.middleware[id]) && !_.isArray(hook.middleware[id]) && !_.isFunction(hook.middleware[id]))) {
+            hook.middleware[id] = {};
+        }
+
+        _.each(controller, function(action, actionId) {
+            actionId = actionId.toLowerCase();
+
+            if (action === false) {
+                delete hook.middleware[id][actionId];
+                return;
+            }
+
+            if (_.isString(action) || _.isBoolean(action)) {
+                return;
+            }
+
+            action._middlewareType = 'ACTION: '+id+'/'+actionId;
+            hook.middleware[id][actionId] = action;
+            hook.explicitActions[id] = hook.explicitActions[id] || {};
+            hook.explicitActions[id][actionId] = true;
+        });
+    },
+
     createPluginLogger: function(pluginname) {
         var customOptions = _.clone(sails.config.log);
         var themeName = 'plugin_' + pluginname;

@@ -2,6 +2,7 @@ var _ = require('lodash');
 
 function App() {
     this.customModels = [];
+    this.customControllers = [];
     this.plugins = {};
 }
 
@@ -23,6 +24,21 @@ App.prototype.registerModels = function(models) {
         schema.globalId = name;
         sails.models[name.toLowerCase()] = schema;
     });
+};
+
+App.prototype.registerControllers = function(controllers) {
+    var self = this;
+    _.forOwn(controllers, function(controller, name) {
+        self.customControllers.push({
+            name: name,
+            controller: controller
+        });
+        controller.globalId = name;
+        controller.identity = name.toLowerCase();
+        PluginService.registerControllerInSails(name.toLowerCase(), controller);
+    });
+
+    console.log(sails.controllers);
 };
 
 App.prototype.finishedInstallation = function() {

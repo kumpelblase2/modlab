@@ -16,6 +16,9 @@ module.exports = function(sails) {
                 sails.config.rootPath = path.join(sails.config.paths.config, '..');
             }
 
+            if(!sails.config.plugin) {
+                sails.config.plugin = {};
+            }
 
             var self = this;
             var waitFor = ['hook:app:loaded', 'hook:chat:loaded'];
@@ -56,6 +59,7 @@ module.exports = function(sails) {
                         sails.emit('plugin:' + plugin.name + ':init');
                         plugin.log.verbose('Finished initializing.');
                         PluginService.registerCustomModels(plugin);
+                        PluginService.registerCustomControllers(plugin);
                         return plugin;
                     }).catch(function(err) {
                         result.log.error("Error initializing: " + err.message);
