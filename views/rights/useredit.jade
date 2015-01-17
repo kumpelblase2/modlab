@@ -15,5 +15,17 @@ block content
                 input.form-control(type='text', name='permissions[]', placeholder='Permission', value=permission)
             input.form-control(type='text', name='permissions[]', placeholder='Permission')
         .form-group
+            label Permission Groups
+            each group in groups
+                .checkbox
+                    label
+                        - var in_group = _.find(user.groups, function(to_check) { return to_check.id == group.id; })
+                        if in_group
+                            input(type='checkbox', name='groups[]', value=group.id, checked)
+                            = group.name
+                        else
+                            input(type='checkbox', name='groups[]', value=group.id)
+                            = group.name
+        .form-group
             input(type='hidden', name='_method', value='PATCH')
             button.btn.btn-success(type='submit') Save
