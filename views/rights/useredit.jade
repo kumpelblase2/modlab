@@ -20,12 +20,8 @@ block content
                 .checkbox
                     label
                         - var in_group = _.find(user.groups, function(to_check) { return to_check.id == group.id; })
-                        if in_group
-                            input(type='checkbox', name='groups[]', value=group.id, checked)
-                            = group.name
-                        else
-                            input(type='checkbox', name='groups[]', value=group.id)
-                            = group.name
+                        input(type='checkbox', name='groups[]', value=group.id, checked=!!in_group)
+                        = group.name
         .form-group
             input(type='hidden', name='_method', value='PATCH')
             button.btn.btn-success(type='submit') Save
