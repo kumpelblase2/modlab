@@ -45,7 +45,7 @@ var User = {
         strip: function() {
             var tmp = _.pick(this, 'id', 'username', 'email', 'permissions');
             tmp.groups = this.permission_groups.map(function(group) {
-                return { id: user.id, name: grou.name };
+                return { id: group.id, name: group.name };
             });
             return tmp;
         }
