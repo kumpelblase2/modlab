@@ -162,7 +162,7 @@ module.exports = {
                     if(index < 0) {
                         user.permission_groups.remove(group.id);
                     } else {
-                        permissionGroups = _.without(permissionGroups, String(group.id));
+                        permissionGroups = _.without(permissionGroups, group.id);
                     }
                 });
 
@@ -172,6 +172,8 @@ module.exports = {
 
                 user.save().then(function() {
                     sails.controllers.rights.userShow(req, res);
+                }).catch(function(err) {
+                    res.serverError(err);
                 });
             }).catch(function(err) {
                 res.serverError(err);
