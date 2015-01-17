@@ -104,7 +104,9 @@ module.exports = {
                     return res.notFound('Error.Resource.NotFound');
                 }
 
-                res.view('rights/useredit', { user: user.strip() });
+                PermissionGroup.find().then(function(groups) {
+                    res.view('rights/useredit', { user: user.strip(), groups: _.map(groups, function(group) { return group.strip(); }) });
+                });
             });
         }
     },
@@ -135,14 +137,44 @@ module.exports = {
         } else {
             var id = req.param('id');
             var permissions = req.param('permissions[]');
+            var permissionGroups = req.param('groups[]');
             if(!Array.isArray(permissions)) {
                 permissions = [ permissions ];
             }
 
-            User.update(id, {
-                permissions: _.filter(permissions, function(permission) { return permission.length > 0 })
-            }).then(function(users) {
-                sails.controllers.rights.userShow(req, res);
+            if(!Array.isArray(permissionGroups)) {
+                permissionGroups = [ permissionGroups ];
+            }
+
+            permissionGroups = _.map(permissionGroups, function(groupid) { return parseInt(groupid); });
+
+            User.findOne(id).populate('permission_groups').then(function(user) {
+                if(!user) {
+                    return res.notFound('Error.Resource.NotFound');
+                }
+
+                user.permissions = _.filter(permissions, function(permission) {
+                    return permission.length > 0;
+                });
+
+                user.permission_groups.forEach(function(group) {
+                    var index = permissionGroups.indexOf(group.id);
+                    if(index < 0) {
+                        user.permission_groups.remove(group.id);
+                    } else {
+                        permissionGroups = _.without(permissionGroups, String(group.id));
+                    }
+                });
+
+                permissionGroups.forEach(function(groupid) {
+                    user.permission_groups.add(groupid);
+                });
+
+                user.save().then(function() {
+                    sails.controllers.rights.userShow(req, res);
+                });
+            }).catch(function(err) {
+                res.serverError(err);
             });
         }
     },
