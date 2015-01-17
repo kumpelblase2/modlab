@@ -1,14 +1,16 @@
 var path = require('path');
 var captains = require('sails/node_modules/captains-log');
+var Promise = require('bluebird');
+var fs = require('fs');
 
 module.exports = {
     generateDefaultConfig: function(plugin, confDir) {
         confDir = confDir || path.join(sails.config.paths.config, 'plugin');
         var defaults = plugin.defaults || {};
         sails.config.plugin[plugin.name] = defaults;
-        return PluginService.writePluginConfig(defaults, confDir);
+        return PluginService.writePluginConfig(defaults, plugin, confDir);
     },
-    writePluginConfig: function(config, confDir) {
+    writePluginConfig: function(config, plugin, confDir) {
         return Promise.resolve().then(function() {
             return JSON.stringify(config, null, 4);
         }).then(function(parsed) {
