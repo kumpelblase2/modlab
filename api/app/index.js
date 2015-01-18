@@ -37,8 +37,6 @@ App.prototype.registerControllers = function(controllers) {
         controller.identity = name.toLowerCase();
         PluginService.registerControllerInSails(name.toLowerCase(), controller);
     });
-
-    console.log(sails.controllers);
 };
 
 App.prototype.finishedInstallation = function() {
