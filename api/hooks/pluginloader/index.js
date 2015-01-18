@@ -60,8 +60,7 @@ module.exports = function(sails) {
                         plugin.log.verbose('Finished initializing.');
                         PluginService.registerCustomModels(plugin);
                         PluginService.registerCustomControllers(plugin);
-                        var customRoutes = plugin.routes || {};
-                        sails.config.routes = _.merge(sails.config.routes, customRoutes);
+                        PluginService.registerCustomRoutes(plugin);
                         return plugin;
                     }).catch(function(err) {
                         result.log.error("Error initializing: " + err.message);

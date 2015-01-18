@@ -24,16 +24,51 @@ module.exports = {
     },
     registerCustomModels: function(plugin) {
         if(plugin.models) {
-            sails.app.registerModels(plugin.models);
+            sails.app.registerModels(plugin, plugin.models);
             sails.emit('plugin:' + plugin.name + ':models');
             plugin.log.verbose('Added ' + plugin.models.length + ' custom model(s).');
         }
     },
     registerCustomControllers: function(plugin) {
         if(plugin.controllers) {
-            sails.app.registerControllers(plugin.controllers);
+            sails.app.registerControllers(plugin, plugin.controllers);
             sails.emit('plugin:' + plugin.name + ':controllers');
             plugin.log.verbose('Added ' + plugin.controllers.length + ' custom controllers(s).');
+        }
+    },
+    registerCustomRoutes: function(plugin) {
+        if(plugin.routes) {
+            var routes = plugin.routes;
+            _.forOwn(routes, function(routeInfo, routeName) {
+                var split = routeName.split(' ');
+                var verb = '';
+                var action;
+                if(split.length > 1) {
+                    if(split[0].charAt(0) !== 'r') {
+                        verb = split[0];
+                        action = split.splice(1).join(' ');
+                    } else {
+                        action = split.join(' ');
+                    }
+                } else {
+                    action = split[0];
+                }
+
+                if(action.charAt(0) === '/') {
+                    routeName = verb + ' /p/' + plugin.name.toLowerCase() + action;
+                } else if(action.charAt(0) === 'r') {
+                    var regex = action.slice(2);
+                    if(regex.charAt(0) === '^') {
+                        routeName = verb + ' r|^/p/' + plugin.name.toLowerCase() + regex.slice(1);
+                    } else {
+                        routeName = verb + ' r|/p/' + plugin.name.toLowerCase() + regex;
+                    }
+                } else {
+                    sails.log.error(new Error('Invlid route detected: ' + routeName));
+                }
+
+                sails.config.routes[routeName] = routeInfo;
+            });
         }
     },
 
