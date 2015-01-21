@@ -26,7 +26,7 @@ module.exports.policies = {
      *                                                                          *
      ***************************************************************************/
 
-    '*': ['helper', 'passport', 'sessionAuth'],
+    '*': ['helper', 'passport', 'sessionAuth', 'plugin'],
 
     'auth': {
         '*': ['helper', 'passport'],
@@ -40,7 +40,6 @@ module.exports.policies = {
         '*': ['helper', 'passport', 'notFinishedInstallation', 'admin'],
         '1': ['helper', 'passport', 'notFinishedInstallation']
     }
-
     /***************************************************************************
      *                                                                          *
      * Here's an example of mapping some policies to run before a controller    *
