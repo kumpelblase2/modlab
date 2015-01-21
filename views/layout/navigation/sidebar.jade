@@ -13,3 +13,7 @@
                     +sidebar-item('shield', '/rights', 'Rights')
             else
                 +sidebar-item('sign-in', '/login', 'Sign In')
+                
+            each page in sails.app.customPages
+                if checkDisplay(page, req)
+                    +sidebar-item(page.name.toLowerCase(), page.path, page.name)

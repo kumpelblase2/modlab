@@ -4,14 +4,25 @@ function App() {
     this.customModels = [];
     this.customControllers = [];
     this.plugins = {};
+    this.customPages = [];
+    this.customWidgets = [];
 }
 
-App.prototype.registerSite = function() {
-
+App.prototype.registerSite = function(plugin, page) {
+    this.customPages.push({
+        plugin: plugin,
+        name: page.name,
+        route: page.path,
+        requires: page.requirements
+    });
 };
 
-App.prototype.registerWidget = function() {
-
+App.prototype.registerWidget = function(plugin, widget) {
+    this.customWidgets.push({
+        plugin: plugin,
+        controller: plugin.displayName + widget.controller,
+        action: widget.action
+    });
 };
 
 App.prototype.registerModels = function(plugin, models) {
@@ -30,9 +41,7 @@ App.prototype.registerModels = function(plugin, models) {
 App.prototype.registerControllers = function(plugin, controllers) {
     var self = this;
     _.forOwn(controllers, function(controller, name) {
-        var prefix = plugin.name;
-        prefix = prefix.charAt(0).toUpperCase() + prefix.slice(1);
-        var newName = prefix + name;
+        var newName = plugin.displayName + name;
         self.customControllers.push({
             name: newName,
             controller: controller,
