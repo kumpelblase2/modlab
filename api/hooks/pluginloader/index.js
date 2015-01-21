@@ -39,6 +39,7 @@ module.exports = function(sails) {
                         result.name = pluginInfo.name;
 
                     result.log = PluginService.createPluginLogger(result.name);
+                    result.displayName = result.name.charAt(0).toUpperCase() + result.name.slice(1);
                     return Promise.resolve().then(function() {
                         /*if(!_.has(sails.config.plugin, result.name)) {
                             return PluginService.generateDefaultConfig(result);

@@ -41,9 +41,7 @@ App.prototype.registerModels = function(plugin, models) {
 App.prototype.registerControllers = function(plugin, controllers) {
     var self = this;
     _.forOwn(controllers, function(controller, name) {
-        var prefix = plugin.name;
-        prefix = prefix.charAt(0).toUpperCase() + prefix.slice(1);
-        var newName = prefix + name;
+        var prefix = plugin.displayName + name;
         self.customControllers.push({
             name: newName,
             controller: controller,
