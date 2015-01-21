@@ -1,7 +1,3 @@
 mixin widget(name, size, content)
     div.widget(class='col-md-' + size)
-        .panel.panel-default
-            .panel-heading
-                = name
-            .panel-body
-                != content
+        != content
