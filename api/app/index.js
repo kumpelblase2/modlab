@@ -5,6 +5,7 @@ function App() {
     this.customControllers = [];
     this.plugins = {};
     this.customPages = [];
+    this.customWidgets = [];
 }
 
 App.prototype.registerSite = function(plugin, page) {
@@ -16,8 +17,12 @@ App.prototype.registerSite = function(plugin, page) {
     });
 };
 
-App.prototype.registerWidget = function() {
-
+App.prototype.registerWidget = function(plugin, widget) {
+    this.customWidgets.push({
+        plugin: plugin,
+        controller: widget.controller,
+        action: widget.controllerAction
+    });
 };
 
 App.prototype.registerModels = function(plugin, models) {
