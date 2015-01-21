@@ -10,17 +10,7 @@ module.exports = {
         if(!req.user.hasPermission('system.dashboard.view')) {
             res.forbidden(req.__('Error.Authorization.NoRights'));
         } else {
-            var widgetContents = [];
-
-            sails.app.customWidgets.forEach(function(widget) {
-                var controller = widget.controller.toLowerCase();
-                var action = widget.action;
-                var result = sails.controllers[controller][action](req);
-                if(result) {
-                    result.owner = widget;
-                    widgetContents.push(result);
-                }
-            });
+            var widgetContents = PluginService.renderWidgets(sails.app.customWidgets, req, res);
             res.view({ widgets: widgetContents });
         }
     }

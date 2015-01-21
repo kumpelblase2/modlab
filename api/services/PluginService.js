@@ -99,6 +99,22 @@ module.exports = {
         });
     },
 
+    renderWidgets: function(widgets, req, res) {
+        var widgetContents = [];
+
+        widgets.forEach(function(widget) {
+            var controller = widget.controller.toLowerCase();
+            var action = widget.action;
+            var result = sails.controllers[controller][action](req);
+            if(result) {
+                result.owner = widget;
+                widgetContents.push(result);
+            }
+        });
+
+        return widgetContents;
+    },
+
     createPluginLogger: function(pluginname) {
         var customOptions = _.clone(sails.config.log);
         var themeName = 'plugin_' + pluginname;
