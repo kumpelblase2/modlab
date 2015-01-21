@@ -13,7 +13,7 @@ module.exports = {
             var widgetContents = [];
 
             sails.app.customWidgets.forEach(function(widget) {
-                var controller = widget.controller;
+                var controller = widget.controller.toLowerCase();
                 var action = widget.action;
                 var result = sails.controllers[controller][action](req);
                 if(result) {
