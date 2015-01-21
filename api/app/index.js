@@ -4,10 +4,16 @@ function App() {
     this.customModels = [];
     this.customControllers = [];
     this.plugins = {};
+    this.customPages = [];
 }
 
-App.prototype.registerSite = function() {
-
+App.prototype.registerSite = function(plugin, page) {
+    this.customPages.push({
+        plugin: plugin,
+        name: page.name,
+        route: page.path,
+        requires: page.requirements
+    });
 };
 
 App.prototype.registerWidget = function() {
