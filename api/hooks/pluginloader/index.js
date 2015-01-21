@@ -38,6 +38,8 @@ module.exports = function(sails) {
                     if(!result.name)
                         result.name = pluginInfo.name;
 
+                    result.path = (pluginInfo.source === 'npm' ? path.join(sails.config.rootPath, 'node_modules', pluginInfo.name) : path.join(sails.config.rootPath, pluginInfo.path));
+                    result.relPath = (pluginInfo.source === 'npm' ? path.join('.', 'node_moodules', pluginInfo.name) : path.join('.', pluginInfo.path));
                     result.log = PluginService.createPluginLogger(result.name);
                     return Promise.resolve().then(function() {
                         /*if(!_.has(sails.config.plugin, result.name)) {
