@@ -20,7 +20,7 @@ App.prototype.registerSite = function(plugin, page) {
 App.prototype.registerWidget = function(plugin, widget) {
     this.customWidgets.push({
         plugin: plugin,
-        controller: widget.controller,
+        controller: plugin.displayName + widget.controller,
         action: widget.controllerAction
     });
 };
