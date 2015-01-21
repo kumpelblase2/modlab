@@ -15,7 +15,7 @@ module.exports = {
             sails.app.customWidgets.forEach(function(widget) {
                 var controller = widget.controller;
                 var action = widget.action;
-                var result = sails.controllers[controller][action](req, res);
+                var result = sails.controllers[controller][action](req);
                 if(result) {
                     result.owner = widget;
                     widgetContents.push(result);
