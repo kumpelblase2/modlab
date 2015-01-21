@@ -21,7 +21,7 @@ App.prototype.registerWidget = function(plugin, widget) {
     this.customWidgets.push({
         plugin: plugin,
         controller: plugin.displayName + widget.controller,
-        action: widget.controllerAction
+        action: widget.action
     });
 };
 
