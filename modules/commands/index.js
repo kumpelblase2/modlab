@@ -12,6 +12,10 @@ function Commands(app, chat)
     this.controllers = {
         'Command': require('./controllers/CommandController')
     }
+
+    this.routes = {
+        'GET /test': 'CommandsCommandController.test'
+    }
 }
 
 util.inherits(Commands, Plugin);

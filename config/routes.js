@@ -63,7 +63,7 @@ module.exports.routes = {
      ***************************************************************************/
 
     '/dashboard': 'DashboardController.index',
-    '/plugins': 'PluginController.index',
+    '/modules': 'ModuleController.index',
     '/rights': 'RightsController.index',
     'GET /rights/group/new': 'RightsController.groupNew',
     'GET /rights/user/:id': 'RightsController.userShow',

@@ -1,17 +1,17 @@
 extends ../layout/default.jade
 
-include includes/pluginentry.jade
+include includes/moduleentry.jade
 
 block title
-    | Plugins Overview
+    | Modules Overview
     
 block pageheader
-    | Configured Plugins
+    | Configured Modules
     
 block content
     .panel.panel-primary
         .panel-heading
-            | Enabled Plugins
+            | Enabled Modules
         table.table
             thead
                 th Name
@@ -20,13 +20,13 @@ block content
                 th Description
             
             tbody
-                each plugin in plugins
-                    if plugin.enabled
-                        +pluginentry(plugin)
+                each module in modules
+                    if module.enabled
+                        +moduleentry(module)
                         
     .panel.panel-info
         .panel-heading
-            | Disabled Plugins
+            | Disabled Modules
         table.table
             th
                 td Name
@@ -35,6 +35,6 @@ block content
                 td Description
                 
             tbody
-                each plugin in plugins
-                    if !plugin.enabled
-                        +pluginentry(plugin)
+                each module in modules
+                    if !module.enabled
+                        +moduleentry(module)

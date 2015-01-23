@@ -10,7 +10,7 @@
  */
 
 module.exports.bootstrap = function (cb) {
-    sails.hooks.pluginloader.enableAll().then(function() {
+    sails.hooks.moduleloader.enableAll().then(function() {
         sails.services.passport.loadStrategies();
     }).then(function() {
         if(!sails.config.chat.disabled) {

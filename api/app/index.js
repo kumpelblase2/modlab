@@ -3,53 +3,53 @@ var _ = require('lodash');
 function App() {
     this.customModels = [];
     this.customControllers = [];
-    this.plugins = {};
+    this.modules = {};
     this.customPages = [];
     this.customWidgets = [];
 }
 
-App.prototype.registerSite = function(plugin, page) {
+App.prototype.registerSite = function(mod, page) {
     this.customPages.push({
-        plugin: plugin,
-        name: page.name,
-        route: page.path,
-        requires: page.requirements
+        module: mod,
+        name: mod.name,
+        route: mod.path,
+        requires: mod.requirements
     });
 };
 
-App.prototype.registerWidget = function(plugin, widget) {
+App.prototype.registerWidget = function(mod, widget) {
     this.customWidgets.push({
-        plugin: plugin,
-        controller: plugin.displayName + widget.controller,
+        module: mod,
+        controller: mod.displayName + widget.controller,
         action: widget.action
     });
 };
 
-App.prototype.registerModels = function(plugin, models) {
+App.prototype.registerModels = function(mod, models) {
     var self = this;
     _.forOwn(models, function(schema, name) {
         self.customModels.push({
             name: name,
             schema: schema,
-            plugin: plugin
+            module: mod
         });
         schema.globalId = name;
         sails.models[name.toLowerCase()] = schema;
     });
 };
 
-App.prototype.registerControllers = function(plugin, controllers) {
+App.prototype.registerControllers = function(mod, controllers) {
     var self = this;
     _.forOwn(controllers, function(controller, name) {
-        var newName = plugin.displayName + name;
+        var newName = mod.displayName + name;
         self.customControllers.push({
             name: newName,
             controller: controller,
-            plugin: plugin
+            module: mod
         });
         controller.globalId = newName;
         controller.identity = newName.toLowerCase();
-        PluginService.registerControllerInSails(newName.toLowerCase(), controller);
+        ModuleService.registerControllerInSails(newName.toLowerCase(), controller);
     });
 };
 

@@ -4,41 +4,41 @@ var Promise = require('bluebird');
 var fs = require('fs');
 
 module.exports = {
-    generateDefaultConfig: function(plugin, confDir) {
-        confDir = confDir || path.join(sails.config.paths.config, 'plugin');
-        var defaults = plugin.defaults || {};
-        sails.config.plugin[plugin.name] = defaults;
-        return PluginService.writePluginConfig(defaults, plugin, confDir);
+    generateDefaultConfig: function(mod, confDir) {
+        confDir = confDir || path.join(sails.config.paths.config, 'module');
+        var defaults = mod.defaults || {};
+        sails.config.modules[mod.name] = defaults;
+        return ModuleService.writeModuleConfig(defaults, mod, confDir);
     },
-    writePluginConfig: function(config, plugin, confDir) {
+    writeModuleConfig: function(config, mod, confDir) {
         return Promise.resolve().then(function() {
             return JSON.stringify(config, null, 4);
         }).then(function(parsed) {
-            var configPath = path.join(confDir, plugin.name + '.json');
+            var configPath = path.join(confDir, mod.name + '.json');
             return fs.writeFile(configPath, parsed);
         }).then(function() {
-            plugin.log.info('Generated default config.');
+            mod.log.info('Generated default config.');
         }).catch(function(err) {
-            plugin.log.error('Could not save default config: ' + err);
+            mod.log.error('Could not save default config: ' + err);
         });
     },
-    registerCustomModels: function(plugin) {
-        if(plugin.models) {
-            sails.app.registerModels(plugin, plugin.models);
-            sails.emit('plugin:' + plugin.name + ':models');
-            plugin.log.verbose('Added ' + plugin.models.length + ' custom model(s).');
+    registerCustomModels: function(mod) {
+        if(mod.models) {
+            sails.app.registerModels(mod, mod.models);
+            sails.emit('module:' + mod.name + ':models');
+            mod.log.verbose('Added ' + mod.models.length + ' custom model(s).');
         }
     },
-    registerCustomControllers: function(plugin) {
-        if(plugin.controllers) {
-            sails.app.registerControllers(plugin, plugin.controllers);
-            sails.emit('plugin:' + plugin.name + ':controllers');
-            plugin.log.verbose('Added ' + plugin.controllers.length + ' custom controllers(s).');
+    registerCustomControllers: function(mod) {
+        if(mod.controllers) {
+            sails.app.registerControllers(mod, mod.controllers);
+            sails.emit('module:' + mod.name + ':controllers');
+            mod.log.verbose('Added ' + mod.controllers.length + ' custom controllers(s).');
         }
     },
-    registerCustomRoutes: function(plugin) {
-        if(plugin.routes) {
-            var routes = plugin.routes;
+    registerCustomRoutes: function(mod) {
+        if(mod.routes) {
+            var routes = mod.routes;
             _.forOwn(routes, function(routeInfo, routeName) {
                 var split = routeName.split(' ');
                 var verb = '';
@@ -55,13 +55,13 @@ module.exports = {
                 }
 
                 if(action.charAt(0) === '/') {
-                    routeName = verb + ' /p/' + plugin.name.toLowerCase() + action;
+                    routeName = verb + ' /m/' + mod.name.toLowerCase() + action;
                 } else if(action.charAt(0) === 'r') {
                     var regex = action.slice(2);
                     if(regex.charAt(0) === '^') {
-                        routeName = verb + ' r|^/p/' + plugin.name.toLowerCase() + regex.slice(1);
+                        routeName = verb + ' r|^/m/' + mod.name.toLowerCase() + regex.slice(1);
                     } else {
-                        routeName = verb + ' r|/p/' + plugin.name.toLowerCase() + regex;
+                        routeName = verb + ' r|/m/' + mod.name.toLowerCase() + regex;
                     }
                 } else {
                     sails.log.error(new Error('Invlid route detected: ' + routeName));
@@ -115,19 +115,19 @@ module.exports = {
         return widgetContents;
     },
 
-    createPluginLogger: function(pluginname) {
+    createModuleLogger: function(modulename) {
         var customOptions = _.clone(sails.config.log);
-        var themeName = 'plugin_' + pluginname;
+        var themeName = 'module_' + modulename;
         customOptions.prefixThemes = {};
         customOptions.prefixThemes[themeName] = {
-            silly: 'silly [' + pluginname + ']: ',
-            verbose: 'verbose [' + pluginname + ']: ',
-            info: 'info [' + pluginname + ']: ',
-            blank: '[' + pluginname + ']: ',
-            debug: 'debug [' + pluginname + ']: ',
-            warn: 'warn [' + pluginname + ']: ',
-            error: 'error [' + pluginname + ']: ',
-            crit: 'CRITICAL [' + pluginname + ']: '
+            silly: 'silly [' + modulename + ']: ',
+            verbose: 'verbose [' + modulename + ']: ',
+            info: 'info [' + modulename + ']: ',
+            blank: '[' + modulename + ']: ',
+            debug: 'debug [' + modulename + ']: ',
+            warn: 'warn [' + modulename + ']: ',
+            error: 'error [' + modulename + ']: ',
+            crit: 'CRITICAL [' + modulename + ']: '
         };
         customOptions.prefixTheme = themeName;
         return captains(customOptions);

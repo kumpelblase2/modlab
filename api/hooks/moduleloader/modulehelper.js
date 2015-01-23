@@ -3,9 +3,9 @@ var fs = require('fs');
 var path = require('path');
 
 module.exports = {
-    filter: function(plugins) {
+    filter: function(modules) {
         var toLoad = [];
-        _.forOwn(plugins, function(options, name) {
+        _.forOwn(modules, function(options, name) {
             if(!options)
                 return;
 
@@ -27,22 +27,22 @@ module.exports = {
 
         return toLoad;
     },
-    enable: function(plugin) {
-        return plugin.enableAsync().then(function() {
-            plugin.enabled = true;
-            sails.emit('plugin:' + plugin.name + ':enabled');
-            plugin.log.info('Enabled plugin `' + plugin.name + '` at version ' + plugin.version + '.');
+    enable: function(mod) {
+        return mod.enableAsync().then(function() {
+            mod.enabled = true;
+            sails.emit('module:' + mod.name + ':enabled');
+            mod.log.info('Enabled module `' + mod.name + '` at version ' + mod.version + '.');
         }).catch(function(err) {
-            plugin.log.error("Couldn't enable: " + err.message);
+            mod.log.error("Couldn't enable: " + err.message);
         });
     },
-    disable: function(plugin) {
+    disable: function(mod) {
         return new Promise(function(resolve, reject) {
-            plugin.disable();
-            plugin.enabled = false;
-            sails.emit('plugin:' + plugin.name + ':disable');
-            plugin.log.info('Disabled plugin `' + plugin.name + '`.');
-            resolve(plugin);
+            mod.disable();
+            mod.enabled = false;
+            sails.emit('module:' + mod.name + ':disable');
+            mod.log.info('Disabled module `' + mod.name + '`.');
+            resolve(mod);
         });
     }
 };

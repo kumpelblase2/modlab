@@ -1,0 +1,10 @@
+mixin moduleentry(mod)
+    tr
+        td= mod.displayName
+        td= mod.version
+        td
+            if mod.author
+                = mod.author
+        td
+            if mod.description
+                = mod.description

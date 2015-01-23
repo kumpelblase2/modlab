@@ -7,9 +7,9 @@
             if req.isAuthenticated()
                 if req.user.hasPermission('system.dashboard.view')
                     +sidebar-item('dashboard', '/dashboard', 'Dashboard')
-                if req.user.hasPermission('system.plugins.view')
-                    +sidebar-item('plug', '/plugins', 'Plugins')
-                if req.user.hasPermission('system.plugins.view')
+                if req.user.hasPermission('system.modules.view')
+                    +sidebar-item('plug', '/modules', 'Modules')
+                if req.user.hasPermission('system.rights.view')
                     +sidebar-item('shield', '/rights', 'Rights')
             else
                 +sidebar-item('sign-in', '/login', 'Sign In')
