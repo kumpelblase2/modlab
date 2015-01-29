@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
+var Promise = require('bluebird');
 
 module.exports = {
     filter: function(modules) {
@@ -44,5 +45,24 @@ module.exports = {
             mod.log.info('Disabled module `' + mod.name + '`.');
             resolve(mod);
         });
+    },
+    create: function(mod) {
+        var moduleMain;
+        if(mod.source === 'npm') {
+            moduleMain = require(mod.name);
+        } else if(mod.source === 'local') {
+            moduleMain = require(path.join(sails.config.rootPath, mod.path));
+        }
+
+        var result = Promise.promisifyAll(moduleMain(sails.app, sails.chat));
+        if(!result.name)
+        result.name = mod.name;
+
+        result.path = (mod.source === 'npm' ? path.join(sails.config.rootPath, 'node_modules', mod.name) : path.join(sails.config.rootPath, mod.path));
+        result.relPath = (mod.source === 'npm' ? path.join('.', 'node_moodules', mod.name) : path.join('.', mod.path));
+        result.log = ModuleService.createModuleLogger(result.name);
+        result.displayName = result.name.charAt(0).toUpperCase() + result.name.slice(1);
+        sails.emit('module:' + result.name + ':loaded');
+        return result;
     }
 };

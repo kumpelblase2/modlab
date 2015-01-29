@@ -28,6 +28,8 @@ module.exports = {
             sails.emit('module:' + mod.name + ':models');
             mod.log.verbose('Added ' + mod.models.length + ' custom model(s).');
         }
+
+        return mod;
     },
     registerCustomControllers: function(mod) {
         if(mod.controllers) {
@@ -35,6 +37,8 @@ module.exports = {
             sails.emit('module:' + mod.name + ':controllers');
             mod.log.verbose('Added ' + mod.controllers.length + ' custom controllers(s).');
         }
+
+        return mod;
     },
     registerCustomRoutes: function(mod) {
         if(mod.routes) {
@@ -70,6 +74,8 @@ module.exports = {
                 sails.config.routes[routeName] = routeInfo;
             });
         }
+
+        return mod;
     },
 
     registerControllerInSails: function(id, controller) {
