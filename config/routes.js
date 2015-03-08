@@ -73,10 +73,13 @@ module.exports.routes = {
     'GET /rights/user/:id/edit': 'RightsController.userEdit',
     'PUT /rights/group': 'RightsController.groupCreate',
     'PATCH /rights/group/:id': 'RightsController.groupUpdate',
+    'POST /rights/group/:id': 'RightsController.groupUpdate',
     'PATCH /rights/user/:id': 'RightsController.userUpdate',
+    'POST /rights/user/:id': 'RightsController.userUpdate',
 
     'GET /users': 'UserController.index',
     'GET /users/:id': 'UserController.show',
     'PATCH /users/:id': 'UserController.update',
+    'POST /users/:id': 'UserController.update',
     'DELETE /users/:id': 'UserController.delete'
 };
