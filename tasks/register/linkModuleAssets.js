@@ -1,6 +1,6 @@
 var path = require('path');
 var cwd = process.cwd();
-var filter = require('../../api/hooks/moduleloader/modulehelper').filter;
+var filter = require('../../api/hooks/module_loader/modulehelper').filter;
 
 module.exports = function(grunt) {
     grunt.registerTask('moduleassets', 'Links assets from modules into the assets folder', function() {

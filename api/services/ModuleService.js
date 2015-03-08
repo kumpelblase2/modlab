@@ -5,7 +5,7 @@ var fs = require('fs');
 
 module.exports = {
     generateDefaultConfig: function(mod, confDir) {
-        confDir = confDir || path.join(sails.config.paths.config, 'module');
+        confDir = confDir || path.join(sails.config.paths.config, 'modules');
         var defaults = mod.defaults || {};
         sails.config.modules[mod.name] = defaults;
         return ModuleService.writeModuleConfig(defaults, mod, confDir);
@@ -18,6 +18,7 @@ module.exports = {
             return fs.writeFile(configPath, parsed);
         }).then(function() {
             mod.log.info('Generated default config.');
+            return mod;
         }).catch(function(err) {
             mod.log.error('Could not save default config: ' + err);
         });

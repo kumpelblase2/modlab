@@ -7,7 +7,7 @@ var fs = Promise.promisifyAll(require('fs'));
 var _disable = helper.disable;
 var _enable = helper.enable;
 
-module.exports = function(sails) {
+module.exports = function moduleloader(sails) {
     return {
         loadedModules: [],
         filteredModules: [],
@@ -38,10 +38,10 @@ module.exports = function(sails) {
                     return Promise.resolve().then(function() {
                         return helper.create(moduleInfo);
                     }).then(function(mod) {
-                        // TODO will work in next sails release
-                        /*if(!_.has(sails.config.modules, mod.name)) {
+                        if(!_.has(sails.config.modules, mod.name)) {
                             return ModuleService.generateDefaultConfig(mod);
-                        }*/
+                        }
+
                         return mod;
                     }).then(function(mod) {
                         if(mod.init && typeof(mod.init) === "function") {

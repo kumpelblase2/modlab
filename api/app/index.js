@@ -34,7 +34,10 @@ App.prototype.registerModels = function(mod, models) {
             module: mod
         });
         schema.globalId = name;
-        sails.models[name.toLowerCase()] = schema;
+        schema.identity = name.toLowerCase();
+        schema.schema = true;
+        schema.connection = sails.config.models.connection;
+        sails.models[schema.identity] = schema;
     });
 };
 
