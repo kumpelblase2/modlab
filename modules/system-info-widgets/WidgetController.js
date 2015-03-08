@@ -1,7 +1,7 @@
 module.exports = {
-    plugins: function(req) {
+    modules: function(req) {
         var contentString = "<div class='panel panel-primary'><div class='panel-heading'><div class='row'><div class='col-xs-3'><i class='fa fa-cog fa-5x'></i>";
-        contentString += "</div><div class='col-xs-9 text-right'><div class='huge'>" + Object.keys(sails.app.plugins).length + "</div><div>Enabled plugins</div></div></div></div>";
+        contentString += "</div><div class='col-xs-9 text-right'><div class='huge'>" + Object.keys(sails.app.modules).length + "</div><div>Enabled plugins</div></div></div></div>";
         contentString += "<a href='/plugins'><div class='panel-footer'><span class='pull-left'>View</span><span class='pull-right'><i class='fa fa-arrow-circle-right'></i>";
         contentString += "</span><div class='clearfix'></div></div></a></div>";
 
