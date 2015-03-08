@@ -10,7 +10,7 @@ function SystemInfo(app, chat)
 
     this.widgets = [{
         controller: 'WidgetController',
-        action: 'plugins'
+        action: 'modules'
     }, {
         controller: 'WidgetController',
         action: 'users'

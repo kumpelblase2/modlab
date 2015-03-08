@@ -12,6 +12,10 @@ function Commands(app, chat)
     this.controllers = {
         'Command': require('./controllers/CommandController')
     }
+
+    this.routes = {
+        'GET /test': 'CommandsCommandController.test'
+    }
 }
 
 util.inherits(Commands, Plugin);
@@ -39,7 +43,7 @@ Commands.prototype.enable = function(callback) {
 };
 
 Commands.prototype.registerCommand = function(name, callback) {
-    self.chat.hear(new RegExp("$" + sails.config.plugin.commands.prefix + name), function(message) {
+    self.chat.hear(new RegExp("$" + sails.config.modules.commands.prefix + name), function(message) {
         //TODO
     });
 };

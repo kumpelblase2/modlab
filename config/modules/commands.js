@@ -1,4 +1,4 @@
-module.exports.plugin = {
+module.exports.modules = {
     commands: {
         prefix: '!'
     }
