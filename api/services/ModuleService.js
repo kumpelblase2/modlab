@@ -12,7 +12,9 @@ module.exports = {
     },
     writeModuleConfig: function(config, mod, confDir) {
         return Promise.resolve().then(function() {
-            return JSON.stringify(config, null, 4);
+            var tempConfig = { 'modules': {} };
+            tempConfig.modules[mod.name] = config;
+            return JSON.stringify(tempConfig, null, 4);
         }).then(function(parsed) {
             var configPath = path.join(confDir, mod.name + '.json');
             return fs.writeFile(configPath, parsed);
