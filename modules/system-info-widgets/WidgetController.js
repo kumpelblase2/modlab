@@ -1,29 +1,56 @@
-module.exports = {
-    modules: function(req) {
-        var contentString = "<div class='panel panel-primary'><div class='panel-heading'><div class='row'><div class='col-xs-3'><i class='fa fa-cog fa-5x'></i>";
-        contentString += "</div><div class='col-xs-9 text-right'><div class='huge'>" + Object.keys(sails.app.modules).length + "</div><div>Enabled modules</div></div></div></div>";
-        contentString += "<a href='/modules'><div class='panel-footer'><span class='pull-left'>View</span><span class='pull-right'><i class='fa fa-arrow-circle-right'></i>";
-        contentString += "</span><div class='clearfix'></div></div></a></div>";
+var path = require('path');
 
+module.exports = {
+    modules: function() {
         return {
             name: 'Plugins',
             size: 3,
-            content: contentString
+            content: {
+                template: 'widgets/modules',
+                vars: {
+                    moduleamount: Object.keys(sails.app.modules).length
+                }
+            }
         };
     },
     users: function(req) {
-        var contentString = "<div class='panel panel-primary'><div class='panel-heading'><div class='row'><div class='col-xs-3'><i class='fa fa-comments fa-5x'></i>";
-        contentString += "</div><div class='col-xs-9 text-right'><div class='huge'>" + "1"/*User.find().count()*/ + "</div><div>Registered Users</div></div></div></div>";
-        contentString += "<a href='/rights'><div class='panel-footer'><span class='pull-left'>View</span><span class='pull-right'><i class='fa fa-arrow-circle-right'></i>";
-        contentString += "</span><div class='clearfix'></div></div></a></div>";
-
-        return {
-            name: 'Users',
-            size: 3,
-            content: contentString
-        };
+        return new Promise(function(resolve, reject) {
+            User.count().exec(function(err, result) {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve({
+                        name: 'Users',
+                        size: 3,
+                        content: {
+                            template: 'widgets/users',
+                            vars: {
+                                useramount: result
+                            }
+                        }
+                    });
+                }
+            });
+        });
     },
-    groups: function(req) {
-        return false;
+    groups: function() {
+        return new Promise(function(resolve, reject) {
+            PermissionGroup.count().exec(function(err, result) {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve({
+                        name: 'Groups',
+                        size: 3,
+                        content: {
+                            template: 'widgets/groups',
+                            vars: {
+                                groupamount: result
+                            }
+                        }
+                    });
+                }
+            });
+        });
     }
 };
