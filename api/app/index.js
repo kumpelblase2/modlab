@@ -44,7 +44,7 @@ App.prototype.registerModels = function(mod, models) {
 App.prototype.registerControllers = function(mod, controllers) {
     var self = this;
     _.forOwn(controllers, function(controller, name) {
-        var newName = mod.displayName + name;
+        var newName = mod.displayName.replace(/\-/g, '') + name;
         self.customControllers.push({
             name: newName,
             controller: controller,
