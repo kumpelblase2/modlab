@@ -58,10 +58,10 @@ App.prototype.registerControllers = function(mod, controllers) {
 
 App.prototype.finishedInstallation = function() {
     return this.installation.value.finished;
-}
+};
 
 App.prototype.currentInstallationStep = function() {
     return this.installation.value.step;
-}
+};
 
 module.exports = App;
