@@ -40,7 +40,7 @@ Commands.prototype.enable = function(callback) {
     });
 
     self.registerCommand('register', function(args, message) {
-        var command = escapeRegExp(args[0]);
+        var command = UtilityService.escapeRegex(args[0]);
         var content = args.slice(1).join(' ');
         Command.create({
             name: command,
@@ -57,7 +57,7 @@ Commands.prototype.enable = function(callback) {
     });
 
     self.registerCommand('hear', function(args, message) {
-        var name = escapeRegExp(args[0]);
+        var name = UtilityService.escapeRegex(args[0]);
         var regex = "^[^" + sails.config.moduleconfig.commands.prefix + "]" + args[1];
         var content = args.slice(2).join(' ');
         Command.create({
@@ -101,8 +101,4 @@ function simpleMessage(content) {
 
 function simpleChannelMessage(content) {
     return function(args, message) { message.send(content); };
-}
-
-function escapeRegExp(str) {
-    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
