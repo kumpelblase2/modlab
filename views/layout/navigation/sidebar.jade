@@ -3,17 +3,28 @@
         ul.nav.in#side-menu
             if !sails.config.modlab.disableHome
                 +sidebar-item('home', '/', 'Home')
-                
+
             if req.isAuthenticated()
                 if req.user.hasPermission('system.dashboard.view')
                     +sidebar-item('dashboard', '/dashboard', 'Dashboard')
                 if req.user.hasPermission('system.modules.view')
                     +sidebar-item('plug', '/modules', 'Modules')
+                        ul.nav.nav-second-level
+                            li
+                                a(href='/modules') Overview
+                            each module in sails.app.modules
+                                - if(module.routes && Object.keys(module.routes).length >= 1)
+                                    li
+                                        if module.baseURL
+                                            a(href='/m/' + module.baseURL + '/')= module.name
+                                        else
+                                            a(href='/m/' + module.name + '/')= module.name
+
                 if req.user.hasPermission('system.rights.view')
                     +sidebar-item('shield', '/rights', 'Rights')
             else
                 +sidebar-item('sign-in', '/login', 'Sign In')
-                
+
             each page in sails.app.customPages
                 if checkDisplay(page, req)
                     +sidebar-item(page.name.toLowerCase(), page.path, page.name)

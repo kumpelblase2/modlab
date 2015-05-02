@@ -18,4 +18,23 @@ block content
                         tr
                             td= command.id
                             td= command.name
-                            td= JSON.stringify(command.data)
+                            td= 'Message: ' + command.data.message
+
+    .panel.panel-primary
+        .panel-heading
+            | Hearing commands
+        table.table
+            thead
+                th #
+                th Name
+                th Content
+            tbody
+                each command in commands
+                    - if(command.type == 'hear')
+                        tr
+                            td= command.id
+                            td= command.name
+                            td
+                                = 'Regex: ' + command.data.regex.toString()
+                                br
+                                = 'Message: ' + command.data.message
