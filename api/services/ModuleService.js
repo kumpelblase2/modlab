@@ -109,19 +109,33 @@ module.exports = {
     },
 
     renderWidgets: function(widgets, req, res) {
-        var widgetContents = [];
-
-        widgets.forEach(function(widget) {
+        return Promise.map(widgets, function(widget) {
             var controller = widget.controller.toLowerCase();
             var action = widget.action;
-            var result = sails.controllers[controller][action](req);
-            if(result) {
-                result.owner = widget;
-                widgetContents.push(result);
-            }
-        });
 
-        return widgetContents;
+            return Promise.resolve().then(function() {
+                return sails.controllers[controller][action](req);
+            }).then(function(result) {
+                if(result) {
+                    result.owner = widget;
+                    if(typeof(result.content) === 'object') {
+                        return new Promise(function(resolve, reject) {
+                            sails.renderView(path.join('..', widget.module.relPath, result.content.template), result.content.vars, function(err, resultString) {
+                                if(err) {
+                                    reject(err);
+                                } else {
+                                    result.rendered = resultString;
+                                    resolve(result);
+                                }
+                            });
+                        });
+                    } else {
+                        result.rendered = result.content;
+                        return result;
+                    }
+                }
+            });
+        }, { concurrency: 3 });
     },
 
     createModuleLogger: function(modulename) {

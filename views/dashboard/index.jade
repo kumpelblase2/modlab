@@ -12,4 +12,4 @@ block content
     else
         each widget in widgets
             - var size = widget.size || 4
-            +widget(widget.name, size, widget.content)
+            +widget(widget.name, size, widget.rendered)
