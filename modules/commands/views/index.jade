@@ -1,0 +1,21 @@
+extends default
+
+block pageheader
+    p Commands
+
+block content
+    .panel.panel-primary
+        .panel-heading
+            | Basic commands
+        table.table
+            thead
+                th #
+                th Name
+                th Content
+            tbody
+                each command in commands
+                    - if(command.type == 'basic')
+                        tr
+                            td= command.id
+                            td= command.name
+                            td= JSON.stringify(command.data)
