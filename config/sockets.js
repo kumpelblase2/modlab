@@ -18,11 +18,11 @@ module.exports.sockets = {
      * disconnects                                                              *
      *                                                                          *
      ***************************************************************************/
-    afterDisconnect: function (session, socket, cb) {
+    /*afterDisconnect: function (session, socket, cb) {
 
         // By default: do nothing.
         return cb();
-    },
+    },*/
 
     /***************************************************************************
      *                                                                          *
@@ -39,6 +39,7 @@ module.exports.sockets = {
     //   'xhr-polling',
     //   'jsonp-polling'
     // ],
+    transports: [ 'polling', 'websocket' ],
 
     /***************************************************************************
      *                                                                          *
