@@ -1,8 +1,7 @@
 module.exports = {
     index: function(req, res) {
-        res.view();
-    },
-    test: function(req, res) {
-        res.view('test');
+        Command.find().exec(function(err, commands) {
+            res.view('index', { commands: commands });
+        });
     }
 };
