@@ -9,6 +9,9 @@ function Commands(app, chat)
         models: { 'Command': require('./models/command') }
     });
 
+    this.description = 'Basic command plugin';
+    this.author = 'kumpelblase2';
+
     this.controllers = {
         'Command': require('./controllers/CommandController')
     };
