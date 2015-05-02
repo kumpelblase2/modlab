@@ -3,5 +3,6 @@ mixin sidebar-item(icon, url, name)
         a(href=url)
             i.fa.fa-fw(class='fa-' + icon)
             = ' ' + name
-
+            if block
+                span.fa.arrow
         block

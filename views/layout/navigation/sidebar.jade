@@ -16,9 +16,9 @@
                                 - if(module.routes && Object.keys(module.routes).length >= 1)
                                     li
                                         if module.baseURL
-                                            a(href='/m/' + module.baseURL + '/')= module.name
+                                            a(href='/m/' + module.baseURL + '/')= module.displayName
                                         else
-                                            a(href='/m/' + module.name + '/')= module.name
+                                            a(href='/m/' + module.name + '/')= module.displayName
 
                 if req.user.hasPermission('system.rights.view')
                     +sidebar-item('shield', '/rights', 'Rights')
