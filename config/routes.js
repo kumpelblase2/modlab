@@ -40,16 +40,16 @@ module.exports.routes = {
     *                                                                          *
     ***************************************************************************/
 
-    'get /login': 'AuthController.login',
-    'get /logout': 'AuthController.logout',
-    'get /register': 'AuthController.register',
+    'GET /login': 'AuthController.login',
+    'GET /logout': 'AuthController.logout',
+    'GET /register': 'AuthController.register',
 
-    'post /auth/local': 'AuthController.callback',
-    'post /auth/local/:action': 'AuthController.callback',
+    'POST /auth/local': 'AuthController.callback',
+    'POST /auth/local/:action': 'AuthController.callback',
 
-    'get /auth/:provider': 'AuthController.provider',
-    'get /auth/:provider/callback': 'AuthController.callback',
-    'get /auth/:provider/:action': 'AuthController.callback',
+    'GET /auth/:provider': 'AuthController.provider',
+    'GET /auth/:provider/callback': 'AuthController.callback',
+    'GET /auth/:provider/:action': 'AuthController.callback',
 
 
     /***************************************************************************
@@ -62,9 +62,9 @@ module.exports.routes = {
      *                                                                          *
      ***************************************************************************/
 
-    '/dashboard': 'DashboardController.index',
-    '/modules': 'ModuleController.index',
-    '/rights': 'RightsController.index',
+    'GET /dashboard': 'DashboardController.index',
+    'GET /modules': 'ModuleController.index',
+    'GET /rights': 'RightsController.index',
     'GET /rights/group/new': 'RightsController.groupNew',
     'GET /rights/user/:id': 'RightsController.userShow',
     'GET /rights/group/:id': 'RightsController.groupShow',
