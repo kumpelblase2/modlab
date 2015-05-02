@@ -8,5 +8,8 @@ module.exports.modules = {
     systeminfo: {
         path: 'modules/system-info-widgets'
     },
+    'live-chat': {
+        path: 'modules/live-chat'
+    },
     a_disabled_module: false
 };

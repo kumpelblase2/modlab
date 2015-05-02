@@ -1,0 +1,17 @@
+extends default
+
+block pageheader
+    p Chat
+
+block content
+    script.
+        io.socket.on('chat', function(message) {
+            var entry = $('<li>').addClass('list-group-item');
+            var time = new Date();
+            var timestamp = ((time.getHours() < 10) ? "0" : "") + time.getHours() + ":" + ((time.getMinutes() < 10) ? "0" : "") + time.getMinutes();
+            entry.html(timestamp + " " + message.user + ': ' + message.message + '\n');
+            $('#chatarea').append(entry);
+        });
+
+    .row.col-md-4
+        ul.list-group.well#chatarea(style='overflow-y:auto;max-height:80%;')

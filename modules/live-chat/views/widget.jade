@@ -1,0 +1,14 @@
+script.
+    io.socket.on('chat', function(message) {
+        var entry = $('<li>').addClass('list-group-item');
+        var time = new Date();
+        var timestamp = ((time.getHours() < 10) ? "0" : "") + time.getHours() + ":" + ((time.getMinutes() < 10) ? "0" : "") + time.getMinutes();
+        entry.html(timestamp + " " + message.user + ': ' + message.message + '\n');
+        $('#chatarea').append(entry);
+    });
+
+.panel.panel-primary
+    .panel-heading
+        | Live Chat
+    .panel-body
+        ul.list-group#chatarea(style='overflow-y:auto;max-height:300px;')
