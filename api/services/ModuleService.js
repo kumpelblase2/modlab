@@ -7,13 +7,13 @@ module.exports = {
     generateDefaultConfig: function(mod, confDir) {
         confDir = confDir || path.join(sails.config.paths.config, 'modules');
         var defaults = mod.defaults || {};
-        sails.config.modules[mod.name] = defaults;
+        sails.config.moduleconfig[mod.name] = defaults;
         return ModuleService.writeModuleConfig(defaults, mod, confDir);
     },
     writeModuleConfig: function(config, mod, confDir) {
         return Promise.resolve().then(function() {
-            var tempConfig = { 'modules': {} };
-            tempConfig.modules[mod.name] = config;
+            var tempConfig = { 'moduleconfig': {} };
+            tempConfig.moduleconfig[mod.name] = config;
             return JSON.stringify(tempConfig, null, 4);
         }).then(function(parsed) {
             var configPath = path.join(confDir, mod.name + '.json');

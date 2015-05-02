@@ -38,7 +38,7 @@ module.exports = function moduleloader(sails) {
                     return Promise.resolve().then(function() {
                         return helper.create(moduleInfo);
                     }).then(function(mod) {
-                        if(!_.has(sails.config.modules, mod.name)) {
+                        if(!_.has(sails.config.moduleconfig, mod.name)) {
                             return ModuleService.generateDefaultConfig(mod);
                         }
 
