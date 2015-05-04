@@ -1,0 +1,32 @@
+extends ../layout/default
+
+block pageheader
+    p This is me: #{user.username}
+
+block content
+    table.table
+        tbody
+            tr
+                td Name
+                td= user.username
+            tr
+                td Mail
+                td= user.email
+            tr
+                td Permissions
+                td
+                    each permission in user.allPermissions()
+                        = permission
+                        br
+            tr
+                td Groups
+                td
+                    each group in user.permission_groups
+                        = group.name
+                        br
+            tr
+                td Logins
+                td
+                    each passport in user.passports
+                        = passport.provider || passport.protocol
+                        br
