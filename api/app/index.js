@@ -20,7 +20,7 @@ App.prototype.registerSite = function(mod, page) {
 App.prototype.registerWidget = function(mod, widget) {
     this.customWidgets.push({
         module: mod,
-        controller: mod.displayName + widget.controller,
+        controller: mod.displayName.replace(/\-/g, '') + widget.controller,
         action: widget.action
     });
 };
