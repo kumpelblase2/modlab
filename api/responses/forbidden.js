@@ -51,6 +51,9 @@ module.exports = function forbidden(data, options) {
     // Otherwise try to guess an appropriate view, or if that doesn't
     // work, just send JSON.
     if (options.view) {
+        if(res.old_view) {
+            return res.old_view(options.view, { data: data });
+        }
         return res.view(options.view, {data: data});
     }
 
@@ -58,6 +61,11 @@ module.exports = function forbidden(data, options) {
     // but fall back to sending JSON(P) if any errors occur.
     else {
         req.params.redirect = req.url.substring(1);
+        if(res.old_view) {
+            res.view = function () {
+                res.old_view.apply(res, arguments);
+            };
+        }
         sails.controllers.auth.login(req, res);
     }
 };

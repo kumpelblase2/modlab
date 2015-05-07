@@ -36,6 +36,9 @@ module.exports = function sendOK(data, options) {
     // Otherwise try to guess an appropriate view, or if that doesn't
     // work, just send JSON.
     if (options.view) {
+        if(res.old_view){
+            return res.old_view(options.view, { data: data });
+        }
         return res.view(options.view, {data: data});
     }
 
