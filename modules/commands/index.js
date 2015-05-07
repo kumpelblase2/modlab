@@ -17,7 +17,10 @@ function Commands(app, chat)
     };
 
     this.routes = {
-        'GET /': 'CommandsCommandController.index'
+        'GET /': 'CommandsCommandController.index',
+        'POST /command': 'CommandsCommandController.create',
+        'POST /command/:id': 'CommandsCommandController.update',
+        'DELETE /command/:id': 'CommandsCommandController.deleteC'
     };
 }
 

@@ -9,18 +9,18 @@ function SystemInfo(app, chat)
     });
 
     this.widgets = [{
-        controller: 'WidgetController',
+        controller: 'SysteminfoWidget',
         action: 'modules'
     }, {
-        controller: 'WidgetController',
+        controller: 'SysteminfoWidget',
         action: 'users'
     }, {
-        controller: 'WidgetController',
+        controller: 'SysteminfoWidget',
         action: 'groups'
     }];
 
     this.controllers = {
-        'WidgetController': require('./WidgetController')
+        'Widget': require('./WidgetController')
     }
 }
 

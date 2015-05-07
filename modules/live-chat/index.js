@@ -11,7 +11,7 @@ function LiveChat(app, chat) {
     this.description = 'Live chat widget';
 
     this.liveChat = {
-        controller: 'LivechatChatController',
+        controller: 'LivechatChat',
         action: 'module'
     };
 
