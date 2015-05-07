@@ -6,4 +6,4 @@ module.exports = {
             res.view('homepage');
         }
     }
-}
+};

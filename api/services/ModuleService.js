@@ -29,7 +29,7 @@ module.exports = {
         if(mod.models) {
             sails.app.registerModels(mod, mod.models);
             sails.emit('module:' + mod.name + ':models');
-            mod.log.verbose('Added ' + mod.models.length + ' custom model(s).');
+            mod.log.verbose('Added ' + Object.keys(mod.models).length + ' custom model(s).');
         }
 
         return mod;
@@ -38,7 +38,7 @@ module.exports = {
         if(mod.controllers) {
             sails.app.registerControllers(mod, mod.controllers);
             sails.emit('module:' + mod.name + ':controllers');
-            mod.log.verbose('Added ' + mod.controllers.length + ' custom controllers(s).');
+            mod.log.verbose('Added ' + Object.keys(mod.controllers).length + ' custom controllers(s).');
         }
 
         return mod;
@@ -75,13 +75,14 @@ module.exports = {
                 }
 
                 sails.config.routes[routeName] = routeInfo;
+                sails.router.explicitRoutes = sails.config.routes;
             });
         }
-
         return mod;
     },
 
     registerControllerInSails: function(id, controller) {
+        controller.sails = sails;
         sails.controllers[id] = controller;
         var hook = sails.hooks.controllers;
 
@@ -89,6 +90,7 @@ module.exports = {
             hook.middleware[id] = {};
         }
 
+        _.bindAll(controller);
         _.each(controller, function(action, actionId) {
             actionId = actionId.toLowerCase();
 

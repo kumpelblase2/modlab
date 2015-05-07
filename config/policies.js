@@ -29,7 +29,7 @@ module.exports.policies = {
     '*': ['helper', 'passport', 'sessionAuth', 'module'],
 
     'auth': {
-        '*': ['helper', 'passport'],
+        '*': ['helper', 'passport']
     },
 
     'root': {
