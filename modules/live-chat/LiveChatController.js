@@ -1,5 +1,9 @@
 module.exports = {
-    module: function() {
+    module: function(req) {
+        if(!req.user.hasPermission('widget.livechat.view')){
+            return false;
+        }
+
         return {
             name: 'LiveChat',
             size: 5,
@@ -11,6 +15,10 @@ module.exports = {
     },
 
     index: function(req, res) {
-        res.view('livechat');
+        if(req.user.hasPermission('wdiget.livechat.view')) {
+            res.view('livechat');
+        } else {
+            res.forbidden(req.__('Error.Authorization.NoRights'), '403');
+        }
     }
 };

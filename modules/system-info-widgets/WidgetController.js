@@ -1,7 +1,11 @@
 var path = require('path');
 
 module.exports = {
-    modules: function() {
+    modules: function(req) {
+        if(!req.user.hasPermission('system.modules.view')) {
+            return false;
+        }
+
         return {
             name: 'Plugins',
             size: 3,
@@ -15,6 +19,9 @@ module.exports = {
     },
     users: function(req) {
         return new Promise(function(resolve, reject) {
+            if(!req.user.hasPermission('system.rights.view')) {
+                return resolve(false);
+            }
             User.count().exec(function(err, result) {
                 if(err) {
                     reject(err);
