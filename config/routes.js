@@ -87,5 +87,6 @@ module.exports.routes = {
     'DELETE /users/:id': 'UserController.delete',
 
     'GET /notifications': 'NotificationController.index',
-    'POST /notifications': 'NotificationController.markSeen'
+    'POST /notifications': 'NotificationController.markSeen',
+    'GET /logs': 'LogController.view'
 };
