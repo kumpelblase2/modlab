@@ -1,0 +1,23 @@
+extends ../layout/default.jade
+
+block title
+    | Log Management
+
+block pageheader
+    | Logs
+
+block content
+    table.table
+        thead
+            th Issuer
+            th Message
+            th Time
+        tbody
+            each log in logs
+                tr
+                    if log.issuer
+                        td= log.issuer.username
+                    else
+                        td System
+                    td= log.message
+                    td= log.createdAt
