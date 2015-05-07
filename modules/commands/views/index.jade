@@ -4,6 +4,8 @@ block pageheader
     p Commands
 
 block content
+    - var canEdit = req.user.hasPermission('module.commands.edit')
+
     .panel.panel-primary
         .panel-heading
             | Basic commands
@@ -12,6 +14,8 @@ block content
                 th #
                 th Name
                 th Content
+                if canEdit
+                    th Actions
             tbody
                 each command in commands
                     - if(command.type == 'basic')
@@ -19,6 +23,10 @@ block content
                             td= command.id
                             td= command.name
                             td= 'Message: ' + command.data.message
+                            if canEdit
+                                td
+                                    a.btn.btn-primary.fa.fa-pencil(href='#edit')
+                                    a.btn.btn-danger.fa.fa-bin(href='#delete')
 
     .panel.panel-primary
         .panel-heading
@@ -28,6 +36,8 @@ block content
                 th #
                 th Name
                 th Content
+                if canEdit
+                    th Actions
             tbody
                 each command in commands
                     - if(command.type == 'hear')
@@ -38,3 +48,7 @@ block content
                                 = 'Regex: ' + command.data.regex.toString()
                                 br
                                 = 'Message: ' + command.data.message
+
+                            if canEdit
+                                a.btn.btn-primary.fa.fa-pencil(href='#edit')
+                                a.btn.btn-danger.fa.fa-bin(href='#delete')
