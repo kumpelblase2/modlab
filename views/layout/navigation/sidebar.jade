@@ -22,6 +22,8 @@
 
                 if req.user.hasPermission('system.rights.view')
                     +sidebar-item('shield', '/rights', 'Rights')
+                if req.user.hasPermission('system.logs.view')
+                    +sidebar-item('book', '/logs', 'Logs')
             else
                 +sidebar-item('sign-in', '/login', 'Sign In')
 

@@ -7,7 +7,7 @@ block pageheader
     | Logs
 
 block content
-    table.table
+    table.table.table-striped
         thead
             th Issuer
             th Message
@@ -15,9 +15,10 @@ block content
         tbody
             each log in logs
                 tr
-                    if log.issuer
-                        td= log.issuer.username
-                    else
-                        td System
+                    td.col-md-2
+                        if log.issuer
+                            = log.issuer.username
+                        else
+                            | System
                     td= log.message
-                    td= log.createdAt
+                    td.col-md-2.col-sm-2.col-lg-2= UtilityService.displayDate(log.createdAt)
