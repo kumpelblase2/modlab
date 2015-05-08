@@ -80,9 +80,12 @@ module.exports.routes = {
     'GET /users': 'UserController.index',
     'GET /users/:id': 'UserController.show',
     'GET /user': 'UserController.profile',
-    'GET /user/notifications': 'NotificationController.show',
+    'GET /user/notifications': 'NotificationController.index',
     'GET /user/settings': 'SettingsController.show',
     'PATCH /users/:id': 'UserController.update',
     'POST /users/:id': 'UserController.update',
-    'DELETE /users/:id': 'UserController.delete'
+    'DELETE /users/:id': 'UserController.delete',
+
+    'GET /notifications': 'NotificationController.index',
+    'POST /notifications': 'NotificationController.markSeen'
 };

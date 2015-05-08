@@ -10,17 +10,9 @@ if req.isAuthenticated()
         a.dropdown-toggle(data-toggle='dropdown', href='#')
             i.fa.fa-bell.fa-fw
             i.fa.fa-caret-down
-        ul.dropdown-menu.dropdown-alerts
-            if notifications
-                each notify in notifications
-                    li
-                        +notification(notify.url, notify.icon, notify.message, notify.time)
-                    li.divider
-            else
-                li
-                    .text-center No notifications
+        ul.dropdown-menu.dropdown-alerts#notifications
             li.divider
             li
                 a.text-center(href='/notifications')
-                    strong See All Notifications 
+                    strong See All Notifications
                     i.fa.fa-angle-right

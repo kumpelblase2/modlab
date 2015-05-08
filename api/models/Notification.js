@@ -11,6 +11,8 @@ module.exports = {
         user: { model: 'User', required: true },
         type: { type: 'string' },
         title: { type: 'string' },
-        message: { type: 'text' }
+        message: { type: 'text' },
+        url: { type: 'string' },
+        seen: { type: 'datetime' }
     }
 };
