@@ -9,7 +9,7 @@ module.exports = {
     index: function(req, res) {
         Notification.create({
             user: req.user.id,
-            type: '',
+            type: 'group',
             title: 'Poopy',
             url: 'http://google.com/',
             message: 'This is a test notification'
