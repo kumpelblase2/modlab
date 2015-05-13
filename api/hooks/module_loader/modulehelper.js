@@ -56,12 +56,13 @@ module.exports = {
 
         var result = Promise.promisifyAll(moduleMain(sails.app, sails.chat));
         if(!result.name)
-        result.name = mod.name;
+            result.name = mod.name;
 
         result.path = (mod.source === 'npm' ? path.join(sails.config.rootPath, 'node_modules', mod.name) : path.join(sails.config.rootPath, mod.path));
         result.relPath = (mod.source === 'npm' ? path.join('.', 'node_moodules', mod.name) : path.join('.', mod.path));
         result.log = ModuleService.createModuleLogger(result.name);
         result.displayName = result.name.charAt(0).toUpperCase() + result.name.slice(1);
+        result.assetDirectory = result.assetDirectory || path.join(result.relPath, 'assets');
         sails.emit('module:' + result.name + ':loaded');
         return result;
     }
