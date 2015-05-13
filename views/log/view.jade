@@ -22,3 +22,12 @@ block content
                             | System
                     td= log.message
                     td.col-md-2.col-sm-2.col-lg-2= UtilityService.displayDate(log.createdAt)
+
+    if page > 1
+        a.btn.btn-success(href='/logs?page=' + (page - 1) + "&limit=" + limit)
+            i.fa.fa-arrow-left
+            | Previous
+
+    if logs.length == limit
+        a.btn.btn-success.pull-right(href='/logs?page=' + (page + 1) + "&limit=" + limit) Next
+            i.fa.fa-arrow-right
