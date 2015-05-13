@@ -7,20 +7,13 @@
 
 module.exports = {
     index: function(req, res) {
-        Notification.create({
-            user: req.user.id,
-            type: 'group',
-            title: 'Poopy',
-            url: 'http://google.com/',
-            message: 'This is a test notification'
-        }).then(function() {
-            Notification.find({ user: req.user.id }).then(function(notifications) {
-                if(req.wantsJSON) {
-                    res.jsonx({ notifications: notifications });
-                } else {
-                    res.view({notifications: notifications});
-                }
-            });
+        var limit = parseInt(req.query.limit) || 25;
+        Notification.find({ user: req.user.id, sort: 'createdAt desc', limit: limit }).then(function(notifications) {
+            if(req.wantsJSON) {
+                res.jsonx({ notifications: notifications });
+            } else {
+                res.view({notifications: notifications});
+            }
         });
     },
 
