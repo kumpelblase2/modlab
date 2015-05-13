@@ -17,17 +17,25 @@ module.exports = {
     },
     update: function(req, res) {
         Command.find(req.param('id')).then(function(command) {
+            command = command[0];
             command.name = req.param('name', command.name);
             command.type = req.param('type', command.type);
             command.data = req.param('data', command.data);
-            return Command.save(command);
+            return new Promise(function(resolve, reject) {
+                Command.update(command).then(resolve).catch(reject);
+            });
         }).then(function() {
-            res.redirect('/m/commands/');
+            self.index(req, res);
         });
     },
     deleteC: function(req, res) {
-        Command.delete(req.param('id')).then(function() {
-            res.redirect('/m/commands/');
+        Command.destroy(req.param('id')).then(function() {
+            res.ok();
+        });
+    },
+    edit: function(req, res) {
+        Command.find(req.param('id')).then(function(command) {
+            res.view('edit', { command: command[0] });
         });
     }
 };
