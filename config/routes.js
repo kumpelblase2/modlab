@@ -88,5 +88,6 @@ module.exports.routes = {
 
     'GET /notifications': 'NotificationController.index',
     'POST /notifications': 'NotificationController.markSeen',
-    'GET /logs': 'LogController.view'
+    'GET /logs': 'LogController.view',
+    'GET /assets/m/:module/*': 'AssetController.serve'
 };
