@@ -84,5 +84,6 @@ module.exports.routes = {
     'GET /user/settings': 'SettingsController.show',
     'PATCH /users/:id': 'UserController.update',
     'POST /users/:id': 'UserController.update',
-    'DELETE /users/:id': 'UserController.delete'
+    'DELETE /users/:id': 'UserController.delete',
+    'GET /assets/m/:module/*': 'AssetController.serve'
 };
