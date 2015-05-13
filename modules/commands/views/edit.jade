@@ -4,19 +4,36 @@ block pageheader
     p Edit Command
 
 block content
-    form(action='/m/commands/command/' + command.id, method='POST')
-        .form-group
-            label(for='name') Name
-            input.form-control(type='text', name='name', placeholder='Name', value=command.name)
-        .form-group
-            label(for='type') Type
-            select.form-control(name='type')
-                - var active = /basic/.test(command.type)
-                option(value='basic', selected=active) Default
-                - active = /hear/.test(command.type);
-                option(value='hear', selected=active) Hearing
-        .form-group
-            label(for='data') Data
-            textarea.form-control(name='data')= JSON.stringify(command.data)
-        .form-group
-            button.btn.btn-success(type='submit') Save
+    if command
+        form(action='/m/commands/command/' + command.id, method='POST')
+            .form-group
+                label(for='name') Name
+                input.form-control(type='text', name='name', placeholder='Name', value=command.name)
+            .form-group
+                label(for='type') Type
+                select.form-control(name='type')
+                    - var active = /basic/.test(command.type)
+                    option(value='basic', selected=active) Default
+                    - active = /hear/.test(command.type);
+                    option(value='hear', selected=active) Hearing
+            .form-group
+                label(for='data') Data
+                textarea.form-control(name='data')= JSON.stringify(command.data)
+            .form-group
+                button.btn.btn-success(type='submit') Save
+
+    else
+        form(action='/m/commands/command', method='POST')
+            .form-group
+                label(for='name') Name
+                input.form-control(type='text', name='name', placeholder='Name')
+            .form-group
+                label(for='type') Type
+                select.form-control(name='type')
+                    option(value='basic', selected=true) Default
+                    option(value='hear') Hearing
+            .form-group
+                label(for='data') Data
+                textarea.form-control(name='data') {"message": "default message"}
+            .form-group
+                button.btn.btn-success(type='submit') Save

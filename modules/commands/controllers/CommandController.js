@@ -15,6 +15,9 @@ module.exports = {
             self.index(req, res);
         });
     },
+    prepareNew: function(req, res) {
+        res.view('edit');
+    },
     update: function(req, res) {
         Command.find(req.param('id')).then(function(command) {
             command = command[0];

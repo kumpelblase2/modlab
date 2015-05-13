@@ -18,7 +18,7 @@ $(function() {
                     window.location.href = self.getAttribute('data-return');
                 },
                 error: function(result) {
-                    if(result.status === 200) {
+                    if (result.status === 200) {
                         window.location.href = self.getAttribute('data-return');
                     }
                 }

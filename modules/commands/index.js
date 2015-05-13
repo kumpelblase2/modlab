@@ -21,7 +21,8 @@ function Commands(app, chat)
         'POST /command': 'CommandsCommandController.create',
         'POST /command/:id': 'CommandsCommandController.update',
         'GET /command/:id/edit': 'CommandsCommandController.edit',
-        'DELETE /command/:id': 'CommandsCommandController.deleteC'
+        'DELETE /command/:id': 'CommandsCommandController.deleteC',
+        'GET /command/new': 'CommandsCommandController.prepareNew'
     };
 }
 

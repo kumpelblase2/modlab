@@ -2,38 +2,10 @@ extends default
 
 block pageheader
     p Commands
+        a.btn.btn-success.btn-sm.fa.fa-plus.pull-right(href='/m/commands/command/new')
 
 block content
-    script(type='text/javascript').
-        $(function () {
-            $('.delete-button').click(function () {
-                var self = this;
-                swal({
-                    title: 'Are you sure?',
-                    text: 'If you continue, you will not be able to recover the deleted command.',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonClass: 'btn-danger',
-                    confirmButtonText: 'Yes, continue',
-                    closeOnConfirm: false
-                }, function () {
-                    $.ajax({
-                        url: self.getAttribute('data-href'),
-                        type: 'DELETE',
-                        dataType: 'json',
-                        success: function (result) {
-                            window.location.href = self.getAttribute('data-return');
-                        },
-                        error: function (result) {
-                            if (result.status === 200) {
-                                window.location.href = self.getAttribute('data-return');
-                            }
-                        }
-                    });
-                });
-            });
-        });
-
+    script(type='text/javascript', src='/assets/m/commands/commandedit.js')
     - var canEdit = req.user.hasPermission('module.commands.edit')
 
     .panel.panel-primary
@@ -56,7 +28,7 @@ block content
                             if canEdit
                                 td
                                     a.btn.btn-primary.fa.fa-pencil(href='/m/commands/command/' + command.id + '/edit')
-                                    a.btn.btn-danger.fa.fa-bin.delete-button(data-href='/m/commands/command/' + command.id, data-return='/m/commands/')
+                                    a.btn.btn-danger.fa.fa-trash.delete-button(data-href='/m/commands/command/' + command.id, data-return='/m/commands/')
 
     .panel.panel-primary
         .panel-heading
@@ -82,4 +54,4 @@ block content
                             if canEdit
                                 td
                                     a.btn.btn-primary.fa.fa-pencil(href='/m/commands/command/' + command.id + '/edit')
-                                    a.btn.btn-danger.fa.fa-bin.delete-button(data-href='/m/commands/command/' + command.id, data-return='/m/commands/')
+                                    a.btn.btn-danger.fa.fa-trash.delete-button(data-href='/m/commands/command/' + command.id, data-return='/m/commands/')
