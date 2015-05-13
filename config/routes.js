@@ -86,5 +86,6 @@ module.exports.routes = {
     'POST /users/:id': 'UserController.update',
     'DELETE /users/:id': 'UserController.delete',
 
-    'GET /logs': 'LogController.view'
+    'GET /logs': 'LogController.view',
+    'GET /assets/m/:module/*': 'AssetController.serve'
 };

@@ -20,7 +20,9 @@ function Commands(app, chat)
         'GET /': 'CommandsCommandController.index',
         'POST /command': 'CommandsCommandController.create',
         'POST /command/:id': 'CommandsCommandController.update',
-        'DELETE /command/:id': 'CommandsCommandController.deleteC'
+        'GET /command/:id/edit': 'CommandsCommandController.edit',
+        'DELETE /command/:id': 'CommandsCommandController.deleteC',
+        'GET /command/new': 'CommandsCommandController.prepareNew'
     };
 }
 
@@ -44,6 +46,14 @@ Commands.prototype.enable = function(callback) {
         }
         callback();
     });
+
+    Command.create({
+        name: 'Testing',
+        type: 'basic',
+        data: {
+            message: "Test"
+        }
+    }).exec(function() {});
 
     self.registerCommand('register', function(args, message) {
         var command = UtilityService.escapeRegex(args[0]);
