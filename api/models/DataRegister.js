@@ -3,4 +3,4 @@ module.exports = {
         key: { type: 'string' },
         value: { type: 'json' }
     }
-}
+};
