@@ -1,5 +1,6 @@
 var Plugin = require('modlab-plugin');
 var util = require('util');
+var messageFormatter = require('./CommandFormatter');
 
 function Commands(app, chat)
 {
@@ -47,13 +48,7 @@ Commands.prototype.enable = function(callback) {
         callback();
     });
 
-    Command.create({
-        name: 'Testing',
-        type: 'basic',
-        data: {
-            message: "Test"
-        }
-    }).exec(function() {});
+    messageFormatter.formatters = sails.config.moduleconfig.commands.formatters;
 
     self.registerCommand('register', function(args, message) {
         var command = UtilityService.escapeRegex(args[0]);
@@ -112,9 +107,9 @@ module.exports = function (app, chat) {
 };
 
 function simpleMessage(content) {
-    return function(args, message) { message.reply(content); };
+    return function(args, message) { message.reply(messageFormatter.format(content, message)); };
 }
 
 function simpleChannelMessage(content) {
-    return function(args, message) { message.send(content); };
+    return function(args, message) { message.send(messageFormatter.format(content, message)); };
 }

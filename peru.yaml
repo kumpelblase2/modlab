@@ -10,6 +10,7 @@ imports:
     pace_css: ./assets/styles/vendor/
     sweetalert|min-js: ./assets/js/vendor/
     sweetalert|css: ./assets/styles/vendor/
+    bootstrap_css|min-css: ./assets/styles/dependencies
 
 git module dashboard_css:
     url: https://github.com/IronSummitMedia/startbootstrap-sb-admin-2.git
@@ -34,7 +35,7 @@ git module dashboard_metismenu:
 git module dashboard_morrischarts:
     url: https://github.com/IronSummitMedia/startbootstrap-sb-admin-2.git
     export: bower_components/morrisjs/
-    files: morris.css
+    pick: bower_components/morrisjs/morris.css
     rev: 6f99dc2305ea397a51689f1c89847bfcd4a58fd8
 
 git module dashboard_fontawesome:
@@ -50,7 +51,7 @@ git module dashboard_fontawesome-fonts:
 git module pace_css:
     url: https://github.com/HubSpot/pace.git
     export: themes/blue/
-    files: pace-theme-flash.css
+    pick: themes/blue/pace-theme-flash.css
     rev: c6846cbf6b928e9903b569269fa9fbf32f2554f4
 
 git module pace_js:
@@ -61,14 +62,18 @@ git module sweetalert:
     url: https://github.com/lipis/bootstrap-sweetalert.git
     export: lib/
 
+git module bootstrap_css:
+    url: https://github.com/twbs/bootstrap.git
+    export: dist/css
+
 rule min-css:
-    files: '*.min.css'
+    pick: '*.min.css'
 
 rule min-js:
-    files: '*.min.js'
+    pick: '*.min.js'
 
 rule css:
-    files: '*.css'
+    pick: '*.css'
 
 rule js:
-    files: '*.js'
+    pick: '*.js'

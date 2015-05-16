@@ -64,6 +64,8 @@ module.exports.routes = {
 
     'GET /dashboard': 'DashboardController.index',
     'GET /modules': 'ModuleController.index',
+    'GET /logs': 'LogController.view',
+
     'GET /rights': 'RightsController.index',
     'GET /rights/group/new': 'RightsController.groupNew',
     'GET /rights/user/:id': 'RightsController.userShow',
@@ -88,6 +90,6 @@ module.exports.routes = {
 
     'GET /notifications': 'NotificationController.index',
     'POST /notifications': 'NotificationController.markSeen',
-    'GET /logs': 'LogController.view',
+
     'GET /assets/m/:module/*': 'AssetController.serve'
 };
