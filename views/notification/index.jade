@@ -18,6 +18,10 @@ block content
                         td.col-md-1= notification.type
                         td.col-md-1.col-sm-1.col-lg-1
                             input(type='checkbox', disabled, checked=notification.seen != null)
-                        td= notification.title
+                        td
+                            if notification.url
+                                a(href=notification.url)= notification.title
+                            else
+                                = notification.title
                         td= notification.message
                         td.col-md-2= UtilityService.displayDate(notification.createdAt)
