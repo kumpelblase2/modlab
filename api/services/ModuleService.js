@@ -2,6 +2,7 @@ var path = require('path');
 var captains = require('sails/node_modules/captains-log');
 var Promise = require('bluebird');
 var fs = require('fs');
+var _ = require('lodash');
 
 module.exports = {
     generateDefaultConfig: function(mod, confDir) {
@@ -74,7 +75,16 @@ module.exports = {
                     sails.log.error(new Error('Invlid route detected: ' + routeName));
                 }
 
-                sails.config.routes[routeName] = routeInfo;
+                if(typeof(routeInfo) == 'object') {
+                    if("requiresLogin" in routeInfo && !routeInfo.requiresLogin) {
+                        ModuleService.registerInsecureRoute(mod, routeInfo.value);
+                    }
+
+                    sails.config.routes[routeName] = routeInfo.value;
+                } else {
+                    sails.config.routes[routeName] = routeInfo;
+                }
+
                 sails.router.explicitRoutes = sails.config.routes;
             });
         }
@@ -108,6 +118,32 @@ module.exports = {
             hook.explicitActions[id] = hook.explicitActions[id] || {};
             hook.explicitActions[id][actionId] = true;
         });
+    },
+
+    registerInsecureRoute: function(module, controller) {
+        if(controller.indexOf('/') >= 0 || controller.indexOf('.') < 0) {
+            sails.log.warning('Could not register an insecure route because target was not a controller.');
+            return;
+        }
+
+        var controllerSplit = controller.split('.');
+        var controllerName = controllerSplit[0];
+        var action = controllerSplit[1];
+        var object = sails.hooks.policies.mapping[controllerName];
+        var newPolicies = sails.hooks.policies.mapping['*'].slice();
+        _.remove(newPolicies, function(elem) {
+            return elem.identity == 'sessionauth';
+        });
+
+        if(!object) {
+            object = {};
+        }
+
+        object[action] = newPolicies;
+        var controllerNameInPolicies = controllerName.toLowerCase().replace(/controller$/, '');
+        sails.hooks.policies.mapping[controllerNameInPolicies] = object;
+        console.dir(sails.hooks.policies.mapping[controllerName]);
+        console.dir(sails.hooks.policies.mapping);
     },
 
     renderWidgets: function(widgets, req, res) {
