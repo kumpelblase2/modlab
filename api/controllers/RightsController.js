@@ -70,11 +70,12 @@ module.exports = {
                 permissions = [ permissions ];
             }
 
-            PermissionGroup.create({
-                name: name,
-                permissions: _.filter(permissions, function(permission) { return permission.length > 0 })
-            }).then(function(group) {
+            permissions = _.filter(permissions, function(permission) { return permission.length > 0 });
+
+            RightsService.createGroup(name, permissions).then(function(group) {
                 res.redirect('/rights/group/' + group.id);
+            }).then(function() {
+                return LogService.create('Group ' + name + ' created', LogService.TYPES.EVENT, req.user);
             });
         }
     },
@@ -122,11 +123,12 @@ module.exports = {
                 permissions = [ permissions ];
             }
 
+            var self = this;
             PermissionGroup.update(id, {
                 name: name,
                 permissions: _.filter(permissions, function(permission) { return permission.length > 0 })
             }).then(function(groups) {
-                sails.controllers.rights.groupShow(req, res);
+                self.groupShow(req, res);
             });
         }
     },
@@ -147,7 +149,7 @@ module.exports = {
             }
 
             permissionGroups = _.map(permissionGroups, function(groupid) { return parseInt(groupid); });
-
+            var self = this;
             User.findOne(id).populate('permission_groups').then(function(user) {
                 if(!user) {
                     return res.notFound('Error.Resource.NotFound');
@@ -171,7 +173,7 @@ module.exports = {
                 });
 
                 user.save().then(function() {
-                    sails.controllers.rights.userShow(req, res);
+                    self.userShow(req, res);
                 }).catch(function(err) {
                     res.serverError(err);
                 });
@@ -187,7 +189,9 @@ module.exports = {
         } else {
             var id = req.param('id');
             PermissionGroup.destroy(id).then(function() {
-                res.redirect('/rights');
+                return res.redirect('/rights');
+            }).then(function() {
+                return LogService.create('Deleted group with id ' + id, LogService.TYPES.EVENT, req.user);
             }).catch(function(err) {
                 console.log(err);
             });
