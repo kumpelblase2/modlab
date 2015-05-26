@@ -207,5 +207,17 @@ module.exports = {
                 });
             }
         });
+
+        var sorted = dependencyGraph.sort();
+        if(sorted[0] == '0') {
+            sorted.shift();
+        }
+
+        var result = [];
+        sorted.forEach(function(name) {
+            result.push(_.find(modules, function(mod) { return mod.name == name; }));
+        });
+
+        return result;
     }
 };
