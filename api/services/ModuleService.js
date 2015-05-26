@@ -3,6 +3,7 @@ var captains = require('sails/node_modules/captains-log');
 var Promise = require('bluebird');
 var fs = require('fs');
 var _ = require('lodash');
+var tsort = require('tsort');
 
 module.exports = {
     generateDefaultConfig: function(mod, confDir) {
@@ -192,5 +193,31 @@ module.exports = {
         };
         customOptions.prefixTheme = themeName;
         return captains(customOptions);
+    },
+
+    sortModulesForLoading: function(modules) {
+        var dependencyGraph = tsort();
+
+        modules.forEach(function(module) {
+            if(!module.dependencies || module.dependencies.length == 0) {
+                dependencyGraph.add('0', module.name);
+            } else {
+                module.dependencies.forEach(function (dep) {
+                    dependencyGraph.add(dep, module.name);
+                });
+            }
+        });
+
+        var sorted = dependencyGraph.sort();
+        if(sorted[0] == '0') {
+            sorted.shift();
+        }
+
+        var result = [];
+        sorted.forEach(function(name) {
+            result.push(_.find(modules, function(mod) { return mod.name == name; }));
+        });
+
+        return result;
     }
 };

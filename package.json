@@ -41,6 +41,7 @@
     "sails-disk": "~0.10.0",
     "sails-mysql": "~0.10.7",
     "skipper": "~0.5.3",
+    "tsort": "0.0.1",
     "validator": "~3.27.0",
     "waterline": "~0.10.15"
   },

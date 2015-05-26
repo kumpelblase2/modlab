@@ -69,19 +69,21 @@ module.exports = function moduleloader(sails) {
                 });
         },
         enableAll: function() {
-            return Promise.map(this.loadedModules, _enable).then(function() {
+            var result = ModuleService.sortModulesForLoading(this.loadedModules);
+            console.log(result);
+            return Promise.map(result, _enable).then(function() {
                 sails.emit('hook:modulesloader:modulesenable');
                 sails.log.info('Loaded all modules.');
             });
         },
         enable: function(name) {
-            var mod = _.find(this.loadedModules, function(mod) { mod.name === name });
+            var mod = _.find(this.loadedModules, function(mod) { return mod.name === name; });
             if(mod)
                 return _enable(mod);
         },
 
         disable: function(name) {
-            var mod = _.find(this.loadedModules, function(mod) { mod.name === name });
+            var mod = _.find(this.loadedModules, function(mod) { return mod.name === name; });
             if(mod)
                 _disable(mod);
         },
