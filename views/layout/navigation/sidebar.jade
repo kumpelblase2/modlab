@@ -27,7 +27,7 @@
 
                 each menu in Object.keys(sails.app.moduleMenus)
                     - var menuItems = sails.app.moduleMenus[menu];
-                    if menuItems.length > 1
+                    if menuItems.length > 1 && req.user.hasAnyPermission(menuItems, 'permission')
                         +sidebar-item('plug', '/modules', menu)
                             ul.nav.nav-secon-level
                                 each menuItem in menuItems

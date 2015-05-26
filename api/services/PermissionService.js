@@ -39,5 +39,24 @@ module.exports = {
         }
 
         return true;
+    },
+
+    hasAny: function(own_permissions, other_permissions, property) {
+        var i = 0;
+        var max = other_permissions.length;
+        for(; i < max; i++) {
+            var elem = other_permissions[i];
+            if(typeof(property) == 'function') {
+                elem = property(elem);
+            } else if(typeof(property) == 'string') {
+                elem = elem[property];
+            }
+
+            if(PermissionService.isIncluded(own_permissions, elem)) {
+                return true;
+            }
+        }
+
+        return false;
     }
-}
+};
