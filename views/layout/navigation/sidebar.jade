@@ -13,15 +13,27 @@
                             li
                                 a(href='/modules') Overview
                             each menu in Object.keys(sails.app.moduleMenus)
-                                - var menuItem = sails.app.moduleMenus[menu];
-                                if menuItem.permission == '' || (req.user && req.user.hasPermission(menuItem.permission))
-                                    li
-                                        a(href=menuItem.url)= menuItem.text
+                                - var menuItems = sails.app.moduleMenus[menu];
+                                if menuItems.length == 1
+                                    - var menuItem = menuItems[0];
+                                    if menuItem.permission == '' || (req.user && req.user.hasPermission(menuItem.permission))
+                                        li
+                                            a(href=menuItem.url)= menuItem.text
 
                 if req.user.hasPermission('system.rights.view')
                     +sidebar-item('shield', '/rights', 'Rights')
                 if req.user.hasPermission('system.logs.view')
                     +sidebar-item('book', '/logs', 'Logs')
+
+                each menu in Object.keys(sails.app.moduleMenus)
+                    - var menuItems = sails.app.moduleMenus[menu];
+                    if menuItems.length > 1
+                        +sidebar-item('plug', '/modules', menu)
+                            ul.nav.nav-secon-level
+                                each menuItem in menuItems
+                                    if menuItem.permission == '' || (req.user && req.user.hasPermission(menuItem.permission))
+                                        li
+                                            a(href=menuItem.url)= menuItem.text
             else
                 +sidebar-item('sign-in', '/login', 'Sign In')
 

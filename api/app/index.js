@@ -74,11 +74,15 @@ App.prototype.registerMenuItem = function(mod, info) {
         return;
     }
 
-    this.moduleMenus[mod.name] = {
+    if(!this.moduleMenus[mod.name]) {
+        this.moduleMenus[mod.name] = [];
+    }
+
+    this.moduleMenus[mod.name].push({
         permission: permission,
         url: url,
         text: mod.displayName
-    };
+    });
 };
 
 App.prototype.finishedInstallation = function() {
