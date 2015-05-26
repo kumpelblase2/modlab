@@ -75,13 +75,13 @@ module.exports = function moduleloader(sails) {
             });
         },
         enable: function(name) {
-            var mod = _.find(this.loadedModules, function(mod) { mod.name === name });
+            var mod = _.find(this.loadedModules, function(mod) { return mod.name === name; });
             if(mod)
                 return _enable(mod);
         },
 
         disable: function(name) {
-            var mod = _.find(this.loadedModules, function(mod) { mod.name === name });
+            var mod = _.find(this.loadedModules, function(mod) { return mod.name === name; });
             if(mod)
                 _disable(mod);
         },
