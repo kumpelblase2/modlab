@@ -28,6 +28,7 @@ util.inherits(LiveChat, Plugin);
 
 LiveChat.prototype.enable = function(callback) {
     sails.app.registerWidget(this, this.liveChat);
+    sails.app.registerMenuItem(this, { permission: 'module.livechat.view' });
     callback();
 };
 

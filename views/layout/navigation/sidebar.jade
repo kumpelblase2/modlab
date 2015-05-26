@@ -12,13 +12,11 @@
                         ul.nav.nav-second-level
                             li
                                 a(href='/modules') Overview
-                            each module in sails.app.modules
-                                - if(module.routes && Object.keys(module.routes).length >= 1)
+                            each menu in Object.keys(sails.app.moduleMenus)
+                                - var menuItem = sails.app.moduleMenus[menu];
+                                if menuItem.permission == '' || (req.user && req.user.hasPermission(menuItem.permission))
                                     li
-                                        if module.baseURL
-                                            a(href='/m/' + module.baseURL + '/')= module.displayName
-                                        else
-                                            a(href='/m/' + module.name + '/')= module.displayName
+                                        a(href=menuItem.url)= menuItem.text
 
                 if req.user.hasPermission('system.rights.view')
                     +sidebar-item('shield', '/rights', 'Rights')

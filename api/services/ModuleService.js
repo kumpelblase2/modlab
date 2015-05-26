@@ -66,9 +66,9 @@ module.exports = {
                 } else if(action.charAt(0) === 'r') {
                     var regex = action.slice(2);
                     if(regex.charAt(0) === '^') {
-                        routeName = verb + ' r|^/m/' + mod.name.toLowerCase() + regex.slice(1);
+                        routeName = verb + ' r|^' + ModuleService.getModuleURI(mod) + regex.slice(1);
                     } else {
-                        routeName = verb + ' r|/m/' + mod.name.toLowerCase() + regex;
+                        routeName = verb + ' r|' + ModuleService.getModuleURI(mod) + regex;
                     }
                 } else {
                     sails.log.error(new Error('Invlid route detected: ' + routeName));
@@ -79,6 +79,10 @@ module.exports = {
             });
         }
         return mod;
+    },
+
+    getModuleURI: function(mod) {
+        return '/m/' + mod.name.toLowerCase() + '/';
     },
 
     registerControllerInSails: function(id, controller) {
