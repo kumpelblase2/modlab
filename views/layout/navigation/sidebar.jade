@@ -26,9 +26,10 @@
                     +sidebar-item('book', '/logs', 'Logs')
 
                 each menu in Object.keys(sails.app.moduleMenus)
-                    - var menuItems = sails.app.moduleMenus[menu];
+                    - var primaryMenu = sails.app.moduleMenus[menu];
+                    - var menuItems = primaryMenu.items;
                     if menuItems.length > 1 && req.user.hasAnyPermission(menuItems, 'permission')
-                        +sidebar-item('plug', '/modules', menu)
+                        +sidebar-item('plug', '/m/' + menu + '/', primaryMenu.display)
                             ul.nav.nav-secon-level
                                 each menuItem in menuItems
                                     if menuItem.permission == '' || (req.user && req.user.hasPermission(menuItem.permission))

@@ -75,10 +75,13 @@ App.prototype.registerMenuItem = function(mod, info) {
     }
 
     if(!this.moduleMenus[mod.name]) {
-        this.moduleMenus[mod.name] = [];
+        this.moduleMenus[mod.name] = {
+            display: mod.displayName,
+            items: []
+        };
     }
 
-    this.moduleMenus[mod.name].push({
+    this.moduleMenus[mod.name].items.push({
         permission: permission,
         url: url,
         text: mod.displayName
