@@ -88,5 +88,7 @@ module.exports.routes = {
     'POST /users/:id': 'UserController.update',
     'DELETE /users/:id': 'UserController.delete',
 
+    'GET /widgets': 'WidgetController.index',
+
     'GET /assets/m/:module/*': 'AssetController.serve'
 };

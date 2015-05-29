@@ -151,6 +151,10 @@ module.exports = {
         return Promise.map(widgets, function(widget) {
             var controller = widget.controller.toLowerCase();
             var action = widget.action;
+            var id = widget.id;
+            if(req.user && req.user.hidesWidget(id)) {
+                return;
+            }
 
             return Promise.resolve().then(function() {
                 return sails.controllers[controller][action](req);

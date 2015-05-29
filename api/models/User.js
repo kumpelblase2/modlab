@@ -8,6 +8,7 @@ var User = {
         passports: { collection: 'Passport', via: 'user' },
         permissions: { type: 'array', defaultsTo: [] },
         permission_groups: { collection: 'PermissionGroup', via: 'users_in_group', defaultsTo: [] },
+        hidden_widgets: { type: 'array', defaultsTo: ['SysteminfoWidget#groups'] },
 
         hasPermission: function (inPermission) {
             return PermissionService.isIncluded(this.permissions, inPermission) || _.some(this.permission_groups, function(group) {
@@ -40,6 +41,16 @@ var User = {
         },
         removeFromPermissionGroup: function(group) {
             this.permission_groups.remove(group.id);
+        },
+
+        hidesWidget: function(widgetId) {
+            return this.hidden_widgets.indexOf(widgetId) >= 0;
+        },
+        addHiddenWidget: function(widgetId) {
+            this.hidden_widgets.push(widgetId);
+        },
+        removeHiddenWidget: function(widgetId) {
+            this.hidden_widgets = _.without(this.hidden_widgets, widgetId);
         },
 
         strip: function() {
