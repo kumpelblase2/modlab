@@ -70,7 +70,6 @@ module.exports = function moduleloader(sails) {
         },
         enableAll: function() {
             var result = ModuleService.sortModulesForLoading(this.loadedModules);
-            console.log(result);
             return Promise.map(result, _enable).then(function() {
                 sails.emit('hook:modulesloader:modulesenable');
                 sails.log.info('Loaded all modules.');
