@@ -1,0 +1,41 @@
+extends ../layout/default.jade
+
+block content
+    - var canEdit = req.user.hasPermission('system.widgets.toggle');
+    .panel.panel-primary
+        .panel-heading
+            | Visible Widgets
+        table.table
+            thead
+                th Controller
+                th Action
+                if canEdit
+                    th Actions
+            tbody
+                each widget in visible
+                    tr
+                        td= widget.controller
+                        td= widget.action
+                        if canEdit
+                            td
+                                form(method='POST',action='/widget/' + widget.id.replace('#', '_') + '/hide')
+                                    input.btn.btn-primary.fa.fa-pencil(type='submit',value='Hide')
+
+    .panel.panel-info
+        .panel-heading
+            | Hidden Widgets
+        table.table
+            thead
+                th Controller
+                th Action
+                if canEdit
+                    th Actions
+            tbody
+                each widget in hidden
+                    tr
+                        td= widget.controller
+                        td= widget.action
+                        if canEdit
+                            td
+                                form(method='POST',action='/widget/' + widget.id.replace('#', '_') + '/show')
+                                    input.btn.btn-primary.fa.fa-pencil(type='submit',value='Show')
