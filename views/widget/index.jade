@@ -19,7 +19,8 @@ block content
                         if canEdit
                             td
                                 form(method='POST',action='/widget/' + widget.id.replace('#', '_') + '/hide')
-                                    input.btn.btn-primary.fa.fa-pencil(type='submit',value='Hide')
+                                    button.btn.btn-primary(type='submit')
+                                        span.fa.fa-eye-slash
 
     .panel.panel-info
         .panel-heading
@@ -38,4 +39,5 @@ block content
                         if canEdit
                             td
                                 form(method='POST',action='/widget/' + widget.id.replace('#', '_') + '/show')
-                                    input.btn.btn-primary.fa.fa-pencil(type='submit',value='Show')
+                                    button.btn.btn-primary(type='submit')
+                                        span.fa.fa-eye
