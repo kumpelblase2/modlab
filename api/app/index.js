@@ -22,7 +22,8 @@ App.prototype.registerWidget = function(mod, widget) {
         id: widget.controller + '#' + widget.action,
         module: mod,
         controller: widget.controller,
-        action: widget.action
+        action: widget.action,
+        permission: widget.permission || ''
     });
 };
 

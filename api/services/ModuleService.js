@@ -147,40 +147,6 @@ module.exports = {
         console.dir(sails.hooks.policies.mapping);
     },
 
-    renderWidgets: function(widgets, req, res) {
-        return Promise.map(widgets, function(widget) {
-            var controller = widget.controller.toLowerCase();
-            var action = widget.action;
-            var id = widget.id;
-            if(req.user && req.user.hidesWidget(id)) {
-                return;
-            }
-
-            return Promise.resolve().then(function() {
-                return sails.controllers[controller][action](req);
-            }).then(function(result) {
-                if(result) {
-                    result.owner = widget;
-                    if(typeof(result.content) === 'object') {
-                        return new Promise(function(resolve, reject) {
-                            sails.renderView(path.join('..', widget.module.relPath, result.content.template), result.content.vars, function(err, resultString) {
-                                if(err) {
-                                    reject(err);
-                                } else {
-                                    result.rendered = resultString;
-                                    resolve(result);
-                                }
-                            });
-                        });
-                    } else {
-                        result.rendered = result.content;
-                        return result;
-                    }
-                }
-            });
-        }, { concurrency: 3 });
-    },
-
     createModuleLogger: function(modulename) {
         var customOptions = _.clone(sails.config.log);
         var themeName = 'module_' + modulename;

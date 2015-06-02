@@ -10,10 +10,10 @@ module.exports = {
         var displayedWidgets = [];
         var hiddenWidgets = [];
         widgets.forEach(function(widget) {
-            if(req.user.hidesWidget(widget.id)) {
-                hiddenWidgets.push(widget);
-            } else {
+            if(WidgetService.canDisplayFor(req.user, widget)) {
                 displayedWidgets.push(widget);
+            } else {
+                hiddenWidgets.push(widget);
             }
         });
 
