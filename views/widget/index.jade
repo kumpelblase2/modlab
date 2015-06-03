@@ -15,9 +15,9 @@ block content
                 each widget in visible
                     tr
                         td= widget.controller
-                        td= widget.action
+                        td.col-md-4= widget.action
                         if canEdit
-                            td
+                            td.col-md-1
                                 form(method='POST',action='/widget/' + widget.id.replace('#', '_') + '/hide')
                                     button.btn.btn-primary(type='submit')
                                         span.fa.fa-eye-slash
@@ -35,9 +35,9 @@ block content
                 each widget in hidden
                     tr
                         td= widget.controller
-                        td= widget.action
+                        td.col-md-4= widget.action
                         if canEdit
-                            td
+                            td.col-md-1
                                 form(method='POST',action='/widget/' + widget.id.replace('#', '_') + '/show')
                                     button.btn.btn-primary(type='submit')
                                         span.fa.fa-eye
