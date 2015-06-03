@@ -33,11 +33,12 @@ block content
                     th Actions
             tbody
                 each widget in hidden
+                    - var canShow = req.user.hasPermission(widget.permission);
                     tr
                         td= widget.controller
                         td.col-md-4= widget.action
                         if canEdit
                             td.col-md-1
                                 form(method='POST',action='/widget/' + widget.id.replace('#', '_') + '/show')
-                                    button.btn.btn-primary(type='submit')
+                                    button.btn.btn-primary(type='submit', disabled=!canShow)
                                         span.fa.fa-eye
