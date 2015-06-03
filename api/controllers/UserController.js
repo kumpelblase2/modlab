@@ -33,7 +33,7 @@ module.exports = {
     update: function(req, res) {
         res.ok();
     },
-    delete: function(req, res) {
+    'delete': function(req, res) {
         res.ok();
     }
 };
