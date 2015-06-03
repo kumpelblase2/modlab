@@ -1,9 +1,5 @@
 module.exports = {
-    module: function(req) {
-        if(!req.user.hasPermission('module.livechat.view')){
-            return false;
-        }
-
+    widget: function(req) {
         return {
             name: 'LiveChat',
             size: 5,
