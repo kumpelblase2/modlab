@@ -1,14 +1,2 @@
-.panel.panel-primary
-    .panel-heading
-        .row
-            .col-xs-3
-                i.fa.fa-comments.fa-5x
-            .col-xs-9.text-right
-                .huge= useramount
-                | Registered Users
-    a(href='/rights')
-        .panel-footer
-            span.pull-left View
-            span.pull-right
-                i.fa.fa-arrow-circle-right
-            .clearfix
+include base/mixins/infowidget.jade
++info-widget('users-info-widget', 'comments', useramount, 'Registered Users', '/rights', 'View')
