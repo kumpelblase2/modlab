@@ -4,6 +4,7 @@ var Promise = require('bluebird');
 var fs = require('fs');
 var _ = require('lodash');
 var tsort = require('tsort');
+var myParser = require('../app/CustomParser');
 
 module.exports = {
     generateDefaultConfig: function(mod, confDir) {
@@ -159,6 +160,8 @@ module.exports = {
                     result.owner = widget;
                     if(typeof(result.content) === 'object') {
                         return new Promise(function(resolve, reject) {
+                            var options = result.content.vars;
+                            options.parser = myParser;
                             sails.renderView(path.join('..', widget.module.relPath, result.content.template), result.content.vars, function(err, resultString) {
                                 if(err) {
                                     reject(err);

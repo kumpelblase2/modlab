@@ -14,8 +14,10 @@ myParser.prototype.resolvePath = function(path, purpose) {
 
     if(splitPath[0] == 'default') {
         return pathModule.join(sails.config.rootPath, 'views', 'layout', 'default.jade');
-    } else if (splitPath[0] == 'custom') {
+    } else if(splitPath[0] == 'custom') {
         return _super.call(this, splitPath.slice(1).join('/'), purpose);
+    } else if(splitPath[0] == 'base') {
+        return pathModule.join(sails.config.rootPath, 'views', splitPath.slice(1).join('/'));
     } else {
         return _super.call(this, path, purpose);
     }
