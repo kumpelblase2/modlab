@@ -1,12 +1,12 @@
 var Promise = require('bluebird');
 var path = require('path');
+var myParser = require('../app/CustomParser');
 
 module.exports = {
     renderWidgets: function(widgets, req, res) {
         return Promise.map(widgets, function(widget) {
             var controller = widget.controller.toLowerCase();
             var action = widget.action;
-            var id = widget.id;
             if(!WidgetService.canDisplayFor(req.user, widget)) {
                 return;
             }
@@ -18,7 +18,9 @@ module.exports = {
                     result.owner = widget;
                     if(typeof(result.content) === 'object') {
                         return new Promise(function(resolve, reject) {
-                            sails.renderView(path.join('..', widget.module.relPath, result.content.template), result.content.vars, function(err, resultString) {
+                            var options = result.content.vars;
+                            options.parser = myParser;
+                            sails.renderView(path.join('..', widget.module.relPath, result.content.template), options, function(err, resultString) {
                                 if(err) {
                                     reject(err);
                                 } else {

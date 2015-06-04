@@ -12,5 +12,4 @@ block content
     else
         each widget in widgets
             if widget
-                - var size = widget.size || 4
-                +widget(widget.name, size, widget.rendered)
+                +widget(widget.name, widget.rendered)
