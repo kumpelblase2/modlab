@@ -12,7 +12,8 @@ function LiveChat(app, chat) {
 
     this.liveChat = {
         controller: 'LivechatChat',
-        action: 'module'
+        action: 'widget',
+        permission: 'module.livechat.view'
     };
 
     this.controllers = {

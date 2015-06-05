@@ -1,0 +1,16 @@
+mixin info-widget(id, icon, big_text, text, link, link_text)
+    .col-md-2
+        .panel.panel-primary
+            .panel-heading
+                .row
+                    .col-xs-3
+                        i.fa.fa-5x(class='fa-' + icon)
+                    .col-xs-9.text-right
+                        .huge= big_text
+                        = text
+            a(href=link)
+                .panel-footer
+                    span.pull-left= link_text
+                    span.pull-right
+                        i.fa.fa-arrow-circle-right
+                    .clearfix

@@ -74,6 +74,7 @@ module.exports.routes = {
     'GET /rights/group/:id/edit': 'RightsController.groupEdit',
     'GET /rights/user/:id/edit': 'RightsController.userEdit',
     'PUT /rights/group': 'RightsController.groupCreate',
+    'POST /rights/group': 'RightsController.groupCreate',
     'PATCH /rights/group/:id': 'RightsController.groupUpdate',
     'POST /rights/group/:id': 'RightsController.groupUpdate',
     'PATCH /rights/user/:id': 'RightsController.userUpdate',
@@ -87,6 +88,10 @@ module.exports.routes = {
     'PATCH /users/:id': 'UserController.update',
     'POST /users/:id': 'UserController.update',
     'DELETE /users/:id': 'UserController.delete',
+
+    'GET /widgets': 'WidgetController.index',
+    'POST /widget/:id/hide': 'WidgetController.hide',
+    'POST /widget/:id/show': 'WidgetController.show',
 
     'GET /assets/m/:module/*': 'AssetController.serve'
 };

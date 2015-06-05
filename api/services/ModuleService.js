@@ -3,6 +3,7 @@ var captains = require('sails/node_modules/captains-log');
 var Promise = require('bluebird');
 var fs = require('fs');
 var _ = require('lodash');
+var tsort = require('tsort');
 
 module.exports = {
     generateDefaultConfig: function(mod, confDir) {
@@ -146,36 +147,6 @@ module.exports = {
         console.dir(sails.hooks.policies.mapping);
     },
 
-    renderWidgets: function(widgets, req, res) {
-        return Promise.map(widgets, function(widget) {
-            var controller = widget.controller.toLowerCase();
-            var action = widget.action;
-
-            return Promise.resolve().then(function() {
-                return sails.controllers[controller][action](req);
-            }).then(function(result) {
-                if(result) {
-                    result.owner = widget;
-                    if(typeof(result.content) === 'object') {
-                        return new Promise(function(resolve, reject) {
-                            sails.renderView(path.join('..', widget.module.relPath, result.content.template), result.content.vars, function(err, resultString) {
-                                if(err) {
-                                    reject(err);
-                                } else {
-                                    result.rendered = resultString;
-                                    resolve(result);
-                                }
-                            });
-                        });
-                    } else {
-                        result.rendered = result.content;
-                        return result;
-                    }
-                }
-            });
-        }, { concurrency: 3 });
-    },
-
     createModuleLogger: function(modulename) {
         var customOptions = _.clone(sails.config.log);
         var themeName = 'module_' + modulename;
@@ -192,5 +163,31 @@ module.exports = {
         };
         customOptions.prefixTheme = themeName;
         return captains(customOptions);
+    },
+
+    sortModulesForLoading: function(modules) {
+        var dependencyGraph = tsort();
+
+        modules.forEach(function(module) {
+            if(!module.dependencies || module.dependencies.length == 0) {
+                dependencyGraph.add('0', module.name);
+            } else {
+                module.dependencies.forEach(function (dep) {
+                    dependencyGraph.add(dep, module.name);
+                });
+            }
+        });
+
+        var sorted = dependencyGraph.sort();
+        if(sorted[0] == '0') {
+            sorted.shift();
+        }
+
+        var result = [];
+        sorted.forEach(function(name) {
+            result.push(_.find(modules, function(mod) { return mod.name == name; }));
+        });
+
+        return result;
     }
 };
