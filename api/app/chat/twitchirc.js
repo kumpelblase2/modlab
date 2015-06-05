@@ -2,6 +2,7 @@ var twitchirc = require('twitch-irc');
 var util = require('util');
 var Base = require('./base');
 var _ = require('lodash');
+var Message = require('./message');
 
 function TwitchIRC(config) {
     TwitchIRC.super_.call(this);
@@ -9,7 +10,8 @@ function TwitchIRC(config) {
     var twitchClientOptions = {
         options: {
             debug: config.debug,
-            emitSelf: true
+            emitSelf: true,
+            tc: 3
         },
         connection: {
             reconnect: true,
@@ -23,18 +25,43 @@ function TwitchIRC(config) {
     };
 
     this.room = config.room;
-    this.client = twitchirc.client(twitchClientOptions);
-    this.client.connect();
+    this.client = new twitchirc.client(twitchClientOptions);
     this.name = twitchClientOptions.identity.username;
-    this.hearings = {};
+    this.hearings = [];
+
+    var log = function(message) {
+        return function() {
+            LogService.create(message, LogService.TYPES.EVENT);
+        }
+    };
 
     var self = this;
+    this.on('join', function() {
+        console.log('Connected to chat');
+    });
+
+    this.on('join', log('Connected to chat'));
+    this.on('disconnected', log('Disconnected from chat'));
+    this.on('connectfail', log('Connection failed'));
+    this.on('reconnect', log('Reconnect'));
+    this.on('chat', function(channel, user, message) {
+        LogService.create(user.username + ': ' + message, LogService.TYPES.CHAT);
+    });
+
+    this.on('action', function(channel, user, message) {
+        LogService.create(user.username + ': /me' + message, LogService.TYPES.CHAT);
+    });
+
+    this.on('timeout', function(channel, user) {
+        LogService.create(user + ' got timed out', LogService.TYPES.EVENT.CHAT);
+    });
+
     this.on('chat', function(channel, user, message) {
         if(channel == self.room && user.username != self.name) {
-            _.forOwn(self.hearings, function(hearing, hearingName) {
+            self.hearings.forEach(function(hearing) {
                 var result = hearing.toHear.exec(message);
                 if(result) {
-                    hearing.callback(user, message, result);
+                    hearing.callback(result, new Message(channel, self, user, message));
                 }
             });
         }
@@ -47,19 +74,32 @@ TwitchIRC.prototype.on = function(event, callback) {
     this.client.addListener(event, callback);
 };
 
+TwitchIRC.prototype.run = function() {
+    this.client.connect();
+};
+
+TwitchIRC.prototype.removeListener = function(event, callback) {
+    this.client.removeListener(event, callback);
+};
+
 TwitchIRC.prototype.isMod = function(inUser) {
     return this.client.isMod(this.room, inUser);
 };
 
-TwitchIRC.prototype.hear = function(name, toHear, callback) {
-    if(this.hearings[name]) {
-        return false;
-    }
-
-    this.hearings[name] = {
+TwitchIRC.prototype.hear = function(toHear, callback) {
+    this.hearings.push({
         toHear: toHear,
         callback: callback
-    };
+    });
+};
+
+TwitchIRC.prototype.removeHearing = function(callback) {
+    for(var i = 0; i < this.hearings.length; i++) {
+        if(this.hearings[i].callback === callback) {
+            this.hearings.slice(i);
+            return;
+        }
+    }
 };
 
 TwitchIRC.prototype.emit = function() {
