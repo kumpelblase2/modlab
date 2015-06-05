@@ -22,6 +22,10 @@ function LiveChat(app, chat) {
     this.routes = {
         'GET /': 'LivechatChatController.index'
     };
+
+    chat.on('chat', function(channel, user, message) {
+        sails.sockets.blast('chat', { user: user.username, message: message });
+    });
 }
 
 util.inherits(LiveChat, Plugin);
