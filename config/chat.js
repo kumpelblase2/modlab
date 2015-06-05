@@ -9,6 +9,6 @@ module.exports.chat = {
         token: 'oauth:aaaaaaaaaaaaaaaaaa',
         debug: true,
         reconnect: true,
-        reconnectTime: 60
+        reconnectTries: 5
     }
 };
