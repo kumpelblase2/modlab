@@ -8,7 +8,7 @@ var User = {
         passports: { collection: 'Passport', via: 'user' },
         permissions: { type: 'array', defaultsTo: [] },
         permission_groups: { collection: 'PermissionGroup', via: 'users_in_group', defaultsTo: [] },
-        hidden_widgets: { type: 'array', defaultsTo: ['SysteminfoWidget#groups'] },
+        hidden_widgets: { type: 'array', defaultsTo: [] },
 
         hasPermission: function (inPermission) {
             return PermissionService.isIncluded(this.permissions, inPermission) || _.some(this.permission_groups, function(group) {
