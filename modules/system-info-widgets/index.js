@@ -10,13 +10,16 @@ function SystemInfo(app, chat)
 
     this.widgets = [{
         controller: 'SysteminfoWidget',
-        action: 'modules'
+        action: 'modules',
+        permission: 'system.modules.view'
     }, {
         controller: 'SysteminfoWidget',
-        action: 'users'
+        action: 'users',
+        permission: 'system.rights.view'
     }, {
         controller: 'SysteminfoWidget',
-        action: 'groups'
+        action: 'groups',
+        permission: 'system.rights.view'
     }];
 
     this.controllers = {

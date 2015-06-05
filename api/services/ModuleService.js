@@ -4,7 +4,6 @@ var Promise = require('bluebird');
 var fs = require('fs');
 var _ = require('lodash');
 var tsort = require('tsort');
-var myParser = require('../app/CustomParser');
 
 module.exports = {
     generateDefaultConfig: function(mod, confDir) {
@@ -146,38 +145,6 @@ module.exports = {
         sails.hooks.policies.mapping[controllerNameInPolicies] = object;
         console.dir(sails.hooks.policies.mapping[controllerName]);
         console.dir(sails.hooks.policies.mapping);
-    },
-
-    renderWidgets: function(widgets, req, res) {
-        return Promise.map(widgets, function(widget) {
-            var controller = widget.controller.toLowerCase();
-            var action = widget.action;
-
-            return Promise.resolve().then(function() {
-                return sails.controllers[controller][action](req);
-            }).then(function(result) {
-                if(result) {
-                    result.owner = widget;
-                    if(typeof(result.content) === 'object') {
-                        return new Promise(function(resolve, reject) {
-                            var options = result.content.vars;
-                            options.parser = myParser;
-                            sails.renderView(path.join('..', widget.module.relPath, result.content.template), result.content.vars, function(err, resultString) {
-                                if(err) {
-                                    reject(err);
-                                } else {
-                                    result.rendered = resultString;
-                                    resolve(result);
-                                }
-                            });
-                        });
-                    } else {
-                        result.rendered = result.content;
-                        return result;
-                    }
-                }
-            });
-        }, { concurrency: 3 });
     },
 
     createModuleLogger: function(modulename) {
