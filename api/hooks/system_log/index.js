@@ -6,7 +6,9 @@ module.exports = function(sails) {
             });
 
             sails.config.beforeShutdown = function(cb) {
-                LogService.create('System stopped', LogService.TYPES.EVENT);
+                LogService.create('System stopped', LogService.TYPES.EVENT).then(function() {
+                    cb();
+                });
             };
 
             cb();
