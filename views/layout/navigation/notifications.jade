@@ -6,7 +6,7 @@ mixin notification(url, icon, message, time)
                 = time
 
 if req.isAuthenticated()
-    li.dropdown
+    li.dropdown#notification_menu
         a.dropdown-toggle(data-toggle='dropdown', href='#')
             i.fa.fa-bell.fa-fw
             i.fa.fa-caret-down
