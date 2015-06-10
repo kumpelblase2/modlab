@@ -3,6 +3,7 @@ function refreshNotifications() {
     $.getJSON('notifications?limit=10', function(notifications) {
         console.log('reload');
         $('#no_notifies').remove();
+        $('.notification-item').remove();
         if(notifications.notifications && notifications.notifications.length > 0) {
             notifications.notifications.reverse().forEach(function (notification) {
                 notificationBar.prepend(JST["assets/templates/notifications/notification.html"]({

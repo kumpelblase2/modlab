@@ -1,11 +1,11 @@
-<a href="{{ notification.url }}">
-    <div>
+<div class="notification-item">
+    <a href="{{ notification.url }}">
         <div style="margin-left: 10px; margin-right: 10px">
             <i class="fa fa-fa fa-{{ notification.type }} fa-2x">{{ notification.title }}</i>
             <p>{{ notification.message }}</p>
         </div>
-        <span class="pull-right text-muted small">
-            {{ notification.createdAt }}
-        </span>
-    </div>
-</a>
+    </a>
+    <span class="pull-right text-muted small">
+        {{ notification.createdAt }}
+    </span>
+</div>
