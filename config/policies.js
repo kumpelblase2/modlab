@@ -34,11 +34,6 @@ module.exports.policies = {
 
     'root': {
         '*': ['helper', 'passport']
-    },
-
-    'install/steps': {
-        '*': ['helper', 'passport', 'notFinishedInstallation', 'admin'],
-        '1': ['helper', 'passport', 'notFinishedInstallation']
     }
     /***************************************************************************
      *                                                                          *

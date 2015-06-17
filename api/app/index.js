@@ -90,12 +90,4 @@ App.prototype.registerMenuItem = function(mod, info) {
     });
 };
 
-App.prototype.finishedInstallation = function() {
-    return this.installation.value.finished;
-};
-
-App.prototype.currentInstallationStep = function() {
-    return this.installation.value.step;
-};
-
 module.exports = App;
