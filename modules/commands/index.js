@@ -28,9 +28,10 @@ function Commands(app, chat)
 }
 
 util.inherits(Commands, Plugin);
-
 Commands.prototype.enable = function(callback) {
     var self = this;
+    self.app.registerMenuItem(self, { permission: 'module.commands.view' });
+
     Command.find().exec(function(err, commands) {
         if(commands) {
             commands.forEach(function(command) {

@@ -12,18 +12,29 @@
                         ul.nav.nav-second-level
                             li
                                 a(href='/modules') Overview
-                            each module in sails.app.modules
-                                - if(module.routes && Object.keys(module.routes).length >= 1)
-                                    li
-                                        if module.baseURL
-                                            a(href='/m/' + module.baseURL + '/')= module.displayName
-                                        else
-                                            a(href='/m/' + module.name + '/')= module.displayName
+                            each menu in Object.keys(sails.app.moduleMenus)
+                                - var menuItems = sails.app.moduleMenus[menu];
+                                if menuItems.length == 1
+                                    - var menuItem = menuItems[0];
+                                    if menuItem.permission == '' || (req.user && req.user.hasPermission(menuItem.permission))
+                                        li
+                                            a(href=menuItem.url)= menuItem.text
 
                 if req.user.hasPermission('system.rights.view')
                     +sidebar-item('shield', '/rights', 'Rights')
                 if req.user.hasPermission('system.logs.view')
                     +sidebar-item('book', '/logs', 'Logs')
+
+                each menu in Object.keys(sails.app.moduleMenus)
+                    - var primaryMenu = sails.app.moduleMenus[menu];
+                    - var menuItems = primaryMenu.items;
+                    if menuItems.length > 1 && req.user.hasAnyPermission(menuItems, 'permission')
+                        +sidebar-item('plug', '/m/' + menu + '/', primaryMenu.display)
+                            ul.nav.nav-secon-level
+                                each menuItem in menuItems
+                                    if menuItem.permission == '' || (req.user && req.user.hasPermission(menuItem.permission))
+                                        li
+                                            a(href=menuItem.url)= menuItem.text
             else
                 +sidebar-item('sign-in', '/login', 'Sign In')
 

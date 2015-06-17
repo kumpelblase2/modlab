@@ -10,10 +10,13 @@ var User = {
         permission_groups: { collection: 'PermissionGroup', via: 'users_in_group', defaultsTo: [] },
         hidden_widgets: { type: 'array', defaultsTo: [] },
 
+        hasAnyPermission: function(inPermissions, inProperty) {
+            return PermissionService.hasAny(this.permissions, inPermissions, inProperty) || _.some(this.permission_groups, function(group) {
+                    PermissionService.hasAny(group.permissions, inPermissions, inProperty);
+                });
+        },
         hasPermission: function (inPermission) {
-            return PermissionService.isIncluded(this.permissions, inPermission) || _.some(this.permission_groups, function(group) {
-                PermissionService.isIncluded(group.permissions, inPermission);
-            });
+            return this.hasAnyPermission([inPermission]);
         },
         allPermissions: function() {
             var all = [];

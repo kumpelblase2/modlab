@@ -189,9 +189,9 @@ module.exports = {
         } else {
             var id = req.param('id');
             PermissionGroup.destroy(id).then(function() {
-                return res.redirect('/rights');
-            }).then(function() {
                 return LogService.create('Deleted group with id ' + id, LogService.TYPES.EVENT, req.user);
+            }).then(function() {
+                return res.redirect('/rights');
             }).catch(function(err) {
                 console.log(err);
             });
