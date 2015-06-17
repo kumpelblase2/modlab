@@ -2,6 +2,8 @@ var path = require('path');
 var captains = require('sails/node_modules/captains-log');
 var Promise = require('bluebird');
 var fs = require('fs');
+var _ = require('lodash');
+var tsort = require('tsort');
 
 module.exports = {
     generateDefaultConfig: function(mod, confDir) {
@@ -74,7 +76,16 @@ module.exports = {
                     sails.log.error(new Error('Invlid route detected: ' + routeName));
                 }
 
-                sails.config.routes[routeName] = routeInfo;
+                if(typeof(routeInfo) == 'object') {
+                    if("requiresLogin" in routeInfo && !routeInfo.requiresLogin) {
+                        ModuleService.registerInsecureRoute(mod, routeInfo.value);
+                    }
+
+                    sails.config.routes[routeName] = routeInfo.value;
+                } else {
+                    sails.config.routes[routeName] = routeInfo;
+                }
+
                 sails.router.explicitRoutes = sails.config.routes;
             });
         }
@@ -114,34 +125,30 @@ module.exports = {
         });
     },
 
-    renderWidgets: function(widgets, req, res) {
-        return Promise.map(widgets, function(widget) {
-            var controller = widget.controller.toLowerCase();
-            var action = widget.action;
+    registerInsecureRoute: function(module, controller) {
+        if(controller.indexOf('/') >= 0 || controller.indexOf('.') < 0) {
+            sails.log.warning('Could not register an insecure route because target was not a controller.');
+            return;
+        }
 
-            return Promise.resolve().then(function() {
-                return sails.controllers[controller][action](req);
-            }).then(function(result) {
-                if(result) {
-                    result.owner = widget;
-                    if(typeof(result.content) === 'object') {
-                        return new Promise(function(resolve, reject) {
-                            sails.renderView(path.join('..', widget.module.relPath, result.content.template), result.content.vars, function(err, resultString) {
-                                if(err) {
-                                    reject(err);
-                                } else {
-                                    result.rendered = resultString;
-                                    resolve(result);
-                                }
-                            });
-                        });
-                    } else {
-                        result.rendered = result.content;
-                        return result;
-                    }
-                }
-            });
-        }, { concurrency: 3 });
+        var controllerSplit = controller.split('.');
+        var controllerName = controllerSplit[0];
+        var action = controllerSplit[1];
+        var object = sails.hooks.policies.mapping[controllerName];
+        var newPolicies = sails.hooks.policies.mapping['*'].slice();
+        _.remove(newPolicies, function(elem) {
+            return elem.identity == 'sessionauth';
+        });
+
+        if(!object) {
+            object = {};
+        }
+
+        object[action] = newPolicies;
+        var controllerNameInPolicies = controllerName.toLowerCase().replace(/controller$/, '');
+        sails.hooks.policies.mapping[controllerNameInPolicies] = object;
+        console.dir(sails.hooks.policies.mapping[controllerName]);
+        console.dir(sails.hooks.policies.mapping);
     },
 
     createModuleLogger: function(modulename) {
@@ -160,5 +167,31 @@ module.exports = {
         };
         customOptions.prefixTheme = themeName;
         return captains(customOptions);
+    },
+
+    sortModulesForLoading: function(modules) {
+        var dependencyGraph = tsort();
+
+        modules.forEach(function(module) {
+            if(!module.dependencies || module.dependencies.length == 0) {
+                dependencyGraph.add('0', module.name);
+            } else {
+                module.dependencies.forEach(function (dep) {
+                    dependencyGraph.add(dep, module.name);
+                });
+            }
+        });
+
+        var sorted = dependencyGraph.sort();
+        if(sorted[0] == '0') {
+            sorted.shift();
+        }
+
+        var result = [];
+        sorted.forEach(function(name) {
+            result.push(_.find(modules, function(mod) { return mod.name == name; }));
+        });
+
+        return result;
     }
 };

@@ -10,6 +10,6 @@ module.exports = {
             issuer: inUser || null,
             message: inMessage,
             type: inType
-        });
+        }).then(function(user) { return user; });
     }
 };

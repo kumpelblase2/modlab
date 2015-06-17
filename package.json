@@ -31,7 +31,6 @@
     "lodash": "^2.4.1",
     "log": "^1.4.0",
     "marked": "~0.3.2",
-    "modlab-chat": "~0.0.3",
     "modlab-plugin": "~0.0.2",
     "passport": "~0.2.1",
     "passport-local": "~1.0.0",
@@ -41,6 +40,8 @@
     "sails-disk": "~0.10.0",
     "sails-mysql": "~0.10.7",
     "skipper": "~0.5.3",
+    "twitch-irc": "~1.2.7",
+    "tsort": "0.0.1",
     "validator": "~3.27.0",
     "waterline": "~0.10.15"
   },

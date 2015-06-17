@@ -12,6 +12,11 @@ li.dropdown
                 a(href='/settings')
                     i.fa.fa-gear.fa-fw
                     | Settings
+            if req.user.hasPermission('system.widgets.view')
+                li
+                    a(href='/widgets')
+                        i.fa.fa-plug.fa-fw
+                        | Widgets
             li
                 a(href='/logout')
                     i.fa.fa-sign-out.fa-fw

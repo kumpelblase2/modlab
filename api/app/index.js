@@ -20,9 +20,11 @@ App.prototype.registerSite = function(mod, page) {
 
 App.prototype.registerWidget = function(mod, widget) {
     this.customWidgets.push({
+        id: widget.controller + '#' + widget.action,
         module: mod,
         controller: widget.controller,
-        action: widget.action
+        action: widget.action,
+        permission: widget.permission || ''
     });
 };
 

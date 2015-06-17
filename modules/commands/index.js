@@ -88,15 +88,14 @@ Commands.prototype.enable = function(callback) {
 };
 
 Commands.prototype.registerCommand = function(name, callback) {
-    this.chat.hear(new RegExp("^" + sails.config.moduleconfig.commands.prefix + name + " ?(.*)"), function(message) {
-        callback(message.match[1].split(' '), message);
+    //TODO change regex to a single regex handler that calls the commands via name
+    this.chat.hear(new RegExp("^" + sails.config.moduleconfig.commands.prefix + name + " ?(.*)"), function(result, message) {
+        callback(result[1].split(' '), message);
     });
 };
 
 Commands.prototype.registerHearingCommand = function(name, callback) {
-    this.chat.hear(new RegExp(name), function(message) {
-        callback(message.match[0], message);
-    });
+    this.chat.hear(new RegExp(name), callback);
 };
 
 Commands.prototype.disable = function() {
@@ -108,9 +107,9 @@ module.exports = function (app, chat) {
 };
 
 function simpleMessage(content) {
-    return function(args, message) { message.reply(messageFormatter.format(content, message)); };
+    return function(args, message) { message.reply(messageFormatter.format(content, message.content)); };
 }
 
 function simpleChannelMessage(content) {
-    return function(args, message) { message.send(messageFormatter.format(content, message)); };
+    return function(args, message) { message.reply(messageFormatter.format(content, message.content)); };
 }
