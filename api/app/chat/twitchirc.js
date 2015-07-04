@@ -1,4 +1,4 @@
-var twitchirc = require('twitch-irc');
+var tmi = require('tmi.js');
 var util = require('util');
 var Base = require('./base');
 var _ = require('lodash');
@@ -9,13 +9,10 @@ function TwitchIRC(config) {
 
     var twitchClientOptions = {
         options: {
-            debug: config.debug,
-            emitSelf: true,
-            tc: 3
+            debug: config.debug
         },
         connection: {
-            reconnect: true,
-            retries: config.reconnectTries
+            reconnect: true
         },
         identity: {
             username: config.name || 'kumpelbot',
@@ -25,7 +22,7 @@ function TwitchIRC(config) {
     };
 
     this.room = config.room;
-    this.client = new twitchirc.client(twitchClientOptions);
+    this.client = new tmi.client(twitchClientOptions);
     this.name = twitchClientOptions.identity.username;
     this.hearings = [];
 
@@ -37,7 +34,7 @@ function TwitchIRC(config) {
 
     var self = this;
     this.on('join', function() {
-        console.log('Connected to chat');
+        sails.log.info('Connected to chat');
     });
 
     this.on('join', log('Connected to chat'));
@@ -71,11 +68,11 @@ function TwitchIRC(config) {
 util.inherits(TwitchIRC, Base);
 
 TwitchIRC.prototype.on = function(event, callback) {
-    this.client.addListener(event, callback);
+    this.client.on(event, callback);
 };
 
 TwitchIRC.prototype.run = function() {
-    this.client.connect();
+    return this.client.connect();
 };
 
 TwitchIRC.prototype.removeListener = function(event, callback) {
