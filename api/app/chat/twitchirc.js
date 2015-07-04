@@ -107,6 +107,10 @@ TwitchIRC.prototype.send = function(message) {
     this.client.say(this.room, message);
 };
 
+TwitchIRC.prototype.sendTo = function(user, message) {
+    this.client.whisper(user, message);
+};
+
 module.exports = function(config) {
     return new TwitchIRC(config);
 };
