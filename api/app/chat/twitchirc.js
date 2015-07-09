@@ -34,11 +34,13 @@ function TwitchIRC(config) {
     };
 
     var self = this;
-    this.on('join', function() {
-        sails.log.info('Connected to chat');
+    this.on('join', function(room, user) {
+        if(user === self.name) {
+            sails.log.info('Connected to chat');
+            log('Connected to chat');
+        }
     });
 
-    this.on('join', log('Connected to chat'));
     this.on('disconnected', log('Disconnected from chat'));
     this.on('connectfail', log('Connection failed'));
     this.on('reconnect', log('Reconnect'));
@@ -155,12 +157,12 @@ module.exports = function(config) {
 
 
 function registerInService(inTwitch) {
-    var service = globals['StreamService'];
+    var service = global['StreamService'];
 
-    service.unhost = inTwitch.unhost;
-    service.host = inTwitch.host;
-    service.getHostTarget = inTwitch.getHostTarget;
-    service.playCommercial = inTwitch.playCommercial;
+    service.unhost = inTwitch.unhost.bind(inTwitch);
+    service.host = inTwitch.host.bind(inTwitch);
+    service.getHostTarget = inTwitch.getHostTarget.bind(inTwitch);
+    service.playCommercial = inTwitch.playCommercial.bind(inTwitch);
 
-    globals['StreamService'] = service;
+    global['StreamService'] = service;
 }
