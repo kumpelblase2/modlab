@@ -11,5 +11,7 @@ Base.prototype.sendTo = function() {};
 Base.prototype.hear = function() {};
 Base.prototype.removeHearing = function() {};
 Base.prototype.isMod = function() {};
+Base.prototype.timeout = function() {};
+Base.prototype.ban = function() {};
 
 module.exports = Base;
