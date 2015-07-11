@@ -5,7 +5,7 @@ module.exports = {
     unhost: function() {
 
     },
-    getHost: function() {
+    getHostTarget: function() {
 
     },
     setTitle: function(inTitle) {
@@ -21,6 +21,9 @@ module.exports = {
 
     },
     getViewers: function() {
+
+    },
+    playCommercial: function(inLength) {
 
     }
 };

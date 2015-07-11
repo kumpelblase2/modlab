@@ -1,3 +1,3 @@
 module.exports.prettyerror = {
-    enabled: true
+    enabled: false
 };
