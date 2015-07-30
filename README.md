@@ -44,18 +44,18 @@ Keep in mind, the product is in a really early preparation phase. The core may c
 
 * Sails as backend
 * Bootstrap styling
-* (Modified) Hubot for chat
+* TMI.js for twitch-chat
 
 ----
 ### Plugins that *should* be available at launch
 * Commands
 * Twitch Auth
-* User/PW Auth
+* User/PW Auth (DONE)
 * Spam filter
 * Subscriber notifier
 * auto-timeout
 * Timed messages
-* Chat log
+* Chat log (DONE)
 * Better permissions (group inheritance)
 
 ### Plugins that *should* follow (soon) after launch
